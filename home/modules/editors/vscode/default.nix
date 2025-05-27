@@ -18,7 +18,7 @@ in
     programs.vscode = {
       enable = true;
       # Need some packages for web assembly and preview in IDE
-      package = pkgs.unstable.vscode.fhsWithPackages (
+      package = pkgs.vscode.fhsWithPackages (
         ps: with ps; [
           cmake
           fontconfig

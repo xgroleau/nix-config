@@ -17,7 +17,7 @@ in
       brightnessctl
       flameshot
       flashfocus
-      (nerdfonts.override { fonts = [ "FiraCode" ]; })
+      nerd-fonts.fira-code
       xclip
       (rofi.override {
         plugins = [

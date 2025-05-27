@@ -19,7 +19,7 @@ in
     modules.darwin.home.extraHomeModules = [
       {
         programs.zsh = {
-          initExtra = ''
+          initContent = ''
             eval "$(/opt/homebrew/bin/brew shellenv)"
           '';
         };

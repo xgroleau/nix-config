@@ -34,12 +34,8 @@ in
           ]))
 
           # Font
-          (nerdfonts.override {
-            fonts = [
-              "FiraCode"
-              "NerdFontsSymbolsOnly"
-            ];
-          })
+          nerd-fonts.fira-code
+          nerd-fonts.symbols-only
 
           # general tools
           fd
