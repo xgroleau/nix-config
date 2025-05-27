@@ -238,7 +238,7 @@
               git
               nixfmt-rfc-style
               statix
-              home-manager.defaultPackage.${system}
+              home-manager.packages.${system}.default
             ]
             ++ (lib.optionals stdenv.isDarwin [ nix-darwin.packages.${system}.default ]);
         };

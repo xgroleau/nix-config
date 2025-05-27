@@ -34,7 +34,7 @@ in
         ]
       );
 
-      extensions = with pkgs.vscode-extensions; [
+      profiles.default.extensions = with pkgs.vscode-extensions; [
         arrterian.nix-env-selector
         bbenoist.nix
         brettm12345.nixfmt-vscode
