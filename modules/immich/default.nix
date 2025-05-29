@@ -99,7 +99,7 @@ in
 
       immich-redis = {
         autoStart = true;
-        image = "valkey/valkey:8-bookworm@sha256:42cba146593a5ea9a622002c1b7cba5da7be248650cbb64ecb9c6c33d29794b1";
+        image = "valkey/valkey:8-bookworm@sha256:a19bebed6a91bd5e6e2106fef015f9602a3392deeb7c9ed47548378dcee3dfc2";
         environmentFiles = [ cfg.envFile ];
         extraOptions = [ "--network=immich-bridge" ];
       };
