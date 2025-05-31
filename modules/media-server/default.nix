@@ -181,7 +181,6 @@ in
         enable = true;
         port = 5055;
         openFirewall = cfg.openFirewall;
-        configDir = cfg.dataDir + "/jellyseerr";
       };
     };
 
