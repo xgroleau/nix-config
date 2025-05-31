@@ -174,12 +174,14 @@ in
         inherit group;
         enable = true;
         openFirewall = cfg.openFirewall;
+        dataDir = cfg.dataDir + "/jellyfin";
       };
 
       jellyseerr = {
         enable = true;
         port = 5055;
         openFirewall = cfg.openFirewall;
+        configDir = cfg.dataDir + "/jellyseerr";
       };
     };
 
