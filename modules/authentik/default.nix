@@ -172,21 +172,24 @@ in
         };
     };
 
-    networking.firewall = lib.mkIf cfg.openFirewall (
-      lib.mkMerge [
-        { allowedTCPPorts = [ cfg.port ]; }
-        (lib.mkIf (cfg.ldap.enable && cfg.ldap.openFirewall) {
-          allowedTCPPorts = [
-            cfg.ldap.ldapPort
-            cfg.ldap.ldapsPort
-          ];
-          allowedUDPPorts = [
-            cfg.ldap.ldapPort
-            cfg.ldap.ldapsPort
-          ];
-        })
-      ]
-    );
+    networking = {
+      useHostResolvConf = true;
+      firewall = lib.mkIf cfg.openFirewall (
+        lib.mkMerge [
+          { allowedTCPPorts = [ cfg.port ]; }
+          (lib.mkIf (cfg.ldap.enable && cfg.ldap.openFirewall) {
+            allowedTCPPorts = [
+              cfg.ldap.ldapPort
+              cfg.ldap.ldapsPort
+            ];
+            allowedUDPPorts = [
+              cfg.ldap.ldapPort
+              cfg.ldap.ldapsPort
+            ];
+          })
+        ]
+      );
+    };
 
     # Create the folder if it doesn't exist
     systemd.tmpfiles.settings.authentik = {
