@@ -127,6 +127,7 @@ in
           ];
 
           services = {
+            resolved.enable = true;
             authentik = {
               enable = true;
               createDatabase = true;
