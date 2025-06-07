@@ -20,7 +20,6 @@ jobs:
         system:
           - { name: azura, platform: x86_64-linux }
           - { name: namira, platform: x86_64-linux }
-          - { name: vaermina, platform: x86_64-linux }
     steps:
       - name: Checkout
         uses: actions/checkout@v4
