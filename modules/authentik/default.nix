@@ -90,11 +90,6 @@ in
 
       # Access to the host data
       bindMounts = {
-        # Needed to have dns, see https://discourse.nixos.org/t/declarative-containers-lose-ability-to-resolve-host-names-over-time-any-tips-for-troubleshooting/12218/7
-        # "/etc/resolv.conf" = {
-        #   hostPath = "/etc/resolv.conf";
-        #   isReadOnly = true;
-        # };
 
         "${cfg.envFile}" = {
           hostPath = cfg.envFile;
