@@ -87,6 +87,7 @@ in
       autoStart = true;
       ephemeral = true;
       restartIfChanged = true;
+      privateUsers = "identity";
 
       # Access to the host data
       bindMounts = {
