@@ -46,21 +46,12 @@ in
       settings.trusted-users = [ "@admin" ];
     };
 
-    services = {
-      nix-daemon.enable = true;
-    };
-
     # Adding all machines to known host
     programs.ssh.knownHosts = lib.mapAttrs (name: value: { publicKey = value; }) keys.machines;
 
     system = {
+      primaryUser = "xgroleau";
       startup.chime = false;
-
-      # activateSettings -u will reload the settings from the database and apply them to the current session,
-      # so we do not need to logout and login again to make the changes take effect.
-      activationScripts.postUserActivation.text = ''
-        /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-      '';
 
       defaults = {
         dock = {

@@ -20,8 +20,11 @@ exec-on-workspace-change = ['/bin/bash', '-c',
     '/opt/homebrew/opt/sketchybar/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
 ]
 
+on-focus-changed = ['move-mouse window-lazy-center']
+
 [exec.env-vars]
 PATH = '${HOME}/.nix-profile/bin:/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
+
 
 [mode.main.binding]
 cmd-enter = 'exec-and-forget alacritty'
