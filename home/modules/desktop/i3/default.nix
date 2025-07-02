@@ -48,9 +48,6 @@ in
       };
     };
 
-    # Until https://github.com/NixOS/nixpkgs/pull/417193  land
-    programs.i3lock.enable = true;
-
     services = {
 
       betterlockscreen = {
