@@ -2,7 +2,7 @@
 {
 
   imports = [
-    ../desktop.nix
+    ../base-config.nix
     ./disko.nix
     ./hardware-configuration.nix
   ];
