@@ -9,6 +9,8 @@
       "enabled": true
     }
   },
+  
+  "digest": { "masterIssueApproval": true },
 
   "regexManagers": [
     {
