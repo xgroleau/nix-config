@@ -54,6 +54,9 @@ in
         "visual-studio-code"
         "spotify"
 
+        # Setup
+        "unnaturalscrollwheels"
+
         # IM & audio & remote desktop & meeting
         "discord"
         "element"

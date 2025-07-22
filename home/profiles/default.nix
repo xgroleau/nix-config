@@ -36,6 +36,7 @@ rec {
       config = {
         modules = {
           shell.alacritty.enable = true;
+          keyboards.kanata.enable = true;
         };
       };
     };
@@ -50,6 +51,7 @@ rec {
           applications.discord.enable = true;
           editors.vscode.enable = true;
           shell.alacritty.enable = true;
+          keyboards.kanata.enable = true;
         };
 
         home.packages = with pkgs; [

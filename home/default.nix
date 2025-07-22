@@ -19,6 +19,7 @@ in
     ./modules/nixpkgs
     ./modules/shell
     ./modules/nix
+    ./modules/keyboards
     inputs.stylix.homeManagerModules.stylix
   ];
 
