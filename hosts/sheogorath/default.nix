@@ -183,7 +183,7 @@ in
       paperlessNgx = {
         enable = true;
         port = 11300;
-        domain = "paperless.${domain}";
+        url = "https://paperless.${domain}";
         backupDir = "/data/backups/paperless";
         mediaDir = "/documents/paperless";
         dataDir = "/data/paperless";
