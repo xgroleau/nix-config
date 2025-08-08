@@ -139,7 +139,7 @@ in
               d = {
                 user = "postgres";
                 group = "postgres";
-                mode = "700";
+                mode = "750";
               };
             };
           };
@@ -182,7 +182,7 @@ in
         d = {
           user = "paperless";
           group = "paperless";
-          mode = "700";
+          mode = "750";
         };
       };
 
@@ -190,7 +190,7 @@ in
         d = {
           user = "paperless";
           group = "paperless";
-          mode = "700";
+          mode = "750";
         };
       };
 
@@ -198,7 +198,7 @@ in
         d = {
           user = "paperless";
           group = "paperless";
-          mode = "700";
+          mode = "750";
         };
       };
     };
