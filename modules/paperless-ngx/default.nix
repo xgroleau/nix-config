@@ -59,7 +59,7 @@ in
       autoStart = true;
       ephemeral = true;
       restartIfChanged = true;
-      privateUsers = "pick";
+      privateUsers = "identity";
 
       # Access to the host data
       bindMounts = {
@@ -182,7 +182,7 @@ in
         d = {
           user = "paperless";
           group = "paperless";
-          mode = "755";
+          mode = "700";
         };
       };
 
@@ -190,7 +190,7 @@ in
         d = {
           user = "paperless";
           group = "paperless";
-          mode = "755";
+          mode = "700";
         };
       };
 
@@ -198,7 +198,7 @@ in
         d = {
           user = "paperless";
           group = "paperless";
-          mode = "755";
+          mode = "700";
         };
       };
     };
