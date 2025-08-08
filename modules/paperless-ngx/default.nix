@@ -182,7 +182,7 @@ in
         d = {
           user = "paperless";
           group = "paperless";
-          mode = "777";
+          mode = "755";
         };
       };
 
@@ -190,7 +190,7 @@ in
         d = {
           user = "paperless";
           group = "paperless";
-          mode = "777";
+          mode = "755";
         };
       };
 
@@ -198,7 +198,7 @@ in
         d = {
           user = "paperless";
           group = "paperless";
-          mode = "777";
+          mode = "755";
         };
       };
     };
