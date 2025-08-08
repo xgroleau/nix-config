@@ -152,6 +152,18 @@ in
       );
     };
 
+    users = lib.optionalAttrs {
+      users.paperless = {
+        group = "paperless";
+        uid = config.ids.uids.paperless;
+        home = cfg.dataDir;
+      };
+
+      groups.paperless = {
+        gid = config.ids.gids.paperless;
+      };
+    };
+
     # Create the folder if it doesn't exist
     systemd.tmpfiles.settings.paperlessNgx = {
       "${cfg.dataDir}" = {
