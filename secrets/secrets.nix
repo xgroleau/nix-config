@@ -47,6 +47,10 @@ with keys;
     users.xgroleau
     machines.sheogorath
   ];
+  "paperless-ngx-env.age".publicKeys = [
+    users.xgroleau
+    machines.sheogorath
+  ];
   "pia-ovpn.age".publicKeys = [
     users.xgroleau
     machines.sheogorath

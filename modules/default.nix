@@ -28,6 +28,7 @@
     ./ssh
     ./tailscale
     ./valheim
+    ./paperless-ngx
     ./xserver
   ];
 }

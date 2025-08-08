@@ -178,6 +178,16 @@ in
       #   dataDir = "/data/palworld";
       # };
 
+      paperlessNgx = {
+        enable = true;
+        port = 11300;
+        backupDir = "/data/backups/paperless";
+        dataDir = "/documents/paperless";
+        mediaDir = "/media/paperless";
+        consumptionDir = "/data/paperless/consumption";
+        envFile = config.age.secrets.paperlessNgxEnv.path;
+      };
+
       valheim = {
         enable = true;
         restart = true;
