@@ -113,6 +113,7 @@ in
                   "desktop.ini"
                 ];
                 PAPERLESS_OCR_LANGUAGE = "fra+eng";
+                PAPERLESS_DBPORT = 5433;
                 PAPERLESS_OCR_USER_ARGS = {
                   optimize = 1;
                   pdfa_image_compression = "lossless";
@@ -121,7 +122,10 @@ in
             };
 
             # Some override of the internal services
-            postgresql.dataDir = "${cfg.dataDir}/postgres";
+            postgresql = {
+              dataDir = "${cfg.dataDir}/postgres";
+              settings.port = 5433;
+            };
             postgresqlBackup = {
               enable = true;
               backupAll = true;
