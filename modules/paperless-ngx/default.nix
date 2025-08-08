@@ -20,6 +20,11 @@ in
 
     openFirewall = lib.mkEnableOption "Open the required ports in the firewall";
 
+    url = lib.mkOption {
+      type = types.str;
+      description = "Url of paperless";
+    };
+
     envFile = lib.mkOption {
       type = types.str;
       description = "Path to the environment file";
@@ -108,6 +113,7 @@ in
               configureTika = true;
 
               settings = {
+                PAPERLESS_URL = cfg.url;
                 PAPERLESS_APPS = "allauth.socialaccount.providers.openid_connect";
                 PAPERLESS_CONSUMER_IGNORE_PATTERN = [
                   ".DS_STORE/*"
