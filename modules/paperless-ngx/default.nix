@@ -114,6 +114,7 @@ in
                 ];
                 PAPERLESS_OCR_LANGUAGE = "fra+eng";
                 PAPERLESS_DBPORT = 5433;
+                PAPERLESS_PORT = cfg.port;
                 PAPERLESS_OCR_USER_ARGS = {
                   optimize = 1;
                   pdfa_image_compression = "lossless";
