@@ -189,6 +189,14 @@ in
           mode = "750";
         };
       };
+
+      "${cfg.consumptionDir}" = {
+        d = {
+          user = "paperless";
+          group = "paperless";
+          mode = "750";
+        };
+      };
     };
   };
 }
