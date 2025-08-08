@@ -80,6 +80,8 @@ in
           "wopi.${domain}" = "localhost:11210";
           "collabora.${domain}" = "localhost:11220";
 
+          "paperless.${domain}" = "localhost:11300";
+
           "jellyfin.${domain}" = "localhost:8096";
           "jellyseerr.${domain}" = "localhost:5055";
 
