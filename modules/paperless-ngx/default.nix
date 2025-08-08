@@ -107,7 +107,7 @@ in
               configureTika = true;
 
               settings = {
-                PAPERLESS_APPS = [ "allauth.socialaccount.providers.openid_connect" ];
+                PAPERLESS_APPS = "allauth.socialaccount.providers.openid_connect";
                 PAPERLESS_CONSUMER_IGNORE_PATTERN = [
                   ".DS_STORE/*"
                   "desktop.ini"
