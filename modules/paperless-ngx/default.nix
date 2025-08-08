@@ -171,7 +171,7 @@ in
         d = {
           user = "paperless";
           group = "paperless";
-          mode = "755";
+          mode = "777";
         };
       };
 
