@@ -152,7 +152,7 @@ in
       );
     };
 
-    users = lib.optionalAttrs {
+    users = {
       users.paperless = {
         group = "paperless";
         uid = config.ids.uids.paperless;
