@@ -184,8 +184,8 @@ in
         enable = true;
         port = 11300;
         backupDir = "/data/backups/paperless";
-        dataDir = "/documents/paperless";
-        mediaDir = "/media/paperless";
+        mediaDir = "/documents/paperless";
+        dataDir = "/data/paperless";
         consumptionDir = "/documents/paperless/consumption";
         envFile = config.age.secrets.paperlessNgxEnv.path;
       };
