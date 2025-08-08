@@ -168,21 +168,24 @@ in
     systemd.tmpfiles.settings.paperlessNgx = {
       "${cfg.dataDir}" = {
         d = {
-          user = config.services.paperless.user;
+          user = "paperless";
+          group = "paperless";
           mode = "750";
         };
       };
 
       "${cfg.mediaDir}" = {
         d = {
-          user = config.services.paperless.user;
+          user = "paperless";
+          group = "paperless";
           mode = "750";
         };
       };
 
       "${cfg.backupDir}" = {
         d = {
-          user = config.services.paperless.user;
+          user = "paperless";
+          group = "paperless";
           mode = "750";
         };
       };
