@@ -160,6 +160,7 @@ in
               d = {
                 user = "postgres";
                 group = "postgres";
+                mode = "700";
               };
             };
           };
