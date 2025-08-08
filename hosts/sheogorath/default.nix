@@ -186,7 +186,7 @@ in
         backupDir = "/data/backups/paperless";
         dataDir = "/documents/paperless";
         mediaDir = "/media/paperless";
-        consumptionDir = "/data/paperless/consumption";
+        consumptionDir = "/documents/paperless/consumption";
         envFile = config.age.secrets.paperlessNgxEnv.path;
       };
 
