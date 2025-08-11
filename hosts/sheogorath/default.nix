@@ -139,7 +139,7 @@ in
       };
 
       mealie = {
-        enable = false;
+        enable = true;
         port = 10400;
         credentialsFile = config.age.secrets.mealieEnv.path;
         dataDir = "/data/mealie";
@@ -153,17 +153,17 @@ in
         username = "xavgroleau@gmx.com";
         passwordFile = config.age.secrets.gmxPass.path;
       };
-      minecraft = {
-        enable = true;
-        port = 25665;
-        openFirewall = true;
+      # minecraft = {
+      #   enable = true;
+      #   port = 25665;
+      #   openFirewall = true;
 
-        name = "Yofo";
-        type = "FORGE";
-        version = "1.20.2";
-        dataDir = "/data/minecraft/yofo";
-        packwizPackUrl = "https://raw.githubusercontent.com/xgroleau/yofo-modpack/refs/tags/v1.0.5/pack.toml";
-      };
+      #   name = "Yofo";
+      #   type = "FORGE";
+      #   version = "1.20.2";
+      #   dataDir = "/data/minecraft/yofo";
+      #   packwizPackUrl = "https://raw.githubusercontent.com/xgroleau/yofo-modpack/refs/tags/v1.0.5/pack.toml";
+      # };
 
       # arkSurvivalAscended = {
       #   enable = true;
