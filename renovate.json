@@ -1,20 +1,23 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-
-  "extends": ["config:recommended"],
-
+  "extends": [
+    "config:recommended"
+  ],
   "nix": {
     "enabled": true,
     "lockFileMaintenance": {
       "enabled": true
     }
   },
-  
-  "digest": { "masterIssueApproval": true },
-
-  "regexManagers": [
+  "digest": {
+    "dependencyDashboardApproval": true
+  },
+  "customManagers": [
     {
-      "fileMatch": ["^.*\\.nix$"],
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^.*\\.nix$/"
+      ],
       "matchStrings": [
         "image\\s*=\\s*\"(?<depName>[^\\n\\r:]+):(?<currentValue>[^\\n\\r@\"]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?\"",
         "Image\\s*=\\s*\"(?<depName>[^\\n\\r:]+):(?<currentValue>[^\\n\\r@\"]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?\""
@@ -22,17 +25,16 @@
       "datasourceTemplate": "docker"
     }
   ],
-
   "packageRules": [
     {
-      "matchPackagePatterns": [
-        "postgres",
-        "mysql",
-        "mariadb",
-        "mongodb",
-        "pgvecto-rs"
-      ],
-      "enabled": false
+      "enabled": false,
+      "matchPackageNames": [
+        "/postgres/",
+        "/mysql/",
+        "/mariadb/",
+        "/mongodb/",
+        "/pgvecto-rs/"
+      ]
     }
   ]
 }
