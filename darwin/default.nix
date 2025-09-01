@@ -41,8 +41,7 @@ in
       '';
 
       # Avoid always redownloading the registry
-      registry.nixpkgsu.flake = inputs.nixpkgs; # For flake commands
-      nixPath = [ "nixpkgsu=${inputs.nixpkgs}" ]; # For legacy commands
+      registry.nixpkgsu.flake = inputs.nixpkgs-unstable; # For flake commands
       settings.trusted-users = [ "@admin" ];
     };
 
@@ -82,8 +81,9 @@ in
           InitialKeyRepeat = 15;
           AppleKeyboardUIMode = 3;
           ApplePressAndHoldEnabled = true;
+          "com.apple.keyboard.fnState" = true;
 
-          # Char Substitutaion
+          # Char Substitution
           NSAutomaticCapitalizationEnabled = false;
           NSAutomaticDashSubstitutionEnabled = false;
           NSAutomaticPeriodSubstitutionEnabled = false;

@@ -42,7 +42,6 @@ in
 
       # Avoid always redownloading the registry
       registry.nixpkgsu.flake = inputs.nixpkgs-unstable; # For flake commands
-      nixPath = [ "nixpkgsu=${inputs.nixpkgs-unstable}" ]; # For legacy commands
       settings = {
         auto-optimise-store = true;
         trusted-users = [
