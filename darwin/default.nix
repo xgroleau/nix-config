@@ -81,7 +81,7 @@ in
           InitialKeyRepeat = 15;
           AppleKeyboardUIMode = 3;
           ApplePressAndHoldEnabled = true;
-          "com.apple.keyboard.fnState" = true;
+          "com.apple.keyboard.fnState" = false;
 
           # Char Substitution
           NSAutomaticCapitalizationEnabled = false;
