@@ -139,7 +139,7 @@ in
       };
 
       mealie = {
-        enable = false;
+        enable = true;
         port = 10400;
         credentialsFile = config.age.secrets.mealieEnv.path;
         dataDir = "/data/mealie";
