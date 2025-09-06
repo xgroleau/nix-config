@@ -43,6 +43,7 @@
        ;; neotree           ; a project drawer, like NERDTree for vim
        ophints           ; highlight the region an operation acts on
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
+       smooth-scroll     ; So smooth you won't believe it's not butter
        ;; tabs              ; a tab bar for Emacs
        treemacs          ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
@@ -95,7 +96,9 @@
        editorconfig      ; let someone else argue about tabs vs spaces
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
+       ;;llm               ; when I said you needed friends, I didn't mean...
        lookup              ; navigate your code and its documentation
+
        (lsp +peek)
        magit             ; a git porcelain for Emacs
        make              ; run make tasks from Emacs
@@ -140,6 +143,7 @@
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
        json              ; At least it ain't XML
+       ;;janet             ; Fun fact: Janet is me!
        ;;(java +lsp) ; the poster child for carpal tunnel syndrome
        (javascript +lsp +tree-sitter)        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
@@ -166,7 +170,7 @@
        ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
        (rust +lsp +tree-sitter)              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good
-       ;;scheme            ; a fully conniving family of lisps
+       ;;(scheme +guile)   ; a fully conniving family of lisps
        (sh +zsh +lsp)                ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
        ;;solidity          ; do you need a blockchain? No.
