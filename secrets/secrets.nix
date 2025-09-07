@@ -43,6 +43,10 @@ with keys;
     users.xgroleau
     machines.sheogorath
   ];
+  "miniflux-env.age".publicKeys = [
+    users.xgroleau
+    machines.sheogorath
+  ];
   "opencloud-env.age".publicKeys = [
     users.xgroleau
     machines.sheogorath

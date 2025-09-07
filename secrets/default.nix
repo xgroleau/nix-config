@@ -35,6 +35,7 @@ let
     gmxPass.file = ./gmx-pass.age;
     immichEnv.file = ./immich-env.age;
     mealieEnv.file = ./mealie-env.age;
+    minifluxEnv.file = ./miniflux-env.age;
     opencloudEnv.file = ./opencloud-env.age;
     paperlessNgxEnv.file = ./paperless-ngx-env.age;
     piaOvpn.file = ./pia-ovpn.age;

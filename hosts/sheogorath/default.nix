@@ -75,6 +75,7 @@ in
 
           "immich.${domain}" = "localhost:10300";
           "mealie.${domain}" = "localhost:10400";
+          "miniflux.${domain}" = "localhost:11400";
 
           "opencloud.${domain}" = "localhost:11200";
           "wopi.${domain}" = "localhost:11210";
@@ -143,6 +144,15 @@ in
         port = 10400;
         credentialsFile = config.age.secrets.mealieEnv.path;
         dataDir = "/data/mealie";
+      };
+
+      miniflux = {
+        enable = true;
+        port = 11400;
+        url = "miniflux.${domain}";
+        envFile = config.age.secrets.mealieEnv.path;
+        dataDir = "/data/miniflux";
+        backupDir = "/data/backups/miniflux";
       };
 
       msmtp = {

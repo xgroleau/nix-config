@@ -21,6 +21,7 @@
     ./mealie
     ./media-server
     ./minecraft
+    ./miniflux
     ./monitoring
     ./msmtp
     ./opencloud
