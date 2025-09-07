@@ -90,7 +90,9 @@ in
                 BASE_URL = cfg.url;
 
                 CLEANUP_FREQUENCY = 48;
-                DATABASE_URL = "user=miniflux host=/run/postgresql port=5434 dbname=miniflux";
+
+                # Change the default port value
+                DATABASE_URL = lib.mkForce "user=miniflux host=/run/postgresql port=5434 dbname=miniflux";
               };
             };
 
