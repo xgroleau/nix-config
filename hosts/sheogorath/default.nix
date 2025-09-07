@@ -150,7 +150,7 @@ in
         enable = true;
         port = 11400;
         url = "https://miniflux.${domain}";
-        envFile = config.age.secrets.mealieEnv.path;
+        envFile = config.age.secrets.minifluxEnv.path;
         dataDir = "/data/miniflux";
         backupDir = "/data/backups/miniflux";
       };
