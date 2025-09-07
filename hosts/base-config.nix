@@ -87,5 +87,7 @@ in
       };
     };
 
+    #Increase number of file descriptor
+    systemd.extraConfig = "DefaultLimitNOFILE=32768";
   };
 }
