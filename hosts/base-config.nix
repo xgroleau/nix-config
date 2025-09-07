@@ -88,6 +88,6 @@ in
     };
 
     #Increase number of file descriptor
-    systemd.extraConfig = "DefaultLimitNOFILE=32768";
+    systemd.services.nix-daemon.serviceConfig.LimitNOFILE = lib.mkForce 32768;
   };
 }
