@@ -149,7 +149,7 @@ in
       miniflux = {
         enable = true;
         port = 11400;
-        url = "miniflux.${domain}";
+        url = "https://miniflux.${domain}";
         envFile = config.age.secrets.mealieEnv.path;
         dataDir = "/data/miniflux";
         backupDir = "/data/backups/miniflux";
