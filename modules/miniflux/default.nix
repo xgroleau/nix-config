@@ -42,7 +42,7 @@ in
 
     port = lib.mkOption {
       type = types.port;
-      default = 28981;
+      default = 8080;
       description = "the port for http access";
     };
 
@@ -90,6 +90,7 @@ in
                 BASE_URL = cfg.url;
 
                 CLEANUP_FREQUENCY = 48;
+                DATABASE_URL = "user=miniflux host=/run/postgresql port=5434 dbname=miniflux";
               };
             };
 
