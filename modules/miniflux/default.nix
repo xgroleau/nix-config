@@ -80,6 +80,13 @@ in
         {
           nixpkgs.pkgs = pkgs;
 
+        # db setup port
+        systemd.services.miniflux-dbsetup.serviceConfig.Environment = [
+            "PGHOST=/run/postgresql"
+            "PGPORT=5434"
+        ];
+
+
           services = {
             miniflux = {
               enable = true;
@@ -96,12 +103,6 @@ in
               };
             };
 
-
-            # db setup port
-            systemd.services.miniflux-dbsetup.serviceConfig.Environment = [
-                "PGHOST=/run/postgresql"
-                "PGPORT=5434"
-            ];
 
 
             # Some override of the internal services
