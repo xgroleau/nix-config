@@ -79,13 +79,11 @@ in
         { ... }:
         {
           nixpkgs.pkgs = pkgs;
-
-        # db setup port
-        systemd.services.miniflux-dbsetup.serviceConfig.Environment = [
+          # db setup port
+          systemd.services.miniflux-dbsetup.serviceConfig.Environment = [
             "PGHOST=/run/postgresql"
             "PGPORT=5434"
-        ];
-
+          ];
 
           services = {
             miniflux = {
@@ -102,8 +100,6 @@ in
                 DATABASE_URL = lib.mkForce "user=miniflux host=/run/postgresql port=5434 dbname=miniflux";
               };
             };
-
-
 
             # Some override of the internal services
             postgresql = {
