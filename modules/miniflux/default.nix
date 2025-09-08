@@ -133,6 +133,7 @@ in
     };
 
     networking = {
+      useHostResolvConf = true;
       firewall = lib.mkIf cfg.openFirewall (
         lib.mkMerge [
           { allowedTCPPorts = [ cfg.port ]; }
