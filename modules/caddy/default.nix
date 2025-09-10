@@ -48,7 +48,6 @@ in
       virtualHosts = lib.mapAttrs (addr: target: {
         serverAliases = [ "www.${addr}" ];
         # See https://github.com/opencloud-eu/opencloud/issues/455
-        # extraConfig = ''
         #   header {
         #       Access-Control-Allow-Origin "*"
         #       Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE"
@@ -56,10 +55,12 @@ in
         #       Access-Control-Allow-Credentials "true"
         #       Access-Control-Max-Age "86400"
         #   }
+        #
         #   reverse_proxy ${target} {
-        #       header_down -Content-Security-Policy
         #   }
-        # '';
+        extraConfig = ''
+          reverse_proxy ${target}
+        '';
       }) cfg.reverseProxies;
     };
 
