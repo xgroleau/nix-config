@@ -81,9 +81,6 @@ in
               NATS_NATS_HOST = "0.0.0.0";
               NATS_NATS_PORT = "9233";
 
-              # Proxy config
-              PROXY_CSP_CONFIG_FILE_LOCATION = "/etc/opencloud/csp.yaml";
-
               #Tika
               SEARCH_EXTRACTOR_TYPE = "tika";
               SEARCH_EXTRACTOR_TIKA_TIKA_URL = "http://opencloud-tika:9998";

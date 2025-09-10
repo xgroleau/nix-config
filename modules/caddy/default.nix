@@ -45,23 +45,26 @@ in
       dataDir = cfg.dataDir;
       email = cfg.email;
 
-      virtualHosts = lib.mapAttrs (addr: target: {
-        serverAliases = [ "www.${addr}" ];
-        # See https://github.com/opencloud-eu/opencloud/issues/455
-        #   header {
-        #       Access-Control-Allow-Origin "*"
-        #       Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE"
-        #       Access-Control-Allow-Headers "Content-Type, Authorization"
-        #       Access-Control-Allow-Credentials "true"
-        #       Access-Control-Max-Age "86400"
-        #   }
-        #
-        #   reverse_proxy ${target} {
-        #   }
-        extraConfig = ''
-          reverse_proxy ${target}
-        '';
-      }) cfg.reverseProxies;
+      # See https://github.com/opencloud-eu/opencloud/issues/455
+      virtualHosts = lib.mapAttrs (
+        addr: target:
+        let
+          authentikHost = "authentik.xgroleau.com";
+        in
+        {
+          serverAliases = [ "www.${addr}" ];
+          extraConfig = ''
+            reverse_proxy ${target}
+
+            # Discovery: expose /opencloud/.well-known/openid-configuration locally
+            @discovery path /opencloud/.well-known/openid-configuration
+            rewrite @discovery /application/o/opencloud/.well-known/openid-configuration
+            reverse_proxy @discovery https://${authentikHost} {
+              header_up Host ${authentikHost}
+            }
+          '';
+        }
+      ) cfg.reverseProxies;
     };
 
     networking.firewall = lib.mkIf cfg.openFirewall {

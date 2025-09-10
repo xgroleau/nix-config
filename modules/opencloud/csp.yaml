@@ -8,9 +8,7 @@ directives:
     - "wss://${COMPANION_DOMAIN|companion.opencloud.xgroleau.com}/"
     - "https://raw.githubusercontent.com/opencloud-eu/awesome-apps/"
     - "https://raw.githubusercontent.com/opencloud-eu/awesome/"
-    - "https://${OPENID_DOMAIN|openid.opencloud.xgroleau.com}/"
-    - "https://authentik.xgroleau.com/"
-    - "https://authentik.xgroleau.com/application/o/opencloud/.well-known/openid-configuration"
+    - "https://${OIDC_DOMAIN|openid.opencloud.xgroleau.com}/"
   default-src:
     - "'none'"
   font-src:
