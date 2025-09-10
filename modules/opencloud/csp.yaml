@@ -9,6 +9,8 @@ directives:
     - "https://raw.githubusercontent.com/opencloud-eu/awesome-apps/"
     - "https://raw.githubusercontent.com/opencloud-eu/awesome/"
     - "https://${OPENID_DOMAIN|openid.opencloud.xgroleau.com}/"
+    - "https://authentik.xgroleau.com/"
+    - "https://authentik.xgroleau.com/application/o/opencloud/.well-known/openid-configuration"
   default-src:
     - "'none'"
   font-src:
