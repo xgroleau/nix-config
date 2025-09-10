@@ -34,8 +34,6 @@
     # Dualbooting, avoids time issues
     time.hardwareClockInLocalTime = true;
 
-    programs.nix-ld.enable = true;
-
     services.zerotierone.enable = true;
 
     system.stateVersion = "23.11";

@@ -42,7 +42,7 @@ in
       containers = {
         delugevpn = {
           autoStart = true;
-          image = "binhex/arch-delugevpn:2.1.1-4-05";
+          image = "binhex/arch-delugevpn:2.2@sha256:2ff474cba3af585e15a608ffe03ca81ec4ac2e588f4462f584005081804fbd28";
           ports = [
             "8112:8112"
             "8118:8118"

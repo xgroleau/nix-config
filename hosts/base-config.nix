@@ -71,7 +71,7 @@ in
       users.xgroleau = {
         isNormalUser = true;
         shell = pkgs.zsh;
-        initialPassword = "nixos";
+        initialHashedPassword = "$y$j9T$DFrf44y1.2sqKsnal8hCF/$iXy/x/EAGHzU0jEvCs7L/hFu6tSKLQzbcmLL.35nNBA";
         extraGroups = [
           "wheel"
           "builder"

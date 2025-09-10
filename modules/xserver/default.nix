@@ -22,7 +22,7 @@ in
         enable = true;
         defaultSession = "none+fake";
 
-        # Setup lightdm
+        # Setup login manager
         sddm = {
           enable = true;
           theme = "chili";

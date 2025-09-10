@@ -72,7 +72,6 @@
         "users"
         "video"
       ];
-      initialPassword = "nixos";
     };
 
     nix.gc = {

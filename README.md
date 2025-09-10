@@ -102,23 +102,21 @@ To use for your home-manager configuration.
 
   outputs = { nixpkgs, home-manager, nix-dotfiles, ... }: {
     homeConfigurations = {
-      example = nix-dotfiles.utils.homeConfigurationFromProfile {
-        home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${flake-utils.lib.system.x86_64-linux};
-          modules = [ 
-            nix-dotfiles.homeManagerModules
-            # Enable some modules
-            {
-              # Minimum HM requirements
-              home = {
-                username = "xgroleau";
-                homeDirectory = "/home/xgroleau";
-                stateVersion = "23.11";
-              };
-              modules.shell.zsh.enable = true;
-            }
-          ];
-      };
+      example = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${flake-utils.lib.system.x86_64-linux};
+        modules = [ 
+          nix-dotfiles.homeManagerModules
+          # Then enable some modules
+          {
+            # Minimum HM requirements
+            home = {
+              username = "xgroleau";
+              homeDirectory = "/home/xgroleau";
+              stateVersion = "23.11";
+            };
+            modules.shell.zsh.enable = true;
+          }
+        ];
     };
   };
 }

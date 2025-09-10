@@ -17,6 +17,6 @@ in
 
   config = lib.mkIf cfg.enable {
     virtualisation.docker.enable = true;
-    users.groups.docker.members = [ config.users.users.${config.modules.home.username}.name ];
+    users.groups.docker.members = lib.mkIf config.modules.home.enable [ config.users.users.${config.modules.home.username}.name ];
   };
 }

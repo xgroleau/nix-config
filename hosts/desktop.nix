@@ -22,9 +22,6 @@
       config.common.default = "*";
     };
 
-    # Until https://github.com/NixOS/nixpkgs/pull/417193  land
-    programs.i3lock.enable = true;
-
     programs.dconf.enable = true;
     hardware = {
       bluetooth = {
