@@ -54,14 +54,14 @@ in
         {
           serverAliases = [ "www.${addr}" ];
           extraConfig = ''
-            reverse_proxy ${target}
-
             # Discovery: expose /opencloud/.well-known/openid-configuration locally
-            @discovery path /opencloud/.well-known/openid-configuration
+            @discovery path /application/o/opencloud/.well-known/openid-configuration
             rewrite @discovery /application/o/opencloud/.well-known/openid-configuration
             reverse_proxy @discovery https://${authentikHost} {
               header_up Host ${authentikHost}
             }
+
+            reverse_proxy ${target}
           '';
         }
       ) cfg.reverseProxies;
