@@ -46,25 +46,19 @@ in
       email = cfg.email;
 
       # See https://github.com/opencloud-eu/opencloud/issues/455
-      virtualHosts = lib.mapAttrs (
-        addr: target:
-        let
-          authentikHost = "authentik.xgroleau.com";
-        in
-        {
-          serverAliases = [ "www.${addr}" ];
-          extraConfig = ''
-            # Discovery: expose /opencloud/.well-known/openid-configuration locally
-            @discovery path /application/o/opencloud/.well-known/openid-configuration
-            rewrite @discovery /application/o/opencloud/.well-known/openid-configuration
-            reverse_proxy @discovery https://${authentikHost} {
-              header_up Host ${authentikHost}
-            }
-
-            reverse_proxy ${target}
-          '';
-        }
-      ) cfg.reverseProxies;
+      virtualHosts = lib.mapAttrs (addr: target: {
+        serverAliases = [ "www.${addr}" ];
+        extraConfig = ''
+          header {
+            Access-Control-Allow-Origin "*"
+            Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE"
+            Access-Control-Allow-Headers "Content-Type, Authorization"
+            Access-Control-Allow-Credentials "true"
+            Access-Control-Max-Age "86400"
+          }
+          reverse_proxy ${target}
+        '';
+      }) cfg.reverseProxies;
     };
 
     networking.firewall = lib.mkIf cfg.openFirewall {
