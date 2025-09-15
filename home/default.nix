@@ -20,7 +20,7 @@ in
     ./modules/shell
     ./modules/nix
     ./modules/keyboards
-    inputs.stylix.homeManagerModules.stylix
+    inputs.stylix.homeModules.stylix
   ];
 
   config = {

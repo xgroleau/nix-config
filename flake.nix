@@ -114,7 +114,7 @@
         }) (nixpkgs.lib.filterAttrs (hostName: hostConfig: hostConfig ? deploy) hosts);
       };
 
-      homeManagerModules.default = hmModule;
+      homeModules.default = hmModule;
 
       nixosModules.default = import ./modules;
 
@@ -154,16 +154,15 @@
           specialArgs = {
             inherit inputs;
           };
-          modules =
-            [
-              ./secrets
-              hostConfig.cfg
-              nixosModule
-            ]
-            # unstable modules
-            ++ (nixpkgs.lib.optionals (hostConfig.useUnstable or false) [
-              nixosUnstableModule
-            ]);
+          modules = [
+            ./secrets
+            hostConfig.cfg
+            nixosModule
+          ]
+          # unstable modules
+          ++ (nixpkgs.lib.optionals (hostConfig.useUnstable or false) [
+            nixosUnstableModule
+          ]);
         }
       ) hosts;
     }

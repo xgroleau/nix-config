@@ -105,7 +105,7 @@ To use for your home-manager configuration.
       example = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${flake-utils.lib.system.x86_64-linux};
         modules = [ 
-          nix-dotfiles.homeManagerModules
+          nix-dotfiles.homeModules
           # Then enable some modules
           {
             # Minimum HM requirements
