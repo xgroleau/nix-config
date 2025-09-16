@@ -14,8 +14,7 @@ in
   imports = [ ];
 
   options.modules.ntfy = with lib.types; {
-    enable = lib.mkEnableOption ''
-      Enables the ntfy module to notify services'';
+    enable = lib.mkEnableOption ''Enables the ntfy module to notify services'';
 
     openFirewall = lib.mkEnableOption "Open the required ports in the firewall";
 
@@ -60,15 +59,23 @@ in
 
     };
 
-    # Until https://github.com/NixOS/nixpkgs/pull/441304 is merged
-    systemd.services.ntfy = {
+    systemd.services.ntfy-sh = {
       serviceConfig = {
+        # Until https://github.com/NixOS/nixpkgs/pull/441304 is merged
         EnvironmentFile = lib.mkIf (cfg.envFile != null) cfg.envFile;
+
+        # Allow r2 to those
+        ReadWritePaths = [
+          cfg.dataDir
+          "${cfg.dataDir}/cache"
+          "${cfg.dataDir}/cache/attachments"
+        ];
+
       };
 
     };
 
-    systemd.tmpfiles.settings.mealie = {
+    systemd.tmpfiles.settings.ntfy = {
       "${cfg.dataDir}" = {
         d = {
           mode = "0750";
@@ -84,7 +91,7 @@ in
           group = config.services.ntfy-sh.group;
         };
       };
-      "${cfg.dataDir}/cache/attachements" = {
+      "${cfg.dataDir}/cache/attachments" = {
         d = {
           mode = "0750";
           user = config.services.ntfy-sh.user;
