@@ -49,7 +49,7 @@ in
       enable = true;
       settings = {
         base-url = cfg.url;
-        listen-http = cfg.port;
+        listen-http = ":${toString cfg.port}";
         auth-file = "${cfg.dataDir}/auth.db";
         auth-default-access = "deny-all";
         cache-file = "${cfg.dataDir}/cache/cache.db";
