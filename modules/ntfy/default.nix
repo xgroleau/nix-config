@@ -24,7 +24,8 @@ in
     };
 
     envFile = lib.mkOption {
-      type = lib.types.nullOr types.str;
+      type = with lib.types; nullOr path;
+      default = null;
       example = "/run/secrets/ntfy";
       description = "Path to the environment file";
     };
