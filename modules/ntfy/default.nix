@@ -64,11 +64,9 @@ in
         # Until https://github.com/NixOS/nixpkgs/pull/441304 is merged
         EnvironmentFile = lib.mkIf (cfg.envFile != null) cfg.envFile;
 
-        # Allow r2 to those
+        # Allow r2 in the data dir
         ReadWritePaths = [
           cfg.dataDir
-          "${cfg.dataDir}/cache"
-          "${cfg.dataDir}/cache/attachments"
         ];
 
       };
