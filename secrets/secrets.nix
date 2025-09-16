@@ -47,6 +47,10 @@ with keys;
     users.xgroleau
     machines.sheogorath
   ];
+  "ntfy-env.age".publicKeys = [
+    users.xgroleau
+    machines.sheogorath
+  ];
   "opencloud-env.age".publicKeys = [
     users.xgroleau
     machines.sheogorath

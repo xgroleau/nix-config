@@ -15,7 +15,7 @@ in
 
   options.modules.miniflux = with lib.types; {
     enable = lib.mkEnableOption ''
-      Enables the miniflux-ngx module, uses a nixos container under the hood so the postges db is a seperated service.
+      Enables the miniflux module, uses a nixos container under the hood so the postges db is a seperated service.
        Also uses ephemeral container'';
 
     openFirewall = lib.mkEnableOption "Open the required ports in the firewall";

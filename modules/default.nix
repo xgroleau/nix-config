@@ -16,6 +16,7 @@
     ./home
     ./immich
     ./kdeconnect
+    ./ntfy
     ./firefly-iii
     ./ollama
     ./mealie

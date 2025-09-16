@@ -36,6 +36,7 @@ let
     immichEnv.file = ./immich-env.age;
     mealieEnv.file = ./mealie-env.age;
     minifluxEnv.file = ./miniflux-env.age;
+    ntfyEnv.file = ./ntfy-env.age;
     opencloudEnv.file = ./opencloud-env.age;
     paperlessNgxEnv.file = ./paperless-ngx-env.age;
     piaOvpn.file = ./pia-ovpn.age;

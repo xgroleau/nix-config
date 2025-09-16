@@ -75,13 +75,14 @@ in
 
           "immich.${domain}" = "localhost:10300";
           "mealie.${domain}" = "localhost:10400";
-          "miniflux.${domain}" = "localhost:11400";
+          "miniflux.${domain}" = "localhost:10500";
+          "ntfy.${domain}" = "localhost:10500";
+          "paperless.${domain}" = "localhost:10700";
 
           "opencloud.${domain}" = "localhost:11200";
           "wopi.${domain}" = "localhost:11210";
           "collabora.${domain}" = "localhost:11220";
 
-          "paperless.${domain}" = "localhost:11300";
 
           "jellyfin.${domain}" = "localhost:8096";
           "jellyseerr.${domain}" = "localhost:5055";
@@ -148,7 +149,7 @@ in
 
       miniflux = {
         enable = true;
-        port = 11400;
+        port = 10500;
         url = "https://miniflux.${domain}";
         envFile = config.age.secrets.minifluxEnv.path;
         dataDir = "/data/miniflux";
@@ -163,6 +164,15 @@ in
         username = "xavgroleau@gmx.com";
         passwordFile = config.age.secrets.gmxPass.path;
       };
+
+      ntfy = {
+        enable = true;
+        url = "https://miniflux.${domain}";
+        envFile = config.age.secrets.ntfyEnv.path;
+        dataDir = "/data/ntfy";
+        port = 10600;
+      };
+
       # minecraft = {
       #   enable = true;
       #   port = 25665;
@@ -192,7 +202,7 @@ in
 
       paperlessNgx = {
         enable = true;
-        port = 11300;
+        port = 10700;
         url = "https://paperless.${domain}";
         backupDir = "/data/backups/paperless";
         mediaDir = "/documents/paperless";
