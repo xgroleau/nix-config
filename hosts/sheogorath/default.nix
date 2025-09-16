@@ -76,7 +76,7 @@ in
           "immich.${domain}" = "localhost:10300";
           "mealie.${domain}" = "localhost:10400";
           "miniflux.${domain}" = "localhost:10500";
-          "ntfy.${domain}" = "localhost:10500";
+          "ntfy.${domain}" = "localhost:10600";
           "paperless.${domain}" = "localhost:10700";
 
           "opencloud.${domain}" = "localhost:11200";
@@ -167,7 +167,7 @@ in
 
       ntfy = {
         enable = true;
-        url = "https://miniflux.${domain}";
+        url = "https://ntfy.${domain}";
         envFile = config.age.secrets.ntfyEnv.path;
         dataDir = "/data/ntfy";
         port = 10600;
