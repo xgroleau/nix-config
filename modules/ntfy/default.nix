@@ -47,6 +47,7 @@ in
   config = lib.mkIf cfg.enable {
     services.ntfy-sh = {
       enable = true;
+      package = pkgs.unstable.ntfy-sh;
       settings = {
         base-url = cfg.url;
         listen-http = ":${toString cfg.port}";
