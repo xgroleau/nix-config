@@ -62,7 +62,7 @@ listview {
 }
 
 /*
-  TODO Not supported in stable branch of rofi
+  TODO: Not supported in stable branch of rofi
   @media only (max-height: 1080px) {
     window {
       y-offset: -30%;

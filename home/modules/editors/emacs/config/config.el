@@ -20,7 +20,7 @@
 
       display-line-numbers-type 'relative
       display-line-numbers-mode t)
-      
+
 (setq nerd-icons-font-names '("SymbolsNerdFontMono-Regular.ttf"))
 
 ;; Key mapping
@@ -37,21 +37,15 @@
 
  ;; scroll
  :n "M-j" #'evil-scroll-down
- :n "M-k" #'evil-scroll-up
-
- ;; windows
- :n "C-h" #'evil-window-left
- :n "C-j" #'evil-window-down
- :n "C-k" #'evil-window-up
- :n "C-l" #'evil-window-right)
+ :n "M-k" #'evil-scroll-up)
 
 
 ;; The greatest splash screen of all
 (defun splash-screen-surpised-pikachu ()
   (mapc (lambda (line)
-                (insert (propertize (+doom-dashboard--center +doom-dashboard--width line)
-                                'face 'doom-dashboard-banner) " ")
-                (insert "\n"))
+          (insert (propertize (+doom-dashboard--center +doom-dashboard--width line)
+                              'face 'doom-dashboard-banner) " ")
+          (insert "\n"))
         '("Tries to use an emacs config thats not his own"
           "Doesn't know the key bindings"
           "⢀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⣠⣤⣶⣶"
@@ -89,14 +83,6 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-
-
-;; Modules settings
-;; dap settings
-(require 'dap-cpptools)
-;; removes all windows when debug starts
-(setq lsp-enable-dap-auto-configure nil
-      dap-auto-configure-features nil)
 
 ;; Modes settings
 (add-to-list 'auto-mode-alist '("\\.tpp\\'" . c++-mode))

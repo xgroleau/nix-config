@@ -45,6 +45,7 @@ in
           ripgrep
 
           # lang
+          emacs-lsp-booster
           nixfmt-rfc-style
           pyright
           rustup

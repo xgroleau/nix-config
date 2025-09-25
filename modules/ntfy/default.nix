@@ -47,6 +47,7 @@ in
   config = lib.mkIf cfg.enable {
     services.ntfy-sh = {
       enable = true;
+      #TODO:  Remove once on 25.11
       package = pkgs.unstable.ntfy-sh;
       settings = {
         base-url = cfg.url;
@@ -63,7 +64,7 @@ in
 
     systemd.services.ntfy-sh = {
       serviceConfig = {
-        # Until https://github.com/NixOS/nixpkgs/pull/441304 is merged
+        #TODO: Remove once on 25.11
         EnvironmentFile = lib.mkIf (cfg.envFile != null) cfg.envFile;
 
         # Allow r2 in the data dir
