@@ -31,6 +31,7 @@ in
             epkgs.editorconfig
             epkgs.vterm
             epkgs.xclip
+            epkgs.treesit-grammars.with-all-grammars
           ]))
 
           # Font
