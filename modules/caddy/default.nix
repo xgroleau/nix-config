@@ -46,16 +46,16 @@ in
       email = cfg.email;
 
       #TODO: See https://github.com/opencloud-eu/opencloud/issues/455
-      # header {
-      #   Access-Control-Allow-Origin "*"
-      #   Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE"
-      #   Access-Control-Allow-Headers "Content-Type, Authorization"
-      #   Access-Control-Allow-Credentials "true"
-      #   Access-Control-Max-Age "86400"
-      # }
       virtualHosts = lib.mapAttrs (addr: target: {
         serverAliases = [ "www.${addr}" ];
         extraConfig = ''
+          header {
+            Access-Control-Allow-Origin "*"
+            Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE"
+            Access-Control-Allow-Headers "Content-Type, Authorization"
+            Access-Control-Allow-Credentials "true"
+            Access-Control-Max-Age "86400"
+          }
           reverse_proxy ${target}
         '';
       }) cfg.reverseProxies;
