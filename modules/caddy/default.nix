@@ -45,7 +45,6 @@ in
       dataDir = cfg.dataDir;
       email = cfg.email;
 
-      #TODO: See https://github.com/opencloud-eu/opencloud/issues/455
       virtualHosts = lib.mapAttrs (addr: target: {
         serverAliases = [ "www.${addr}" ];
         extraConfig = ''
