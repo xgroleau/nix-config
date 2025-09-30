@@ -37,5 +37,7 @@ in
         name = "builder";
       };
     };
+
+    systemd.extraConfig = "DefaultLimitNOFILE=32768";
   };
 }
