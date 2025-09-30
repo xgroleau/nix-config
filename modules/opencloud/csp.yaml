@@ -42,6 +42,7 @@ directives:
   script-src:
     - "'self'"
     - "'unsafe-inline'"
+    - "'unsafe-eval'" # Needed by FF it seems
   style-src:
     - "'self'"
     - "'unsafe-inline'"
