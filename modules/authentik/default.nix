@@ -88,14 +88,15 @@ in
       ephemeral = true;
       restartIfChanged = true;
       privateUsers = "identity";
-      extraFlags = [ "--link-journal=guest" ];
 
       # Access to the host data
       bindMounts = {
+
         "${cfg.envFile}" = {
           hostPath = cfg.envFile;
           isReadOnly = true;
         };
+
         "${cfg.dataDir}" = {
           hostPath = cfg.dataDir;
           isReadOnly = false;
