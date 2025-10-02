@@ -55,7 +55,7 @@ in
       ephemeral = true;
       restartIfChanged = true;
       privateUsers = "identity";
-      extraFlags = [ "--link-journal=none" ];
+      extraFlags = [ "--link-journal=no" ];
 
       # Access to the host data
       bindMounts = {
