@@ -120,6 +120,7 @@ in
                   "desktop.ini"
                 ];
                 PAPERLESS_OCR_LANGUAGE = "fra+eng";
+                PAPERLESS_FILENAME_FORMAT = "{{ created_year }}/{{ document_type }}/{{ correspondent }}/{{ title }}";
                 PAPERLESS_DBPORT = 5433;
                 PAPERLESS_OCR_USER_ARGS = {
                   optimize = 1;
