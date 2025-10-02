@@ -57,7 +57,8 @@ in
           {
             job_name = "journal";
             journal = {
-              max_age = "12h";
+              path = "/var/log/journal";
+              max_age = "48h";
               labels = {
                 job = "systemd-journal";
                 host = hostname;
@@ -67,6 +68,18 @@ in
               {
                 source_labels = [ "__journal__systemd_unit" ];
                 target_label = "unit";
+              }
+              {
+                source_labels = [ "__journal__hostname" ];
+                target_label = "hostname";
+              }
+              {
+                source_labels = [ "__journal__machine_id" ];
+                target_label = "machine_id";
+              }
+              {
+                source_labels = [ "__journal__transport" ];
+                target_label = "transport";
               }
             ];
           }
