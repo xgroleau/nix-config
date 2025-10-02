@@ -55,15 +55,9 @@ in
       ephemeral = true;
       restartIfChanged = true;
       privateUsers = "identity";
-      extraFlags = [ "--link-journal=no" ];
 
       # Access to the host data
       bindMounts = {
-        "/var/log/journal" = {
-          hostPath = "/var/log/journal/miniflux";
-          isReadOnly = false;
-        };
-
         "${cfg.envFile}" = {
           hostPath = cfg.envFile;
           isReadOnly = true;
@@ -157,13 +151,6 @@ in
           user = "root";
           group = "root";
           mode = "777";
-        };
-      };
-      "/var/log/journal/miniflux" = {
-        d = {
-          user = "root";
-          group = "systemd-journal";
-          mode = "2755";
         };
       };
     };
