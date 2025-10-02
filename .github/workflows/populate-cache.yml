@@ -30,9 +30,6 @@ jobs:
       - name: NixInstaller
         uses: DeterminateSystems/nix-installer-action@main
 
-      - name: Nix local cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
-
       - name: Tailscale
         uses: tailscale/github-action@v3
         with:
