@@ -320,18 +320,11 @@ in
             reject_old_samples_max_age = "168h";
           };
 
-          table_manager = {
-            retention_deletes_enabled = false;
-            retention_period = "0s";
-          };
-
           compactor = {
+            retention_enabled = true;
             working_directory = "/var/lib/loki";
-            compactor_ring = {
-              kvstore = {
-                store = "inmemory";
-              };
-            };
+            delete_request_store = "filesystem";
+            compactor_ring.kvstore.store = "inmemory";
           };
 
           analytics = {
