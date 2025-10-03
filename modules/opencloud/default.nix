@@ -169,7 +169,13 @@ in
             entrypoint = "/bin/sh";
             cmd = [
               "-c"
-              "opencloud collaboration server"
+              ''
+                set -e
+                echo "Waiting for OpenCloud health..."
+                timeout 30 sh -c 'until curl -fsS http://$\{COLLABORATION_STORE_NODES\}/healthz >/dev/null; do sleep 1; done'
+                echo "Starting collaboration server..."
+                exec opencloud collaboration server
+              ''
             ];
 
             environmentFiles = cfg.environmentFiles;
@@ -182,8 +188,6 @@ in
               COLLABORATION_HTTP_ADDR = "0.0.0.0:9300";
               COLLABORATION_STORE = "nats-js-kv";
               COLLABORATION_STORE_NODES = "opencloud:9233";
-              MICRO_REGISTRY = "nats-js-kv";
-              MICRO_REGISTRY_ADDRESS = "opencloud:9233";
               COLLABORATION_WOPI_SRC = "https://${cfg.collabora.companionDomain}";
               COLLABORATION_APP_NAME = "CollaboraOnline";
               COLLABORATION_APP_PRODUCT = "Collabora";
