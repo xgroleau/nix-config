@@ -62,15 +62,15 @@ in
             description = "The port to use for colllabora ";
           };
 
-          wopiDomain = lib.mkOption {
+          companionDomain = lib.mkOption {
             type = types.str;
-            description = "domain of the wopi instance";
+            description = "domain of the companion instance";
           };
 
-          wopiPort = lib.mkOption {
+          companionPort = lib.mkOption {
             type = types.port;
             default = 9980;
-            description = "The port to use for wopi";
+            description = "The port to use for companion";
           };
         };
       };
@@ -121,7 +121,8 @@ in
             }
             // (lib.mkIf cfg.collabora.enable {
               # this is needed for setting the correct CSP header
-              COLLABORA_DOMAIN = "https://${cfg.collabora.collaboraDomain}";
+              COLLABORA_DOMAIN = cfg.collabora.collaboraDomain;
+              COMPANION_DOMAIN = cfg.collabora.companionDomain;
               # expose nats and the reva gateway for the collaboration service
               NATS_NATS_HOST = "0.0.0.0";
               GATEWAY_GRPC_ADDR = "0.0.0.0:9142";
@@ -163,11 +164,12 @@ in
             environmentFiles = cfg.environmentFiles;
             environment = {
               COLLABORA_DOMAIN = cfg.collabora.collaboraDomain;
+              COMPANION_DOMAIN = cfg.collabora.companionDomain;
               COLLABORATION_GRPC_ADDR = "0.0.0.0:9301";
               COLLABORATION_HTTP_ADDR = "0.0.0.0:9300";
               MICRO_REGISTRY = "nats-js-kv";
               MICRO_REGISTRY_ADDRESS = "opencloud:9233";
-              COLLABORATION_WOPI_SRC = "https://${cfg.collabora.wopiDomain}";
+              COLLABORATION_WOPI_SRC = "https://${cfg.collabora.companionDomain}";
               COLLABORATION_APP_NAME = "CollaboraOnline";
               COLLABORATION_APP_PRODUCT = "Collabora";
               COLLABORATION_APP_ADDR = "https://${cfg.collabora.collaboraDomain}";
@@ -184,7 +186,7 @@ in
               "-c"
               "opencloud collaboration server"
             ];
-            ports = [ "${toString cfg.collabora.wopiPort}:9300" ];
+            ports = [ "${toString cfg.collabora.companionPort}:9300" ];
           };
 
           opencloud-collabora = {
@@ -196,7 +198,7 @@ in
 
             environmentFiles = cfg.environmentFiles;
             environment = {
-              aliasgroup1 = "https://${cfg.collabora.wopiDomain}:443";
+              aliasgroup1 = "https://${cfg.collabora.companionDomain}:443";
               DONT_GEN_SSL_CERT = "YES";
               extra_params = ''
                 --o:ssl.enable=true \
@@ -250,7 +252,7 @@ in
       ]
       ++ lib.optionals cfg.collabora.enable [
         cfg.collabora.collaboraPort
-        cfg.collabora.wopiPort
+        cfg.collabora.companionPort
       ];
     };
 

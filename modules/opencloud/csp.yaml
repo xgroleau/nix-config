@@ -19,6 +19,7 @@ directives:
     - "'self'"
     - "blob:"
     - "https://embed.diagrams.net/"
+    - "https://docs.opencloud.eu"
     - "https://${COLLABORA_DOMAIN|collabora.opencloud.xgroleau.com}/"
     # This is needed for the external-sites web extension when embedding sites
     - "https://docs.opencloud.eu"
@@ -41,6 +42,7 @@ directives:
     - "'self'"
     - "'unsafe-inline'"
     - "'unsafe-eval'" # Needed by FF it seems
+    - "https://${OIDC_DOMAIN|authentik.xgroleau.com}/"
   style-src:
     - "'self'"
     - "'unsafe-inline'"

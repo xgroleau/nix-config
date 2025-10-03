@@ -80,7 +80,7 @@ in
 
           "opencloud.${domain}" = "localhost:11200";
           "collabora.opencloud.${domain}" = "localhost:11210";
-          "wopi.opencloud.${domain}" = "localhost:11220";
+          "companion.opencloud.${domain}" = "localhost:11220";
 
           "jellyfin.${domain}" = "localhost:8096";
           "jellyseerr.${domain}" = "localhost:5055";
@@ -138,11 +138,10 @@ in
         domain = "opencloud.${domain}";
         collabora = {
           enable = false;
-          collaboraDomain = "collabora.opencloud.xgroleau.com";
-          wopiDomain = "wopi.opencloud.xgroleau.com";
           collaboraPort = 11210;
-          wopiPort = 11220;
-
+          companionPort = 11220;
+          collaboraDomain = "collabora.opencloud.xgroleau.com";
+          companionDomain = "companion.opencloud.xgroleau.com";
         };
       };
 
