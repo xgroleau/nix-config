@@ -95,6 +95,14 @@ in
               "${./app-registry.yaml}:/etc/opencloud/app-registry.yaml"
               "${cfg.dataDir}:/var/lib/opencloud"
             ];
+            networks = [ "opencloud-bridge" ];
+            #"curl 127.0.0.1:9104/healthz"
+
+            entrypoint = "/bin/sh";
+            cmd = [
+              "-c"
+              "opencloud init | true; opencloud server"
+            ];
 
             environmentFiles = cfg.environmentFiles;
             environment = lib.mkMerge [
@@ -135,13 +143,6 @@ in
 
               })
             ];
-
-            extraOptions = [ "--network=opencloud-bridge" ];
-            entrypoint = "/bin/sh";
-            cmd = [
-              "-c"
-              "opencloud init | true; opencloud server"
-            ];
           };
 
           opencloud-tika = {
@@ -162,6 +163,13 @@ in
             dependsOn = [
               "opencloud"
               "opencloud-collabora"
+            ];
+            ports = [ "${toString cfg.collabora.companionPort}:9300" ];
+            networks = [ "opencloud-bridge" ];
+            entrypoint = "/bin/sh";
+            cmd = [
+              "-c"
+              "opencloud collaboration server"
             ];
 
             environmentFiles = cfg.environmentFiles;
@@ -186,14 +194,7 @@ in
               COLLABORATION_LOG_LEVEL = "info";
               OC_URL = "https://${cfg.domain}";
             };
-            extraOptions = [ "--network=opencloud-bridge" ];
 
-            entrypoint = "/bin/sh";
-            cmd = [
-              "-c"
-              "opencloud collaboration server"
-            ];
-            ports = [ "${toString cfg.collabora.companionPort}:9300" ];
           };
 
           opencloud-collabora = {
@@ -201,6 +202,17 @@ in
             image = "collabora/code:25.04.4.2.1";
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
+            ];
+            ports = [ "${toString cfg.collabora.collaboraPort}:9980" ];
+            networks = [ "opencloud-bridge" ];
+
+            capabilities = {
+              CAP_MKNOD = true;
+            };
+            entrypoint = "/bin/bash";
+            cmd = [
+              "-c"
+              "coolconfig generate-proof-key && /start-collabora-online.sh"
             ];
 
             environmentFiles = cfg.environmentFiles;
@@ -217,18 +229,6 @@ in
               username = "admin";
               password = "admin";
             };
-            ports = [ "${toString cfg.collabora.collaboraPort}:9980" ];
-
-            extraOptions = [
-              "--network=opencloud-bridge"
-              "--cap-add=CAP_MKNOD"
-            ];
-
-            entrypoint = "/bin/bash";
-            cmd = [
-              "-c"
-              "coolconfig generate-proof-key && /start-collabora-online.sh"
-            ];
           };
 
         })
