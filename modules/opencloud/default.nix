@@ -96,42 +96,45 @@ in
               "${cfg.dataDir}:/var/lib/opencloud"
             ];
 
-            environment = {
-              IDM_CREATE_DEMO_USERS = "false";
-
-              PROXY_TLS = "false";
-              PROXY_HTTP_ADDR = "0.0.0.0:9200";
-              START_ADDITIONAL_SERVICES = "notifications";
-
-              OC_INSECURE = "false";
-              OC_URL = "https://${cfg.domain}";
-              OC_LOG_LEVEL = "info";
-
-              STORAGE_USERS_POSIX_WATCH_FS = "true";
-              GATEWAY_GRPC_ADDR = "0.0.0.0:9142";
-              MICRO_REGISTRY_ADDRESS = "127.0.0.1:9233";
-              NATS_NATS_HOST = "0.0.0.0";
-              NATS_NATS_PORT = "9233";
-
-              #Tika
-              SEARCH_EXTRACTOR_TYPE = "tika";
-              SEARCH_EXTRACTOR_TIKA_TIKA_URL = "http://opencloud-tika:9998";
-              FRONTEND_FULL_TEXT_SEARCH_ENABLED = "true";
-            }
-            // (lib.mkIf cfg.collabora.enable {
-              # this is needed for setting the correct CSP header
-              COLLABORA_DOMAIN = cfg.collabora.collaboraDomain;
-              COMPANION_DOMAIN = cfg.collabora.companionDomain;
-              # expose nats and the reva gateway for the collaboration service
-              NATS_NATS_HOST = "0.0.0.0";
-              GATEWAY_GRPC_ADDR = "0.0.0.0:9142";
-              # make collabora the secure view app
-              FRONTEND_APP_HANDLER_SECURE_VIEW_APP_ADDR = "eu.opencloud.api.collaboration.CollaboraOnline";
-              # Not sure what this is
-              GRAPH_AVAILABLE_ROLES = "b1e2218d-eef8-4d4c-b82d-0f1a1b48f3b5,a8d5fe5e-96e3-418d-825b-534dbdf22b99,fb6c3e19-e378-47e5-b277-9732f9de6e21,58c63c02-1d89-4572-916a-870abc5a1b7d,2d00ce52-1fc2-4dbc-8b95-a73b73395f5a,1c996275-f1c9-4e71-abdf-a42f6495e960,312c0871-5ef7-4b3a-85b6-0e4074c64049,aa97fe03-7980-45ac-9e50-b325749fd7e6";
-
-            });
             environmentFiles = cfg.environmentFiles;
+            environment = lib.mkMerge [
+              {
+                IDM_CREATE_DEMO_USERS = "false";
+
+                PROXY_TLS = "false";
+                PROXY_HTTP_ADDR = "0.0.0.0:9200";
+                START_ADDITIONAL_SERVICES = "notifications";
+
+                OC_INSECURE = "false";
+                OC_URL = "https://${cfg.domain}";
+                OC_LOG_LEVEL = "info";
+
+                STORAGE_USERS_POSIX_WATCH_FS = "true";
+                GATEWAY_GRPC_ADDR = "0.0.0.0:9142";
+                MICRO_REGISTRY_ADDRESS = "127.0.0.1:9233";
+                NATS_NATS_HOST = "0.0.0.0";
+                NATS_NATS_PORT = "9233";
+
+                #Tika
+                SEARCH_EXTRACTOR_TYPE = "tika";
+                SEARCH_EXTRACTOR_TIKA_TIKA_URL = "http://opencloud-tika:9998";
+                FRONTEND_FULL_TEXT_SEARCH_ENABLED = "true";
+              }
+
+              (lib.mkIf cfg.collabora.enable {
+                # this is needed for setting the correct CSP header
+                COLLABORA_DOMAIN = cfg.collabora.collaboraDomain;
+                COMPANION_DOMAIN = cfg.collabora.companionDomain;
+                # expose nats and the reva gateway for the collaboration service
+                NATS_NATS_HOST = "0.0.0.0";
+                GATEWAY_GRPC_ADDR = "0.0.0.0:9142";
+                # make collabora the secure view app
+                FRONTEND_APP_HANDLER_SECURE_VIEW_APP_ADDR = "eu.opencloud.api.collaboration.CollaboraOnline";
+                # Not sure what this is
+                GRAPH_AVAILABLE_ROLES = "b1e2218d-eef8-4d4c-b82d-0f1a1b48f3b5,a8d5fe5e-96e3-418d-825b-534dbdf22b99,fb6c3e19-e378-47e5-b277-9732f9de6e21,58c63c02-1d89-4572-916a-870abc5a1b7d,2d00ce52-1fc2-4dbc-8b95-a73b73395f5a,1c996275-f1c9-4e71-abdf-a42f6495e960,312c0871-5ef7-4b3a-85b6-0e4074c64049,aa97fe03-7980-45ac-9e50-b325749fd7e6";
+
+              })
+            ];
 
             extraOptions = [ "--network=opencloud-bridge" ];
             entrypoint = "/bin/sh";
