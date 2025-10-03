@@ -109,6 +109,7 @@ in
                 OC_URL = "https://${cfg.domain}";
                 OC_LOG_LEVEL = "info";
 
+                PROXY_CSP_CONFIG_FILE_LOCATION = /etc/opencloud/csp.yaml;
                 STORAGE_USERS_POSIX_WATCH_FS = "true";
                 GATEWAY_GRPC_ADDR = "0.0.0.0:9142";
                 MICRO_REGISTRY_ADDRESS = "127.0.0.1:9233";
@@ -166,6 +167,7 @@ in
 
             environmentFiles = cfg.environmentFiles;
             environment = {
+              PROXY_CSP_CONFIG_FILE_LOCATION = /etc/opencloud/csp.yaml;
               COLLABORA_DOMAIN = cfg.collabora.collaboraDomain;
               COMPANION_DOMAIN = cfg.collabora.companionDomain;
               COLLABORATION_GRPC_ADDR = "0.0.0.0:9301";
@@ -204,7 +206,7 @@ in
               aliasgroup1 = "https://${cfg.collabora.companionDomain}:443";
               DONT_GEN_SSL_CERT = "YES";
               extra_params = ''
-                --o:ssl.enable=true \
+                --o:ssl.enable=false \
                 --o:ssl.ssl_verification=true \
                 --o:ssl.termination=true \
                 --o:welcome.enable=false \
