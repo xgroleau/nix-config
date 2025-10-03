@@ -11,6 +11,7 @@ let
 
   containerBackendName = config.virtualisation.oci-containers.backend;
   containerBackend = pkgs."${containerBackendName}" + "/bin/" + containerBackendName;
+  openCloudImage = "opencloudeu/opencloud:2.0.4@sha256:8d862e83bea7803fd0d48d68ecd1eba8960fe07ac2b8b021f0e921502c962e38";
 in
 {
   options.modules.opencloud = with lib.types; {
@@ -42,7 +43,38 @@ in
 
     domain = lib.mkOption {
       type = types.str;
-      description = "URL of the Opencloud instance, needs to be https and the same as the OpenIDConnect proxy";
+      description = "Domain of the Opencloud instance, needs to be https and the same as the OpenIDConnect proxy";
+    };
+
+    collabora = lib.mkOption {
+      type = types.submodule {
+        options = {
+          enable = lib.mkEnableOption "Enables collabora with the opencloud instance";
+
+          collaboraDomain = lib.mkOption {
+            type = types.str;
+            description = "Domain of the Collabora instance";
+          };
+
+          collaboraPort = lib.mkOption {
+            type = types.port;
+            default = 9300;
+            description = "The port to use for colllabora ";
+          };
+
+          wopiDomain = lib.mkOption {
+            type = types.str;
+            description = "domain of the wopi instance";
+          };
+
+          wopiPort = lib.mkOption {
+            type = types.port;
+            default = 9980;
+            description = "The port to use for wopi";
+          };
+        };
+      };
+      default = { };
     };
   };
 
@@ -53,7 +85,7 @@ in
         {
           opencloud = {
             autoStart = true;
-            image = "opencloudeu/opencloud:2.0.4@sha256:8d862e83bea7803fd0d48d68ecd1eba8960fe07ac2b8b021f0e921502c962e38";
+            image = openCloudImage;
             ports = [ "${toString cfg.port}:9200" ];
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
@@ -64,6 +96,7 @@ in
               "${cfg.dataDir}:/var/lib/opencloud"
             ];
 
+            environmentFiles = cfg.environmentFiles;
             environment = {
               IDM_CREATE_DEMO_USERS = "false";
 
@@ -85,12 +118,22 @@ in
               SEARCH_EXTRACTOR_TYPE = "tika";
               SEARCH_EXTRACTOR_TIKA_TIKA_URL = "http://opencloud-tika:9998";
               FRONTEND_FULL_TEXT_SEARCH_ENABLED = "true";
-            };
+            }
+            // (lib.mkIf cfg.collabora.enable {
+              # this is needed for setting the correct CSP header
+              COLLABORA_DOMAIN = "https://${cfg.collabora.collaboraDomain}";
+              # expose nats and the reva gateway for the collaboration service
+              NATS_NATS_HOST = "0.0.0.0";
+              GATEWAY_GRPC_ADDR = "0.0.0.0:9142";
+              # make collabora the secure view app
+              FRONTEND_APP_HANDLER_SECURE_VIEW_APP_ADDR = "eu.opencloud.api.collaboration.CollaboraOnline";
+              # Not sure what this is
+              GRAPH_AVAILABLE_ROLES = "b1e2218d-eef8-4d4c-b82d-0f1a1b48f3b5,a8d5fe5e-96e3-418d-825b-534dbdf22b99,fb6c3e19-e378-47e5-b277-9732f9de6e21,58c63c02-1d89-4572-916a-870abc5a1b7d,2d00ce52-1fc2-4dbc-8b95-a73b73395f5a,1c996275-f1c9-4e71-abdf-a42f6495e960,312c0871-5ef7-4b3a-85b6-0e4074c64049,aa97fe03-7980-45ac-9e50-b325749fd7e6";
 
-            environmentFiles = cfg.environmentFiles;
+            });
 
-            entrypoint = "/bin/sh";
             extraOptions = [ "--network=opencloud-bridge" ];
+            entrypoint = "/bin/sh";
             cmd = [
               "-c"
               "opencloud init | true; opencloud server"
@@ -103,6 +146,82 @@ in
             extraOptions = [ "--network=opencloud-bridge" ];
           };
         }
+
+        (lib.mkIf cfg.collabora.enable {
+          opencloud-collaboration = {
+            autoStart = true;
+            image = openCloudImage;
+            volumes = [
+              "/etc/localtime:/etc/localtime:ro"
+              "${cfg.configDir}:/etc/opencloud"
+            ];
+            dependsOn = [
+              "opencloud"
+              "opencloud-collabora"
+            ];
+
+            environmentFiles = cfg.environmentFiles;
+            environment = {
+              COLLABORA_DOMAIN = cfg.collabora.collaboraDomain;
+              COLLABORATION_GRPC_ADDR = "0.0.0.0:9301";
+              COLLABORATION_HTTP_ADDR = "0.0.0.0:9300";
+              MICRO_REGISTRY = "nats-js-kv";
+              MICRO_REGISTRY_ADDRESS = "opencloud:9233";
+              COLLABORATION_WOPI_SRC = "https://${cfg.collabora.wopiDomain}";
+              COLLABORATION_APP_NAME = "CollaboraOnline";
+              COLLABORATION_APP_PRODUCT = "Collabora";
+              COLLABORATION_APP_ADDR = "https://${cfg.collabora.collaboraDomain}";
+              COLLABORATION_APP_ICON = "https://${cfg.collabora.collaboraDomain}/favicon.ico";
+              COLLABORATION_APP_INSECURE = "true";
+              COLLABORATION_CS3API_DATAGATEWAY_INSECURE = "true";
+              COLLABORATION_LOG_LEVEL = "info";
+              OC_URL = "https://${cfg.domain}";
+            };
+            extraOptions = [ "--network=opencloud-bridge" ];
+
+            entrypoint = "/bin/sh";
+            cmd = [
+              "-c"
+              "opencloud collaboration server"
+            ];
+            ports = [ "${toString cfg.collabora.wopiPort}:9300" ];
+          };
+
+          opencloud-collabora = {
+            autoStart = true;
+            image = "collabora/code:25.04.4.2.1";
+            volumes = [
+              "/etc/localtime:/etc/localtime:ro"
+            ];
+
+            environmentFiles = cfg.environmentFiles;
+            environment = {
+              aliasgroup1 = "https://${cfg.collabora.wopiDomain}:443";
+              DONT_GEN_SSL_CERT = "YES";
+              extra_params = ''
+                --o:ssl.enable=true \
+                --o:ssl.ssl_verification=true \
+                --o:ssl.termination=true \
+                --o:welcome.enable=false \
+                --o:net.frame_ancestors=${cfg.domain}
+              '';
+              username = "admin";
+              password = "admin";
+            };
+            ports = [ "${toString cfg.collabora.collaboraPort}:9980" ];
+
+            extraOptions = [
+              "--network=opencloud-bridge"
+              "--cap-add=CAP_MKNOD"
+            ];
+
+            entrypoint = "/bin/sh";
+            cmd = [
+              "coolconfig generate-proof-key && /start-collabora-online.sh"
+            ];
+          };
+
+        })
       ];
     };
 
@@ -125,7 +244,15 @@ in
     };
 
     # Expose ports for container
-    networking.firewall = lib.mkIf cfg.openFirewall { allowedTCPPorts = [ cfg.port ]; };
+    networking.firewall = lib.mkIf cfg.openFirewall {
+      allowedTCPPorts = [
+        cfg.port
+      ]
+      ++ lib.optionals cfg.collabora.enable [
+        cfg.collabora.collaboraPort
+        cfg.collabora.wopiPort
+      ];
+    };
 
     systemd.tmpfiles.settings.opencloud = {
       "${cfg.dataDir}" = {

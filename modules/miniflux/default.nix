@@ -154,5 +154,22 @@ in
         };
       };
     };
+    systemd.tmpfiles.settings."container-journals" = {
+      "/var/lib/container-journals" = {
+        d = {
+          mode = "2755";
+          user = "root";
+          group = "systemd-journal";
+        };
+      };
+      "/var/lib/container-journals/miniflux" = {
+        d = {
+          mode = "2755";
+          user = "root";
+          group = "systemd-journal";
+        };
+      };
+    };
+
   };
 }

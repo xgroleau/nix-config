@@ -42,7 +42,6 @@ in
       attic = {
         enable = true;
         port = 15000;
-        openFirewall = true;
         dataDir = "/data/attic";
         environmentFile = config.age.secrets.atticEnv.path;
       };
@@ -80,9 +79,8 @@ in
           "paperless.${domain}" = "localhost:10700";
 
           "opencloud.${domain}" = "localhost:11200";
-          "wopi.${domain}" = "localhost:11210";
-          "collabora.${domain}" = "localhost:11220";
-
+          "collabora.opencloud.${domain}" = "localhost:11210";
+          "wopi.opencloud.${domain}" = "localhost:11220";
 
           "jellyfin.${domain}" = "localhost:8096";
           "jellyseerr.${domain}" = "localhost:5055";
@@ -138,6 +136,14 @@ in
         dataDir = "/documents/opencloud";
         environmentFiles = [ config.age.secrets.opencloudEnv.path ];
         domain = "opencloud.${domain}";
+        collabora = {
+          enable = true;
+          collaboraDomain = "collabora.opencloud.xgroleau.com";
+          wopiDomain = "wopi.opencloud.xgroleau.com";
+          collaboraPort = 11210;
+          wopiPort = 11220;
+
+        };
       };
 
       mealie = {

@@ -1,40 +1,36 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ],
-  "nix": {
-    "enabled": true,
-    "lockFileMaintenance": {
-      "enabled": true
-    }
-  },
-  "digest": {
-    "dependencyDashboardApproval": true
-  },
-  "customManagers": [
-    {
-      "customType": "regex",
-      "managerFilePatterns": [
-        "/^.*\\.nix$/"
-      ],
-      "matchStrings": [
-        "image\\s*=\\s*\"(?<depName>[^\\n\\r:]+):(?<currentValue>[^\\n\\r@\"]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?\"",
-        "Image\\s*=\\s*\"(?<depName>[^\\n\\r:]+):(?<currentValue>[^\\n\\r@\"]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?\""
-      ],
-      "datasourceTemplate": "docker"
-    }
-  ],
-  "packageRules": [
-    {
-      "enabled": false,
-      "matchPackageNames": [
-        "/postgres/",
-        "/mysql/",
-        "/mariadb/",
-        "/mongodb/",
-        "/pgvecto-rs/"
-      ]
-    }
-  ]
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": ["config:recommended"],
+    "nix": {
+        "enabled": true,
+        "lockFileMaintenance": {
+            "enabled": true
+        }
+    },
+    "digest": {
+        "dependencyDashboardApproval": true
+    },
+    "customManagers": [
+        {
+            "customType": "regex",
+            "managerFilePatterns": ["/^.*\\.nix$/"],
+            "matchStrings": [
+                "\\w*image\\s*=\\s*\"(?<depName>[^\\n\\r:]+):(?<currentValue>[^\\n\\r@\"]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?\"",
+                "\\w*Image\\s*=\\s*\"(?<depName>[^\\n\\r:]+):(?<currentValue>[^\\n\\r@\"]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?\""
+            ],
+            "datasourceTemplate": "docker"
+        }
+    ],
+    "packageRules": [
+        {
+            "enabled": false,
+            "matchPackageNames": [
+                "/postgres/",
+                "/mysql/",
+                "/mariadb/",
+                "/mongodb/",
+                "/pgvecto-rs/"
+            ]
+        }
+    ]
 }
