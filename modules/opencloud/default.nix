@@ -220,7 +220,7 @@ in
               "--cap-add=CAP_MKNOD"
             ];
 
-            entrypoint = "/bin/sh";
+            entrypoint = "/bin/bash";
             cmd = [
               "-c"
               "coolconfig generate-proof-key && /start-collabora-online.sh"
