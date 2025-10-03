@@ -167,7 +167,7 @@ in
 
             environmentFiles = cfg.environmentFiles;
             environment = {
-              PROXY_CSP_CONFIG_FILE_LOCATION = /etc/opencloud/csp.yaml;
+              PROXY_CSP_CONFIG_FILE_LOCATION = "/etc/opencloud/csp.yaml";
               COLLABORA_DOMAIN = cfg.collabora.collaboraDomain;
               COMPANION_DOMAIN = cfg.collabora.companionDomain;
               COLLABORATION_GRPC_ADDR = "0.0.0.0:9301";
