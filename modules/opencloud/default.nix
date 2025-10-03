@@ -135,6 +135,7 @@ in
                 GATEWAY_GRPC_ADDR = "0.0.0.0:9142";
                 NATS_NATS_HOST = "0.0.0.0";
                 NATS_NATS_PORT = "9233";
+                NATS_DEBUG_ADDR = "0.0.0.0:9234";
 
                 # make collabora the secure view app
                 FRONTEND_APP_HANDLER_SECURE_VIEW_APP_ADDR = "eu.opencloud.api.collaboration.CollaboraOnline";
@@ -172,7 +173,7 @@ in
               ''
                 set -e
                 echo "Waiting for OpenCloud health..."
-                timeout 30 sh -c 'until curl -fsS http://$\{COLLABORATION_STORE_NODES\}/healthz >/dev/null; do sleep 1; done'
+                timeout 25 sh -c 'until curl -fsS http://opencloud:9234/healthz >/dev/null; do sleep 1; done'
                 echo "Starting collaboration server..."
                 exec opencloud collaboration server
               ''
