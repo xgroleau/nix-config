@@ -137,7 +137,7 @@ in
         environmentFiles = [ config.age.secrets.opencloudEnv.path ];
         domain = "opencloud.${domain}";
         collabora = {
-          enable = true;
+          enable = false;
           collaboraDomain = "collabora.opencloud.xgroleau.com";
           wopiDomain = "wopi.opencloud.xgroleau.com";
           collaboraPort = 11210;
