@@ -109,7 +109,7 @@ in
                 OC_URL = "https://${cfg.domain}";
                 OC_LOG_LEVEL = "info";
 
-                PROXY_CSP_CONFIG_FILE_LOCATION = /etc/opencloud/csp.yaml;
+                PROXY_CSP_CONFIG_FILE_LOCATION = "/etc/opencloud/csp.yaml";
                 STORAGE_USERS_POSIX_WATCH_FS = "true";
                 GATEWAY_GRPC_ADDR = "0.0.0.0:9142";
                 MICRO_REGISTRY_ADDRESS = "127.0.0.1:9233";
