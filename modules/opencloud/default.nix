@@ -222,6 +222,7 @@ in
 
             entrypoint = "/bin/sh";
             cmd = [
+              "-c"
               "coolconfig generate-proof-key && /start-collabora-online.sh"
             ];
           };
