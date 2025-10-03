@@ -96,7 +96,6 @@ in
               "${cfg.dataDir}:/var/lib/opencloud"
             ];
             networks = [ "opencloud-bridge" ];
-            #"curl 127.0.0.1:9104/healthz"
 
             entrypoint = "/bin/sh";
             cmd = [
@@ -173,7 +172,7 @@ in
               ''
                 set -e
                 echo "Waiting for OpenCloud health..."
-                timeout 25 sh -c 'until curl -fsS http://opencloud:9234/healthz >/dev/null; do sleep 1; done'
+                timeout 5 sh -c 'until curl -fsS http://opencloud:9234/healthz >/dev/null; do sleep 1; done'
                 echo "Starting collaboration server..."
                 exec opencloud collaboration server
               ''
