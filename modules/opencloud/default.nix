@@ -186,8 +186,6 @@ in
 
               COLLABORATION_GRPC_ADDR = "0.0.0.0:9301";
               COLLABORATION_HTTP_ADDR = "0.0.0.0:9300";
-              COLLABORATION_STORE = "nats-js-kv";
-              COLLABORATION_STORE_NODES = "opencloud:9233";
               COLLABORATION_WOPI_SRC = "https://${cfg.collabora.companionDomain}";
               COLLABORATION_APP_NAME = "CollaboraOnline";
               COLLABORATION_APP_PRODUCT = "Collabora";
@@ -196,6 +194,10 @@ in
               COLLABORATION_APP_INSECURE = "true";
               COLLABORATION_CS3API_DATAGATEWAY_INSECURE = "true";
               COLLABORATION_LOG_LEVEL = "info";
+              COLLABORATION_STORE = "nats-js-kv";
+              COLLABORATION_STORE_NODES = "opencloud:9233";
+              MICRO_REGISTRY = "nats-js-kv"; # Seems like we need both
+              MICRO_REGISTRY_ADDRESS = "opencloud:9233";
               OC_URL = "https://${cfg.domain}";
             };
 
