@@ -111,10 +111,6 @@ in
 
                 PROXY_CSP_CONFIG_FILE_LOCATION = "/etc/opencloud/csp.yaml";
                 STORAGE_USERS_POSIX_WATCH_FS = "true";
-                GATEWAY_GRPC_ADDR = "0.0.0.0:9142";
-                MICRO_REGISTRY_ADDRESS = "127.0.0.1:9233";
-                NATS_NATS_HOST = "0.0.0.0";
-                NATS_NATS_PORT = "9233";
 
                 #Tika
                 SEARCH_EXTRACTOR_TYPE = "tika";
@@ -126,9 +122,12 @@ in
                 # this is needed for setting the correct CSP header
                 COLLABORA_DOMAIN = cfg.collabora.collaboraDomain;
                 COMPANION_DOMAIN = cfg.collabora.companionDomain;
+
                 # expose nats and the reva gateway for the collaboration service
-                NATS_NATS_HOST = "0.0.0.0";
                 GATEWAY_GRPC_ADDR = "0.0.0.0:9142";
+                NATS_NATS_HOST = "0.0.0.0";
+                NATS_NATS_PORT = "9233";
+
                 # make collabora the secure view app
                 FRONTEND_APP_HANDLER_SECURE_VIEW_APP_ADDR = "eu.opencloud.api.collaboration.CollaboraOnline";
                 # Not sure what this is
@@ -170,8 +169,11 @@ in
               PROXY_CSP_CONFIG_FILE_LOCATION = "/etc/opencloud/csp.yaml";
               COLLABORA_DOMAIN = cfg.collabora.collaboraDomain;
               COMPANION_DOMAIN = cfg.collabora.companionDomain;
+
               COLLABORATION_GRPC_ADDR = "0.0.0.0:9301";
               COLLABORATION_HTTP_ADDR = "0.0.0.0:9300";
+              COLLABORATION_STORE = "nats-js-kv";
+              COLLABORATION_STORE_NODES = "opencloud:9233";
               MICRO_REGISTRY = "nats-js-kv";
               MICRO_REGISTRY_ADDRESS = "opencloud:9233";
               COLLABORATION_WOPI_SRC = "https://${cfg.collabora.companionDomain}";
