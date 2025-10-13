@@ -11,6 +11,10 @@
     "digest": {
         "dependencyDashboardApproval": true
     },
+    "osvVulnerabilityAlerts": true,
+    "vulnerabilityAlerts": {
+        "enabled": true
+    },
     "reviewers": ["xgroleau"],
     "platformAutomerge": true,
     "customManagers": [
