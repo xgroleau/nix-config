@@ -34,8 +34,7 @@
             "matchDatasources": ["docker"],
             "matchUpdateTypes": ["digest"],
             "dependencyDashboardApproval": false,
-            "automerge": true,
-            "automergeType": "pr"
+            "automerge": true
         },
         {
             "enabled": false,
