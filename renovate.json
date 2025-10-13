@@ -44,12 +44,6 @@
                 "/mongodb/",
                 "/pgvecto-rs/"
             ]
-        },
-        {
-            "description": "Create PR for any security updates",
-            "enabled": true,
-            "isSecurityUpdate": true,
-            "dependencyDashboardApproval": false
         }
     ]
 }
