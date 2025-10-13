@@ -1,15 +1,18 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": ["config:recommended"],
-    "nix": {
-        "enabled": true,
-        "lockFileMaintenance": {
-            "enabled": true
-        }
+    "lockFileMaintenance": {
+        "enabled": true
     },
+    "nix": {
+        "enabled": true
+    },
+    "pinDigests": true,
     "digest": {
         "dependencyDashboardApproval": true
     },
+    "reviewers": ["xgroleau"],
+    "platformAutomerge": true,
     "customManagers": [
         {
             "customType": "regex",
@@ -23,7 +26,17 @@
     ],
     "packageRules": [
         {
+            "description": "Auto merge Docker digest updates (only docker, we don't want to update flakes digest)",
+            "matchDatasources": ["docker"],
+            "matchUpdateTypes": ["digest"],
+            "dependencyDashboardApproval": false,
+            "automerge": true,
+            "automergeType": "pr"
+        },
+        {
             "enabled": false,
+            "description": "Freeze DB images to tag (allow only digest/security)",
+            "matchUpdateTypes": ["major", "minor", "patch"],
             "matchPackageNames": [
                 "/postgres/",
                 "/mysql/",
@@ -31,6 +44,12 @@
                 "/mongodb/",
                 "/pgvecto-rs/"
             ]
+        },
+        {
+            "description": "Create PR for any security updates",
+            "enabled": true,
+            "isSecurityUpdate": true,
+            "dependencyDashboardApproval": false
         }
     ]
 }
