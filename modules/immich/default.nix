@@ -74,7 +74,7 @@ in
           PGID = "1000";
 
           # Redis
-          REDIS_HOSTNAME = "immich-redis";
+          REDIS_HOSTNAME = "immich-valkey";
           REDIS_PORT = "6379";
 
           # postgres
@@ -92,12 +92,12 @@ in
         ports = [ "${toString cfg.port}:8080" ];
         dependsOn = [
           "immich-postgres"
-          "immich-redis"
+          "immich-valkey"
         ];
         extraOptions = [ "--network=immich-bridge" ];
       };
 
-      immich-redis = {
+      immich-valkey = {
         autoStart = true;
         image = "valkey/valkey:8-bookworm@sha256:fea8b3e67b15729d4bb70589eb03367bab9ad1ee89c876f54327fc7c6e618571";
         environmentFiles = [ cfg.envFile ];
