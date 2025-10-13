@@ -10,6 +10,7 @@ concurrency:
 
 jobs:
   ci:
+    name: CI
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
