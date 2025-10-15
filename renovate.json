@@ -7,7 +7,6 @@
     "nix": {
         "enabled": true
     },
-    "pinDigests": true,
     "digest": {
         "dependencyDashboardApproval": true
     },
