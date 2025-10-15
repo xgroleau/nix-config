@@ -29,9 +29,6 @@ jobs:
           oauth-secret: ${{ secrets.TAILSCALE_OAUTH_CLIENT_SECRET }}
           tags: tag:deploy-rs
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Setup Attic cache
         uses: ryanccn/attic-action@v0
         with:
