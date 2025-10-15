@@ -46,7 +46,3 @@ jobs:
       - name: Deploy
         run: |
           nix run .#deploy -- --ssh-opts="-i $HOME/.ssh/id_key -o UserKnownHostsFile=$HOME/.ssh/known_hosts"
-
-      - name: Setup upterm session
-        uses: owenthereal/action-upterm@v1
-        if: ${{ failure() }}
