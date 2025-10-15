@@ -19,9 +19,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Free up space
-        uses: wimpysworld/nothing-but-nix@main
-
       - name: NixInstaller
         uses: DeterminateSystems/nix-installer-action@main
 
@@ -31,6 +28,9 @@ jobs:
           oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TAILSCALE_OAUTH_CLIENT_SECRET }}
           tags: tag:deploy-rs
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
 
       - name: Setup Attic cache
         uses: ryanccn/attic-action@v0

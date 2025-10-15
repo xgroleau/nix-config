@@ -13,9 +13,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Free up space
-        uses: wimpysworld/nothing-but-nix@main
-
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
 
