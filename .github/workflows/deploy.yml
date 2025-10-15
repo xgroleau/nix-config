@@ -21,7 +21,7 @@ jobs:
 
       # TODO: Go back to main after https://github.com/serokell/deploy-rs/issues/340 is fixed
       - name: NixInstaller
-        uses: DeterminateSystems/nix-installer-action@v3.11.2
+        uses: DeterminateSystems/determinate-nix-action@v3.11.2
 
       - name: Tailscale
         uses: tailscale/github-action@ac425ca19416ebb90dd453776414ffb1cdba8f91 # v4
