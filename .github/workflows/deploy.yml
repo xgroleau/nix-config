@@ -29,6 +29,10 @@ jobs:
           oauth-secret: ${{ secrets.TAILSCALE_OAUTH_CLIENT_SECRET }}
           tags: tag:deploy-rs
 
+      - name: Setup upterm session
+        uses: owenthereal/action-upterm@v1
+        if: ${{ failure() }}
+
       - name: Setup Attic cache
         uses: ryanccn/attic-action@v0
         with:
