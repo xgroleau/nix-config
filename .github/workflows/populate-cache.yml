@@ -1,4 +1,4 @@
-name: Populate cache
+name: Cache
 on:
   push:
     branches: [main]
