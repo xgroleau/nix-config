@@ -22,31 +22,29 @@
             "customType": "regex",
             "managerFilePatterns": ["/^.*\\.nix$/"],
             "matchStrings": [
-                "\\w*image\\s*=\\s*\"(?<depName>[^\\n\\r:]+):(?<currentValue>[^\\n\\r@\"]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?\"",
-                "\\w*Image\\s*=\\s*\"(?<depName>[^\\n\\r:]+):(?<currentValue>[^\\n\\r@\"]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?\""
+                "\\w*[iI]mage\\s*=\\s*\"(?<depName>[^\\n\\r:]+):(?<currentValue>[^\\n\\r@\"]+)(?:@(?<currentDigest>sha256:[A-Fa-f0-9]+))?\""
             ],
             "datasourceTemplate": "docker"
         }
     ],
     "packageRules": [
         {
+            "enabled": false,
+            "description": "Freeze major DB  updates",
+            "matchUpdateTypes": ["major"],
+            "matchPackageNames": [
+                "/postgres/",
+                "/mysql/",
+                "/mariadb/",
+                "/mongodb/"
+            ]
+        },
+        {
             "description": "Auto merge Docker digest updates (only docker, we don't want to update flakes digest)",
             "matchDatasources": ["docker"],
             "matchUpdateTypes": ["digest"],
             "dependencyDashboardApproval": false,
             "automerge": true
-        },
-        {
-            "enabled": false,
-            "description": "Freeze DB images to tag (allow only digest/security)",
-            "matchUpdateTypes": ["major", "minor", "patch"],
-            "matchPackageNames": [
-                "/postgres/",
-                "/mysql/",
-                "/mariadb/",
-                "/mongodb/",
-                "/pgvecto-rs/"
-            ]
         }
     ]
 }
