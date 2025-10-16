@@ -106,7 +106,7 @@ in
 
       immich-postgres = {
         autoStart = true;
-        image = "ghcr.io/immich-app/postgres:14-vectorchord0.4.3@sha256:dbf18b3ffea4a81434c65b71e20d27203baf903a0275f4341e4c16dfd901fd67";
+        image = "ghcr.io/immich-app/postgres:16-vectorchord0.4.3-pgvectors0.3.0@sha256:0851d187e1f512300b3fcf7911641aa94075a3bfe457f2600ec8637ca1cb9139";
 
         volumes = [
           "/etc/localtime:/etc/localtime:ro"
