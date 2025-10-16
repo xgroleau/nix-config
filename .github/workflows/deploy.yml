@@ -2,7 +2,7 @@ name: Deploy
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["CI", "Cache"]
+    workflows: ["CI"]
     branches: [main]
     types:
       - completed
