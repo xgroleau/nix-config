@@ -63,7 +63,7 @@ in
         du-dust
         fd
         gh
-        jj
+        jujutsu
         jq
         killall
         lazyjj
