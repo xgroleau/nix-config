@@ -63,8 +63,10 @@ in
         du-dust
         fd
         gh
+        jj
         jq
         killall
+        lazyjj
         pre-commit
         ranger
         ripgrep
