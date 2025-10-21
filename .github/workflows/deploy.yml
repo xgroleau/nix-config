@@ -19,6 +19,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      - name: Make space
+        uses: wimpysworld/nothing-but-nix@v6
+
       - name: NixInstaller
         uses: DeterminateSystems/determinate-nix-action@v3.11.2
 
