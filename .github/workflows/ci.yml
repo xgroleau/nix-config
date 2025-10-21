@@ -7,8 +7,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ci:
-    runs-on: ubuntu-24.04
+  build:
+    strategy:
+      matrix:
+        system:
+          - { name: azura, platform: ubuntu-24.04 }
+          - { name: namira, platform: ubuntu-24.04 }
+          - { name: jyggalag, platform: ubuntu-24.04-arm }
+
+    runs-on: ${{ matrix.system.platform }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -33,3 +40,7 @@ jobs:
       - name: Run ci checks
         run: |
           nix flake check
+
+      - name: Build ${{ matrix.system.name }}
+        run: |
+          nix run nixpkgs#nixos-rebuild -- build --flake .#${{ matrix.system.name }}

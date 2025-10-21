@@ -46,3 +46,13 @@ jobs:
       - name: Deploy
         run: |
           nix run .#deploy -- --ssh-opts="-i $HOME/.ssh/id_key -o UserKnownHostsFile=$HOME/.ssh/known_hosts"
+
+      - name: Actions Ntfy
+        if: ${{ !cancelled() }}
+        run: |
+          curl \
+            -H $Authorization: Bearer ${{ secrets.NTFY_TOKEN }} \
+            -H "Title: Nix deployment" \
+            -H "Content-Type: text/plain; charset=utf-8" \
+            -d $Deployment of ${{ github.repository }}: ${{ job.status}}' \
+            ${{ secrets.NTFY_URL }}
