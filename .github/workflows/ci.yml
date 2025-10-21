@@ -13,6 +13,7 @@ jobs:
         system:
           - { name: azura, platform: ubuntu-24.04 }
           - { name: namira, platform: ubuntu-24.04 }
+          - { name: sheogorath, platform: ubuntu-24.04 }
           - { name: jyggalag, platform: ubuntu-24.04-arm }
 
     runs-on: ${{ matrix.system.platform }}
