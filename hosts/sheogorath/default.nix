@@ -96,7 +96,7 @@ in
         enable = true;
         port = 12300;
         exporterPort = 12301;
-        dataDir = "/data/firefly-iii";
+        dataDir = "/vault/firefly-iii";
         appUrl = "https://firefly.${domain}";
         appKeyFile = config.age.secrets.fireflyAppKey.path;
         importerTokenFile = config.age.secrets.fireflyImporterToken.path;
@@ -149,7 +149,7 @@ in
         enable = true;
         port = 10400;
         credentialsFile = config.age.secrets.mealieEnv.path;
-        dataDir = "/data/mealie";
+        dataDir = "/vault/mealie";
       };
 
       miniflux = {

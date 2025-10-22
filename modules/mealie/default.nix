@@ -62,11 +62,12 @@ in
         ALLOW_SIGNUP = "false";
         MAX_WORKERS = "1";
         WEB_CONCURRENCY = "1";
-      } // cfg.settings;
+      }
+      // cfg.settings;
 
     };
 
-    # Until https://github.com/NixOS/nixpkgs/pull/309969 is merged
+    # TODO: Until https://github.com/NixOS/nixpkgs/pull/309969 is merged
     systemd.services.mealie = {
       serviceConfig = {
         ReadWritePaths = [ cfg.dataDir ];

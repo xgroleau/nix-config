@@ -173,6 +173,7 @@ in
                 set -e
                 echo "Waiting for OpenCloud health..."
                 timeout 5 sh -c 'until curl -fsS http://opencloud:9234/healthz; do sleep 1; done'
+                sleep 1
                 echo "Starting collaboration server..."
                 exec opencloud collaboration server
               ''
