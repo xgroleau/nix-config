@@ -50,7 +50,6 @@ in
             "58946:58946"
           ];
           volumes = [
-            "${cfg.dataDir}/deluge:/config"
             "${cfg.downloadDir}:/data"
           ];
           extraOptions = [
@@ -96,14 +95,7 @@ in
     };
 
     # Create a directory for the container to properly start
-    systemd.tmpfiles.settings.delugevpn = {
-      "${cfg.dataDir}/deluge" = {
-        d = {
-          inherit group;
-          mode = "0775";
-          user = "root";
-        };
-      };
+    systemd.tmpfiles.settings.media-server = {
       "${cfg.mediaDir}/movies" = {
         d = {
           inherit group;
