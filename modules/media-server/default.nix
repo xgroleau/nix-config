@@ -31,9 +31,9 @@ in
       description = "Path where the download will be stored";
     };
 
-    ovpnFile = lib.mkOption {
+    binhexDelugeEnv = lib.mkOption {
       type = types.str;
-      description = "Path to ovpn config file, auth needs to be embedded in the file";
+      description = "Path to env config file for binhex deluge";
     };
   };
 
@@ -52,7 +52,6 @@ in
           volumes = [
             "${cfg.dataDir}/deluge:/config"
             "${cfg.downloadDir}:/data"
-            "${cfg.ovpnFile}:/config/openvpn/vpn.ovpn"
           ];
           extraOptions = [
             "--cap-add=NET_ADMIN"
@@ -60,8 +59,6 @@ in
           ];
           environment = {
             VPN_ENABLED = "yes";
-            VPN_PROV = "custom";
-            VPN_CLIENT = "openvpn";
             STRICT_PORT_FORWARD = "yes";
             ENABLE_PRIVOXY = "yes";
             LAN_NETWORK = "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16";
@@ -76,6 +73,7 @@ in
             PUID = "0";
             PGID = "0";
           };
+          environmentFiles = [ cfg.binhexDelugeEnv ];
         };
       };
     };

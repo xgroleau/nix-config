@@ -28,6 +28,7 @@ let
     alertmanagerEnv.file = ./alertmanager-env.age;
     atticEnv.file = ./attic-env.age;
     authentikEnv.file = ./authentik-env.age;
+    binhexDelugeEnv.file = ./binhex-deluge-env.age;
     cloudflareXgroleau.file = ./cloudflare-xgroleau.age;
     duckdnsToken.file = ./duckdns-token.age;
     fireflyAppKey.file = ./firefly-appkey.age;
@@ -39,7 +40,6 @@ let
     ntfyEnv.file = ./ntfy-env.age;
     opencloudEnv.file = ./opencloud-env.age;
     paperlessNgxEnv.file = ./paperless-ngx-env.age;
-    piaOvpn.file = ./pia-ovpn.age;
   };
 
   # Only secrets that have the machine ssh key in them

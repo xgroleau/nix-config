@@ -122,11 +122,10 @@ in
 
       media-server = {
         enable = true;
-        # Each services export backups to /data/backups
         dataDir = "/data/media-server";
         downloadDir = "/media/deluge-downloads";
         mediaDir = "/media/media";
-        ovpnFile = config.age.secrets.piaOvpn.path;
+        binhexDelugeEnv = config.age.secrets.binhexDelugeEnv.path;
       };
 
       opencloud = {

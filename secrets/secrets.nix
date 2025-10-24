@@ -15,6 +15,10 @@ with keys;
     users.xgroleau
     machines.sheogorath
   ];
+  "binhex-deluge-env.age".publicKeys = [
+    users.xgroleau
+    machines.sheogorath
+  ];
   "cloudflare-xgroleau.age".publicKeys = [
     users.xgroleau
     machines.sheogorath
