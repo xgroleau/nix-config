@@ -59,10 +59,11 @@ in
           ];
           environment = {
             VPN_ENABLED = "yes";
+            ENABLE_STARTUP_SCRIPTS = "no";
             STRICT_PORT_FORWARD = "yes";
             ENABLE_PRIVOXY = "yes";
             LAN_NETWORK = "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16";
-            NAME_SERVERS = "84.200.69.80,37.235.1.174,1.1.1.1,37.235.1.177,84.200.70.40,1.0.0.1,8.8.8.8";
+            NAME_SERVERS = "1.1.1.1,1.0.0.1";
             DELUGE_DAEMON_LOG_LEVEL = "info";
             DELUGE_WEB_LOG_LEVEL = "info";
             DELUGE_ENABLE_WEBUI_PASSWORD = "yes";
