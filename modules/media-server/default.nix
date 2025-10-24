@@ -50,6 +50,7 @@ in
             "58946:58946"
           ];
           volumes = [
+            "${cfg.dataDir}/deluge:/config"
             "${cfg.downloadDir}:/data"
           ];
           extraOptions = [
@@ -96,6 +97,13 @@ in
 
     # Create a directory for the container to properly start
     systemd.tmpfiles.settings.media-server = {
+      "${cfg.dataDir}/deluge" = {
+        d = {
+          inherit group;
+          mode = "0775";
+          user = "root";
+        };
+      };
       "${cfg.mediaDir}/movies" = {
         d = {
           inherit group;
