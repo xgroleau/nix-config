@@ -57,5 +57,5 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.NTFY_TOKEN }}" \
             -H "Title: Nix deployment" \
             -H "Content-Type: text/plain; charset=utf-8" \
-            -d "Deployment of ${{ github.repository }} @ ${{ github.event.workflow_run.display_title }} (${{ steps.ref.outputs.short_sha }}: ${{ job.status}}" \
+            -d "Deployment of ${{ github.repository }} @ ${{ github.event.workflow_run.display_title }}: ${{ job.status}}" \
             ${{ secrets.NTFY_URL }}
