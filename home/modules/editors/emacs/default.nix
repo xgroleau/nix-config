@@ -33,6 +33,7 @@ in
             epkgs.xclip
             epkgs.treesit-grammars.with-all-grammars
           ]))
+          emacs-lsp-booster
 
           # Font
           nerd-fonts.fira-code
@@ -46,10 +47,14 @@ in
           ripgrep
 
           # lang
-          emacs-lsp-booster
-          nixfmt-rfc-style
-          pyright
+
           rustup
+
+          nixfmt-tree
+          nixfmt-rfc-style
+
+          pyright
+          ruff
 
           dune_3
           ocamlPackages.utop

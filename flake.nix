@@ -180,11 +180,11 @@
               app = pkgs.writeShellApplication {
                 name = "fmt";
                 runtimeInputs = with pkgs; [
-                  nixfmt-rfc-style
+                  nixfmt-tree
                   statix
                 ];
                 text = ''
-                  nixfmt ./**/*.nix && \
+                  treefmt && \
                   statix fix --config ${./statix.toml}
                 '';
               };
@@ -192,6 +192,7 @@
             {
               type = "app";
               program = "${app}/bin/${app.name}";
+              meta.description = "Fmt and static fixes";
             };
 
           deploy =
@@ -207,22 +208,23 @@
             {
               type = "app";
               program = "${app}/bin/${app.name}";
+              meta.description = "Deploy all servers";
             };
         };
 
-        formatter = pkgs.nixfmt-rfc-style;
+        formatter = pkgs.nixfmt-tree;
 
         checks = {
           fmt =
             pkgs.runCommand "fmt"
               {
                 buildInputs = with pkgs; [
-                  nixfmt-rfc-style
+                  nixfmt-tree
                   statix
                 ];
               }
               ''
-                ${pkgs.nixfmt-rfc-style}/bin/nixfmt --check ${./.}/**/*.nix && \
+                ${pkgs.nixfmt-tree}/bin/treefmt --ci ${./.} && \
                 ${pkgs.statix}/bin/statix check --config ${./statix.toml} && \
                 touch $out
               '';
@@ -235,7 +237,7 @@
               agenix.packages.${system}.default
               deploy-rs.packages.${system}.default
               git
-              nixfmt-rfc-style
+              nixfmt-tree
               statix
               home-manager.packages.${system}.default
             ]
