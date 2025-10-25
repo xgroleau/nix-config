@@ -174,43 +174,52 @@
         pkgs = import nixpkgs { inherit system; };
       in
       {
-        apps = {
-          fmt =
-            let
-              app = pkgs.writeShellApplication {
-                name = "fmt";
-                runtimeInputs = with pkgs; [
-                  nixfmt-tree
-                  statix
-                ];
-                text = ''
-                  treefmt && \
-                  statix fix --config ${./statix.toml}
-                '';
+        apps =
+          # pkgs.lib.mkMerge [
+          {
+            fmt =
+              let
+                app = pkgs.writeShellApplication {
+                  name = "fmt";
+                  runtimeInputs = with pkgs; [
+                    nixfmt-tree
+                    statix
+                  ];
+                  text = ''
+                    treefmt && \
+                    statix fix --config ${./statix.toml}
+                  '';
+                };
+              in
+              {
+                type = "app";
+                program = "${app}/bin/${app.name}";
+                meta.description = "Fmt and static fixes";
               };
-            in
-            {
-              type = "app";
-              program = "${app}/bin/${app.name}";
-              meta.description = "Fmt and static fixes";
-            };
 
-          deploy =
-            let
-              app = pkgs.writeShellApplication {
-                name = "deploy";
-                runtimeInputs = with pkgs; [ deploy-rs.packages.${system}.default ];
-                text = ''
-                  deploy .# --remote-build "$@"
-                '';
+            deploy =
+              let
+                app = pkgs.writeShellApplication {
+                  name = "deploy";
+                  runtimeInputs = with pkgs; [ deploy-rs.packages.${system}.default ];
+                  text = ''
+                    deploy .# --remote-build "$@"
+                  '';
+                };
+              in
+              {
+                type = "app";
+                program = "${app}/bin/${app.name}";
+                meta.description = "Deploy all servers";
               };
-            in
-            {
+          }
+          // (pkgs.lib.optionalAttrs pkgs.stdenv.isDarwin {
+            darwin-rebuild = {
               type = "app";
-              program = "${app}/bin/${app.name}";
-              meta.description = "Deploy all servers";
+              program = "${nix-darwin.packages.${system}.darwin-rebuild}/bin/darwin-rebuild";
+              meta.description = "Reexpose internal darwin rebuild package";
             };
-        };
+          });
 
         formatter = pkgs.nixfmt-tree;
 

@@ -15,6 +15,7 @@ jobs:
           - { name: namira, platform: ubuntu-24.04 }
           - { name: sheogorath, platform: ubuntu-24.04 }
           - { name: jyggalag, platform: ubuntu-24.04-arm }
+          - { name: Xaviers-MacBook-Pro, platform: macos-14 }
 
     runs-on: ${{ matrix.system.platform }}
     steps:
@@ -46,5 +47,11 @@ jobs:
           nix flake check
 
       - name: Build ${{ matrix.system.name }}
+        if: startsWith(matrix.system.platform, 'ubuntu')
         run: |
           nix run nixpkgs#nixos-rebuild -- build --flake .#${{ matrix.system.name }}
+
+      - name: Build (darwin) ${{ matrix.system.name }}
+        if: startsWith(matrix.system.platform, 'macos')
+        run: |
+          nix run .#darwin-rebuild -- build --flake .#${{ matrix.system.name }}
