@@ -215,11 +215,6 @@ in
         envFile = config.age.secrets.paperlessNgxEnv.path;
       };
 
-      stalwart = {
-        enable = true;
-        dataDir = "/vault/stalwart";
-      };
-
       valheim = {
         enable = true;
         restart = true;
