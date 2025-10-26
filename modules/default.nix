@@ -28,6 +28,7 @@
     ./opencloud
     ./palworld
     ./ssh
+    ./stalwart
     ./tailscale
     ./valheim
     ./paperless-ngx
