@@ -36,7 +36,41 @@ in
   config = lib.mkIf cfg.enable {
     services.stalwart-mail = {
       enable = true;
+
       dataDir = cfg.dataDir;
+      openFirewall = cfg.openFirewall;
+      config = {
+        server = {
+          hostname = "mx1.example.org";
+          tls = {
+            enable = true;
+            implicit = true;
+          };
+          listener = {
+            smtp = {
+              protocol = "smtp";
+              bind = "[::]:42225";
+            };
+            submissions = {
+              bind = "[::]:42465";
+              protocol = "smtp";
+            };
+            imaps = {
+              bind = "[::]:42993";
+              protocol = "imap";
+            };
+            # jmap = {
+            #   bind = "[::]:42080";
+            #   url = "https://mail.example.org";
+            #   protocol = "jmap";
+            # };
+            management = {
+              bind = [ "127.0.0.1:42080" ];
+              protocol = "http";
+            };
+          };
+        };
+      };
     };
 
   };
