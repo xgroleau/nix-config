@@ -16,8 +16,6 @@ in
   options.modules.ntfy = with lib.types; {
     enable = lib.mkEnableOption ''Enables the ntfy module to notify services'';
 
-    openFirewall = lib.mkEnableOption "Open the required ports in the firewall";
-
     url = lib.mkOption {
       type = types.str;
       description = "Url of ntfy";

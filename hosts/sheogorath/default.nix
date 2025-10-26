@@ -215,6 +215,11 @@ in
         envFile = config.age.secrets.paperlessNgxEnv.path;
       };
 
+      stalwart = {
+        enable = true;
+        dataDir = "/vault/stalwart";
+      };
+
       valheim = {
         enable = true;
         restart = true;
@@ -309,6 +314,6 @@ in
       };
     };
 
-    system.stateVersion = "23.11";
+    system.stateVersion = "25.05";
   };
 }
