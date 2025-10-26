@@ -65,7 +65,7 @@ in
             #   protocol = "jmap";
             # };
             management = {
-              bind = [ "127.0.0.1:42080" ];
+              bind = [ "[::]:42080" ];
               protocol = "http";
             };
           };
