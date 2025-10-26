@@ -39,7 +39,7 @@ in
 
       dataDir = cfg.dataDir;
       openFirewall = cfg.openFirewall;
-      config = {
+      settings = {
         server = {
           hostname = "mx1.example.org";
           tls = {
