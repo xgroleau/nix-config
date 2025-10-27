@@ -31,8 +31,6 @@ HYPHEN_INSENSITIVE="false"
 
 ENABLE_CORRECTION="true"
 
-HIST_STAMPS="dd/mm/yyyy"
-
 #-- Configuration --
 # Aliases
 source ~/.config/zsh/aliases
