@@ -114,7 +114,7 @@ in
 
                 OC_INSECURE = "false";
                 OC_URL = "https://${cfg.domain}";
-                OC_LOG_LEVEL = "info";
+                # OC_LOG_LEVEL = "info";
 
                 PROXY_CSP_CONFIG_FILE_LOCATION = "/etc/opencloud/csp.yaml";
                 STORAGE_USERS_POSIX_WATCH_FS = "true";
@@ -153,6 +153,7 @@ in
         }
 
         (lib.mkIf cfg.collabora.enable {
+
           opencloud-collaboration = {
             autoStart = true;
             image = openCloudImage;
@@ -169,14 +170,7 @@ in
             entrypoint = "/bin/sh";
             cmd = [
               "-c"
-              ''
-                set -e
-                echo "Waiting for OpenCloud health..."
-                timeout 5 sh -c 'until curl -fsS http://opencloud:9234/healthz; do sleep 1; done'
-                sleep 1
-                echo "Starting collaboration server..."
-                exec opencloud collaboration server
-              ''
+              "opencloud collaboration server"
             ];
 
             environmentFiles = cfg.environmentFiles;
@@ -194,7 +188,7 @@ in
               COLLABORATION_APP_ICON = "https://${cfg.collabora.collaboraDomain}/favicon.ico";
               COLLABORATION_APP_INSECURE = "true";
               COLLABORATION_CS3API_DATAGATEWAY_INSECURE = "true";
-              COLLABORATION_LOG_LEVEL = "info";
+              # COLLABORATION_LOG_LEVEL = "info";
               COLLABORATION_STORE = "nats-js-kv";
               COLLABORATION_STORE_NODES = "opencloud:9233";
               MICRO_REGISTRY = "nats-js-kv"; # Seems like we need both
@@ -242,8 +236,27 @@ in
       ];
     };
 
+    # Allow collab to have a bigger restart limit
+    systemd.services.podman-opencloud-collaboration = lib.mkIf cfg.collabora.enable {
+      serviceConfig = {
+        Restart = "on-failure";
+        RestartSec = 10;
+        StartLimitIntervalSec = 60;
+        StartLimitBurst = 10;
+        After = [
+          "podman-opencloud.service"
+          "init-opencloud-network.service"
+          "network-online.target"
+        ];
+        Requires = [
+          "podman-opencloud.service"
+          "init-opencloud-network.service"
+        ];
+      };
+    };
+
     # Network creation
-    systemd.services.init-opencloud-network = {
+    init-opencloud-network = {
       description = "Create the network bridge for opencloud.";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
