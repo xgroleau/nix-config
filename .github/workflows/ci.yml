@@ -15,7 +15,7 @@ jobs:
           - { name: namira, platform: ubuntu-24.04 }
           - { name: sheogorath, platform: ubuntu-24.04 }
           - { name: jyggalag, platform: ubuntu-24.04-arm }
-          - { name: Xaviers-MacBook-Pro, platform: macos-14 }
+          # - { name: Xaviers-MacBook-Pro, platform: macos-14 }
 
     runs-on: ${{ matrix.system.platform }}
     steps:
@@ -52,7 +52,8 @@ jobs:
         run: |
           nix run nixpkgs#nixos-rebuild -- build --flake .#${{ matrix.system.name }}
 
-      - name: Build (darwin) ${{ matrix.system.name }}
-        if: startsWith(matrix.system.platform, 'macos')
-        run: |
-          nix run .#darwin-rebuild -- build --flake .#${{ matrix.system.name }}
+      # Fails to resolv host for now for some reason
+      # - name: Build (darwin) ${{ matrix.system.name }}
+      #   if: startsWith(matrix.system.platform, 'macos')
+      #   run: |
+      #     nix run .#darwin-rebuild -- build --flake .#${{ matrix.system.name }}
