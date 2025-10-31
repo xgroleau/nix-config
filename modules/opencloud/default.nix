@@ -245,12 +245,10 @@ in
         StartLimitBurst = 10;
         After = [
           "podman-opencloud.service"
-          "init-opencloud-network.service"
           "network-online.target"
         ];
         Requires = [
           "podman-opencloud.service"
-          "init-opencloud-network.service"
         ];
       };
     };
