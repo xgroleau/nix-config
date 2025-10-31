@@ -216,7 +216,7 @@ in
       };
 
       valheim = {
-        enable = true;
+        enable = false;
         restart = true;
         port = 2456;
         name = "Yofo";
