@@ -245,16 +245,18 @@ in
         StartLimitBurst = 10;
         After = [
           "podman-opencloud.service"
+          "init-opencloud-network.service"
           "network-online.target"
         ];
         Requires = [
           "podman-opencloud.service"
+          "init-opencloud-network.service"
         ];
       };
     };
 
     # Network creation
-    init-opencloud-network = {
+    systemd.services.init-opencloud-network = {
       description = "Create the network bridge for opencloud.";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
