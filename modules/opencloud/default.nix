@@ -239,19 +239,9 @@ in
     # Allow collab to have a bigger restart limit
     systemd.services.podman-opencloud-collaboration = lib.mkIf cfg.collabora.enable {
       serviceConfig = {
-        Restart = "on-failure";
-        RestartSec = 10;
-        StartLimitIntervalSec = 60;
-        StartLimitBurst = 10;
-        After = [
-          "podman-opencloud.service"
-          "init-opencloud-network.service"
-          "network-online.target"
-        ];
-        Requires = [
-          "podman-opencloud.service"
-          "init-opencloud-network.service"
-        ];
+        RestartSec = lib.mkForce 10;
+        StartLimitIntervalSec = lib.mkForce 60;
+        StartLimitBurst = lib.mkForce 10;
       };
     };
 
