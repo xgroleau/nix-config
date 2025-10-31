@@ -170,7 +170,24 @@ in
             entrypoint = "/bin/sh";
             cmd = [
               "-c"
-              "opencloud collaboration server"
+              ''
+                set -e
+
+                echo "Waiting for NATS (opencloud:9234) health..."
+                timeout 5 sh -c 'until curl -fsS http://opencloud:9234/healthz >/dev/null; do sleep 1; done'
+
+                echo "Waiting for gateway gRPC port (opencloud:9142)..."
+                timeout 10 sh -c '
+                  # curl exit code 7 = cannot connect (port closed). Any other result means socket accepted.
+                  until (curl --max-time 1 http://opencloud:9142 >/dev/null 2>&1 || [ $? -ne 7 ]); do
+                    sleep 1
+                  done
+                '
+
+                sleep 3
+                echo "Starting collaboration server..."
+                exec opencloud collaboration server
+              ''
             ];
 
             environmentFiles = cfg.environmentFiles;
@@ -239,7 +256,7 @@ in
     # Allow collab to have a bigger restart limit
     systemd.services.podman-opencloud-collaboration = lib.mkIf cfg.collabora.enable {
       serviceConfig = {
-        RestartSec = lib.mkForce 10;
+        RestartSec = lib.mkForce 5;
         StartLimitIntervalSec = lib.mkForce 60;
         StartLimitBurst = lib.mkForce 10;
       };
