@@ -48,7 +48,7 @@
     environment = {
       # Couple of packages
       systemPackages = with pkgs; [
-        retroarchFull
+        retroarch-full
         firefox
         glxinfo
         mangohud
