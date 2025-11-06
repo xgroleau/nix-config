@@ -50,7 +50,7 @@
       systemPackages = with pkgs; [
         retroarch-full
         firefox
-        glxinfo
+        mesa-demos
         mangohud
         vulkan-tools
         wine
