@@ -217,7 +217,7 @@ in
 
           opencloud-collabora = {
             autoStart = true;
-            image = "collabora/code:25.04.7.1.1";
+            image = "collabora/code:25.04.7.2.1";
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
             ];
