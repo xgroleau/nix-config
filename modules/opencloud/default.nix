@@ -92,7 +92,6 @@ in
               "${cfg.configDir}:/etc/opencloud"
               "${./csp.yaml}:/etc/opencloud/csp.yaml"
               "${./proxy.yaml}:/etc/opencloud/proxy.yaml"
-              "${./app-registry.yaml}:/etc/opencloud/app-registry.yaml"
               "${cfg.dataDir}:/var/lib/opencloud"
             ];
             networks = [ "opencloud-bridge" ];
@@ -119,10 +118,14 @@ in
                 PROXY_CSP_CONFIG_FILE_LOCATION = "/etc/opencloud/csp.yaml";
                 STORAGE_USERS_POSIX_WATCH_FS = "true";
 
+                # Config
+                OC_SHARING_PUBLIC_SHARE_MUST_HAVE_PASSWORD = "false";
+
                 #Tika
                 SEARCH_EXTRACTOR_TYPE = "tika";
                 SEARCH_EXTRACTOR_TIKA_TIKA_URL = "http://opencloud-tika:9998";
                 FRONTEND_FULL_TEXT_SEARCH_ENABLED = "true";
+
               }
 
               (lib.mkIf cfg.collabora.enable {
