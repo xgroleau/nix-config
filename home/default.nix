@@ -61,6 +61,7 @@ in
 
     # User config
     targets.genericLinux.enable = pkgs.stdenv.isLinux;
+    targets.genericLinux.gpu.enable = false;
     systemd.user.startServices = true;
     nixpkgs.config.allowUnfree = true;
     manual.manpages.enable = false;

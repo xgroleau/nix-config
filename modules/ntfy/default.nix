@@ -45,8 +45,6 @@ in
   config = lib.mkIf cfg.enable {
     services.ntfy-sh = {
       enable = true;
-      #TODO:  Remove once on 25.11
-      package = pkgs.unstable.ntfy-sh;
       settings = {
         base-url = cfg.url;
         listen-http = ":${toString cfg.port}";
@@ -56,20 +54,7 @@ in
         attachment-cache-dir = "${cfg.dataDir}/cache/attachments";
         enable-login = true;
         enable-reservations = true;
-      };
-
-    };
-
-    systemd.services.ntfy-sh = {
-      serviceConfig = {
-        #TODO: Remove once on 25.11
-        EnvironmentFile = lib.mkIf (cfg.envFile != null) cfg.envFile;
-
-        # Allow r2 in the data dir
-        ReadWritePaths = [
-          cfg.dataDir
-        ];
-
+        environmentFile = cfg.envFile;
       };
 
     };

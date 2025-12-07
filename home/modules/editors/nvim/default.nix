@@ -15,6 +15,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    home.packages = with pkgs; [ helix ];
     programs.neovim = {
       enable = true;
       vimAlias = true;

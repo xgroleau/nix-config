@@ -60,7 +60,7 @@ in
         btop
         bat
         comma
-        du-dust
+        dust
         fd
         gh
         jujutsu

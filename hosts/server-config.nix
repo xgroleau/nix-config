@@ -38,6 +38,8 @@ in
       };
     };
 
-    systemd.extraConfig = "DefaultLimitNOFILE=32768";
+    systemd.settings.Manager = {
+      DefaultLimitNOFILE = 32768;
+    };
   };
 }
