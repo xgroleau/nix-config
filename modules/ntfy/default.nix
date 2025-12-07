@@ -45,6 +45,7 @@ in
   config = lib.mkIf cfg.enable {
     services.ntfy-sh = {
       enable = true;
+      environmentFile = cfg.envFile;
       settings = {
         base-url = cfg.url;
         listen-http = ":${toString cfg.port}";
@@ -54,7 +55,6 @@ in
         attachment-cache-dir = "${cfg.dataDir}/cache/attachments";
         enable-login = true;
         enable-reservations = true;
-        environmentFile = cfg.envFile;
       };
 
     };
