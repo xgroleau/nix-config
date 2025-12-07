@@ -120,9 +120,6 @@ in
         envFile = config.age.secrets.immichEnv.path;
       };
 
-      # https://github.com/binhex/arch-qbittorrentvpn/issues/283
-      networking.firewall.backend = "iptables";
-
       media-server = {
         enable = true;
         dataDir = "/data/media-server";
@@ -275,6 +272,9 @@ in
       useDHCP = true;
       hostId = "819a6cd7";
       hostName = "sheogorath";
+
+      # https://github.com/binhex/arch-qbittorrentvpn/issues/283
+      firewall.backend = "iptables";
     };
 
     # nfs mounts
