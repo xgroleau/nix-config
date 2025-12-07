@@ -30,8 +30,10 @@ in
     programs = {
       git = {
         enable = true;
-        userName = cfg.gitUser;
-        userEmail = cfg.gitEmail;
+        user = {
+          name = cfg.gitUser;
+          email = cfg.gitEmail;
+        };
         lfs.enable = true;
       };
 
