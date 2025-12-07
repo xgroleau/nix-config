@@ -30,10 +30,10 @@ in
       pulseaudio
 
       # KDE apps
-      libsForQt5.ark
-      libsForQt5.dolphin
-      libsForQt5.okular
-      libsForQt5.breeze-icons
+      kdePackages.ark
+      kdePackages.dolphin
+      kdePackages.okular
+      kdePackages.breeze-icons
     ];
 
     home.sessionVariables = {
