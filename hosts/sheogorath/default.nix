@@ -120,6 +120,10 @@ in
         envFile = config.age.secrets.immichEnv.path;
       };
 
+      # https://github.com/binhex/arch-qbittorrentvpn/issues/283
+      networking.nftables.enable = false;
+      networking.firewall.backend = "iptables";
+
       media-server = {
         enable = true;
         dataDir = "/data/media-server";
