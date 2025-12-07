@@ -36,7 +36,7 @@
       "nfs"
       "zfs"
     ];
-    kernelPackages = pkgs.linuxPackages_6_6;
+    kernelPackages = pkgs.linuxPackages_6_18;
     extraModulePackages = [ ];
     zfs.forceImportRoot = false;
   };
