@@ -121,7 +121,6 @@ in
       };
 
       # https://github.com/binhex/arch-qbittorrentvpn/issues/283
-      networking.nftables.enable = false;
       networking.firewall.backend = "iptables";
 
       media-server = {
