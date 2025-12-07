@@ -15,6 +15,16 @@
   environment.systemPackages = with pkgs; [ nfs-utils ];
   boot = {
     initrd.availableKernelModules = [
+      "ip_tables"
+      "iptable_filter"
+      "iptable_nat"
+      "iptable_mangle"
+      "nf_nat"
+      "nf_conntrack"
+      "x_tables"
+      "xt_conntrack"
+      "xt_mark"
+      "xt_comment"
       "xhci_pci"
       "ehci_pci"
       "ahci"
