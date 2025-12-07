@@ -30,7 +30,7 @@ in
     programs = {
       git = {
         enable = true;
-        user = {
+        settings.user = {
           name = cfg.gitUser;
           email = cfg.gitEmail;
         };
