@@ -43,6 +43,7 @@ in
 
   # We use a contianer so other services can have a different PG version
   config = lib.mkIf cfg.enable {
+    systemd.services.ntfy-sh.serviceConfig.ReadWritePaths = [ cfg.dataDir ];
     services.ntfy-sh = {
       enable = true;
       environmentFile = cfg.envFile;
