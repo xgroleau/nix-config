@@ -274,6 +274,7 @@ in
       hostName = "sheogorath";
 
       # https://github.com/binhex/arch-qbittorrentvpn/issues/283
+      nftables.enable = false;
       firewall.backend = "iptables";
     };
 
