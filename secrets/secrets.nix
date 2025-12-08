@@ -15,7 +15,7 @@ with keys;
     users.xgroleau
     machines.sheogorath
   ];
-  "binhex-deluge-env.age".publicKeys = [
+  "gluetun-env.age".publicKeys = [
     users.xgroleau
     machines.sheogorath
   ];

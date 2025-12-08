@@ -8,7 +8,6 @@
 let
   cfg = config.modules.media-server;
   group = "media";
-  delugeUser = "delugevpn";
 in
 {
   options.modules.media-server = with lib.types; {
@@ -31,50 +30,57 @@ in
       description = "Path where the download will be stored";
     };
 
-    binhexDelugeEnv = lib.mkOption {
+    gluetunEnvFile = lib.mkOption {
       type = types.str;
-      description = "Path to env config file for binhex deluge";
+      description = "Path to env config file for gluetun";
     };
   };
 
   config = lib.mkIf cfg.enable {
     virtualisation.oci-containers = {
       containers = {
-        delugevpn = {
+        gluetun = {
           autoStart = true;
-          image = "binhex/arch-delugevpn:2.2@sha256:2ff474cba3af585e15a608ffe03ca81ec4ac2e588f4462f584005081804fbd28";
+          image = "ghcr.io/qdm12/gluetun:v3.40.3@sha256:ef4a44819a60469682c7b5e69183e6401171891feaa60186652d292c59e41b30";
           ports = [
             "8112:8112"
             "8118:8118"
             "58846:58846"
             "58946:58946"
+            "58946:58946/udp"
           ];
+          volumes = [
+            "${cfg.dataDir}/gluetun:/gluetun"
+          ];
+          extraOptions = [
+            "--cap-add=NET_ADMIN"
+            "--device=/dev/net/tun"
+          ];
+          environment = {
+            TZ = config.time.timeZone;
+            HTTPPROXY = "on";
+            HTTPPROXY_PORT = "8118";
+          };
+          environmentFiles = [ cfg.gluetunEnvFile ];
+        };
+
+        deluge = {
+          autoStart = true;
+          dependsOn = [ "gluetun" ];
+          image = "linuxserver/deluge:2.2.0@sha256:0eb19323676546fd560882036ecee982c387d016170906231864bc92d3cd38db";
           volumes = [
             "${cfg.dataDir}/deluge:/config"
             "${cfg.downloadDir}:/data"
           ];
-          extraOptions = [
-            "--cap-add=NET_ADMIN"
-            "--privileged=true"
-          ];
           environment = {
-            VPN_ENABLED = "yes";
-            ENABLE_STARTUP_SCRIPTS = "no";
-            STRICT_PORT_FORWARD = "yes";
-            ENABLE_PRIVOXY = "yes";
-            LAN_NETWORK = "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16";
-            NAME_SERVERS = "1.1.1.1,1.0.0.1";
-            DELUGE_DAEMON_LOG_LEVEL = "info";
-            DELUGE_WEB_LOG_LEVEL = "info";
-            DELUGE_ENABLE_WEBUI_PASSWORD = "yes";
-            VPN_INPUT_PORTS = "";
-            VPN_OUTPUT_PORTS = "";
-            DEBUG = "false";
-            UMASK = "000";
             PUID = "0";
             PGID = "0";
+            UMASK = "000";
+            TZ = config.time.timeZone;
           };
-          environmentFiles = [ cfg.binhexDelugeEnv ];
+          extraOptions = [
+            "--network=container:gluetun"
+          ];
         };
       };
     };
@@ -82,15 +88,11 @@ in
     # Expose ports for container
     networking.firewall = lib.mkIf cfg.openFirewall {
       allowedTCPPorts = [
-        8112
         8118
         58846
         58946
       ];
       allowedUDPPorts = [
-        8112
-        8118
-        58846
         58946
       ];
     };
@@ -129,6 +131,13 @@ in
         d = {
           inherit group;
           mode = "0775";
+          user = "root";
+        };
+      };
+      "${cfg.dataDir}/gluetun" = {
+        d = {
+          inherit group;
+          mode = "0770";
           user = "root";
         };
       };

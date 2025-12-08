@@ -125,7 +125,7 @@ in
         dataDir = "/data/media-server";
         downloadDir = "/media/deluge-downloads";
         mediaDir = "/media/media";
-        binhexDelugeEnv = config.age.secrets.binhexDelugeEnv.path;
+        gluetunEnvFile = config.age.secrets.gluetunEnv.path;
       };
 
       opencloud = {

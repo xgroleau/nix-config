@@ -28,7 +28,7 @@ let
     alertmanagerEnv.file = ./alertmanager-env.age;
     atticEnv.file = ./attic-env.age;
     authentikEnv.file = ./authentik-env.age;
-    binhexDelugeEnv.file = ./binhex-deluge-env.age;
+    gluetunEnv.file = ./gluetun-env.age;
     cloudflareXgroleau.file = ./cloudflare-xgroleau.age;
     duckdnsToken.file = ./duckdns-token.age;
     fireflyAppKey.file = ./firefly-appkey.age;
