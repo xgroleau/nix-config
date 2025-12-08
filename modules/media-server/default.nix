@@ -39,7 +39,7 @@ in
   config = lib.mkIf cfg.enable {
     virtualisation.oci-containers = {
       containers = {
-        gluetun = {
+        mediaserver-gluetun = {
           autoStart = true;
           image = "ghcr.io/qdm12/gluetun:v3.40.3@sha256:ef4a44819a60469682c7b5e69183e6401171891feaa60186652d292c59e41b30";
           ports = [
@@ -63,9 +63,9 @@ in
           environmentFiles = [ cfg.gluetunEnvFile ];
         };
 
-        deluge = {
+        mediaserver-deluge = {
           autoStart = true;
-          dependsOn = [ "gluetun" ];
+          dependsOn = [ "mediaserver-gluetun" ];
           image = "linuxserver/deluge:2.2.0@sha256:0eb19323676546fd560882036ecee982c387d016170906231864bc92d3cd38db";
           volumes = [
             "${cfg.dataDir}/deluge:/config"
@@ -77,7 +77,7 @@ in
             UMASK = "000";
           };
           extraOptions = [
-            "--network=container:gluetun"
+            "--network=container:mediaserver-gluetun"
           ];
         };
       };
