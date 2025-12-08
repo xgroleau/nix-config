@@ -57,7 +57,6 @@ in
             "--device=/dev/net/tun"
           ];
           environment = {
-            TZ = config.time.timeZone;
             HTTPPROXY = "on";
             HTTPPROXY_PORT = "8118";
           };
@@ -76,7 +75,6 @@ in
             PUID = "0";
             PGID = "0";
             UMASK = "000";
-            TZ = config.time.timeZone;
           };
           extraOptions = [
             "--network=container:gluetun"
