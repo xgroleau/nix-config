@@ -69,6 +69,12 @@ in
             };
           };
         };
+        authentication = {
+          fallback-admin = {
+            user = "admin";
+            secret = "%{env:ADMIN_SECRET}%";
+          };
+        };
       };
 
     };

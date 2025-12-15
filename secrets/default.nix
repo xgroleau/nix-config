@@ -40,6 +40,7 @@ let
     ntfyEnv.file = ./ntfy-env.age;
     opencloudEnv.file = ./opencloud-env.age;
     paperlessNgxEnv.file = ./paperless-ngx-env.age;
+    stalwartEnv.file = ./stalwart-env.age;
   };
 
   # Only secrets that have the machine ssh key in them

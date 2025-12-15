@@ -218,6 +218,7 @@ in
       stalwart = {
         enable = true;
         dataDir = "/vault/stalwart";
+        credentials = config.age.secrets.stalwartEnv.path;
       };
 
       valheim = {

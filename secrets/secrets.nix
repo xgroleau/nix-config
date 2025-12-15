@@ -63,7 +63,7 @@ with keys;
     users.xgroleau
     machines.sheogorath
   ];
-  "pia-ovpn.age".publicKeys = [
+  "stalwart-env.age".publicKeys = [
     users.xgroleau
     machines.sheogorath
   ];
