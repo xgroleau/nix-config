@@ -51,10 +51,7 @@ in
       enableDefaultConfig = false;
       matchBlocks."*" = {
         addKeysToAgent = "yes";
-        userKnownHostsFile = [
-          "~/.ssh/known_hosts"
-          "~/.ssh/hm_known_hosts"
-        ];
+        userKnownHostsFile = "~/.ssh/known_hosts ~/.ssh/hm_known_hosts";
       };
     };
 

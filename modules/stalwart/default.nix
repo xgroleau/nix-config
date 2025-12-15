@@ -21,7 +21,6 @@ in
     };
 
     credentials = lib.mkOption {
-
       description = "Credentials, each one of them must be a string to a file containing the secret";
       type = types.submodule {
         environmentFiles = lib.mkOption {
@@ -71,6 +70,18 @@ in
           };
         };
       };
+
+      # Create the folder if it doesn't exist
+      systemd.tmpfiles.settings.stalwart = {
+        "${cfg.dataDir}" = {
+          d = {
+            user = "stalwart-mail";
+            group = "stalwart-mail";
+            mode = "750";
+          };
+        };
+      };
+
     };
 
   };
