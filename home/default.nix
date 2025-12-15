@@ -48,8 +48,14 @@ in
 
     programs.ssh = {
       enable = true;
-      addKeysToAgent = "yes";
-      userKnownHostsFile = "~/.ssh/known_hosts ~/.ssh/hm_known_hosts";
+      enableDefaultConfig = false;
+      matchBlocks."*" = {
+        addKeysToAgent = "yes";
+        userKnownHostsFile = [
+          "~/.ssh/known_hosts"
+          "~/.ssh/hm_known_hosts"
+        ];
+      };
     };
 
     # Adding all machines to known host
