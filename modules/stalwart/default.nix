@@ -71,17 +71,17 @@ in
         };
       };
 
-      # Create the folder if it doesn't exist
-      systemd.tmpfiles.settings.stalwart = {
-        "${cfg.dataDir}" = {
-          d = {
-            user = "stalwart-mail";
-            group = "stalwart-mail";
-            mode = "750";
-          };
+    };
+
+    # Create the folder if it doesn't exist
+    systemd.tmpfiles.settings.stalwart = {
+      "${cfg.dataDir}" = {
+        d = {
+          user = "stalwart-mail";
+          group = "stalwart-mail";
+          mode = "750";
         };
       };
-
     };
 
   };
