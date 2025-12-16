@@ -20,14 +20,15 @@ in
       description = "Path to where the data will be stored";
     };
 
-    credentials = lib.mkOption {
-      description = "Credentials, each one of them must be a string to a file containing the secret";
+    options = lib.mkOption {
       type = types.submodule {
-        environmentFiles = lib.mkOption {
-          type = types.listOf types.str;
-          default = [ ];
-          description = "List of environment files to pass for secrets, oidc and others";
+        options = {
+          admin_password = lib.mkOption {
+            type = types.str;
+            description = "Admin credentials file";
+          };
         };
+
       };
     };
   };
@@ -38,6 +39,9 @@ in
 
       dataDir = cfg.dataDir;
       openFirewall = cfg.openFirewall;
+      credentials = {
+        admin_password = cfg.options.admin_password;
+      };
       settings = {
         server = {
           hostname = "mx1.example.org";
@@ -72,7 +76,7 @@ in
         authentication = {
           fallback-admin = {
             user = "admin";
-            secret = "%{env:ADMIN_SECRET}%";
+            secret = "%{file:/run/credentials/stalwart-mail.service/admin_password}%";
           };
         };
       };
