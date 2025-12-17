@@ -75,7 +75,7 @@ in
         };
         authentication = {
           fallback-admin = {
-            user = "admin";
+            user = "admin_fallback";
             secret = "%{file:/run/credentials/stalwart-mail.service/admin_password}%";
           };
         };
