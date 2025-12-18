@@ -69,7 +69,7 @@ in
           image = "linuxserver/deluge:2.2.0@sha256:448ed924f3479ae175c936c9693b4c4df52ebcb193e05d805c9f16c88112fe45";
           volumes = [
             "${cfg.dataDir}/deluge:/config"
-            "${cfg.downloadDir}:/data"
+            "${cfg.downloadDir}:/downloads"
           ];
           environment = {
             PUID = "0";
