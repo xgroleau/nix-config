@@ -244,8 +244,6 @@ in
                 --o:welcome.enable=false \
                 --o:net.frame_ancestors=${cfg.domain}
               '';
-              username = "admin";
-              password = "admin";
             };
           };
 
