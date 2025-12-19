@@ -100,6 +100,6 @@ in
       };
     };
 
-    system.stateVersion = 5;
+    system.stateVersion = 6;
   };
 }
