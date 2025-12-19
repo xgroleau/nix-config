@@ -44,7 +44,7 @@ in
         imports = [ profiles."macos" ] ++ cfg.extraHomeModules;
         config = {
           home = {
-            stateVersion = "25.05";
+            stateVersion = "25.11";
             homeDirectory = "/Users/${cfg.username}";
           };
         };
