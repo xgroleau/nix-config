@@ -80,7 +80,7 @@ in
           KeyRepeat = 2;
           InitialKeyRepeat = 15;
           AppleKeyboardUIMode = 3;
-          ApplePressAndHoldEnabled = true;
+          ApplePressAndHoldEnabled = false;
           "com.apple.keyboard.fnState" = false;
 
           # Char Substitution

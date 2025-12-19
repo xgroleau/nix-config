@@ -7,6 +7,12 @@
 
 let
   cfg = config.modules.editors.emacs;
+  emacsPackage =  ((pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages (epkgs: [
+            epkgs.editorconfig
+            epkgs.vterm
+            epkgs.xclip
+            epkgs.treesit-grammars.with-all-grammars
+          ]));
 in
 {
 
@@ -27,13 +33,7 @@ in
         with pkgs;
         [
           # Emacs
-          ((emacsPackagesFor emacs).emacsWithPackages (epkgs: [
-            epkgs.editorconfig
-            epkgs.vterm
-            epkgs.xclip
-            epkgs.treesit-grammars.with-all-grammars
-          ]))
-          emacs-lsp-booster
+          emacsPackage
 
           # Font
           nerd-fonts.fira-code
@@ -90,6 +90,7 @@ in
         {
           DOOM_EMACS = "${config.xdg.configHome}/emacs";
           DOOM_EMACS_BIN = "${config.home.sessionVariables.DOOM_EMACS}/bin";
+          EMACS = "${emacsPackage}/bin/emacs";
         }
 
         (lib.mkIf cfg.defaultEditor {
