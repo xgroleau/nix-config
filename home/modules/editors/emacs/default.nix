@@ -7,12 +7,14 @@
 
 let
   cfg = config.modules.editors.emacs;
-  emacsPackage =  ((pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages (epkgs: [
-            epkgs.editorconfig
-            epkgs.vterm
-            epkgs.xclip
-            epkgs.treesit-grammars.with-all-grammars
-          ]));
+  emacsPackage = (
+    (pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages (epkgs: [
+      epkgs.editorconfig
+      epkgs.vterm
+      epkgs.xclip
+      epkgs.treesit-grammars.with-all-grammars
+    ])
+  );
 in
 {
 
