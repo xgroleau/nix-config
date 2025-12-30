@@ -3,9 +3,11 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    flake-utils.url = "github:numtide/flake-utils";
+
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
 
     nix-darwin = {
@@ -13,22 +15,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    stylix = {
-      url = "github:danth/stylix/release-25.11";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
+    authentik-nix.url = "github:nix-community/authentik-nix";
 
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs = {
@@ -36,8 +29,21 @@
         utils.follows = "flake-utils";
       };
     };
+
     disko = {
       url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    direnv-instant = {
+      url = "github:Mic92/direnv-instant";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    flake-utils.url = "github:numtide/flake-utils";
+
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -47,10 +53,12 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
-    authentik-nix.url = "github:nix-community/authentik-nix";
-
-    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
-
+    stylix = {
+      url = "github:danth/stylix/release-25.11";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
   };
 
   outputs =
@@ -58,16 +66,11 @@
       self,
       nixpkgs,
       nixpkgs-unstable,
-      nixos-hardware,
       nix-darwin,
       flake-utils,
       home-manager,
       agenix,
       deploy-rs,
-      disko,
-      authentik-nix,
-      nix-minecraft,
-      jovian-nixos,
       ...
     }:
     let
@@ -79,25 +82,6 @@
           homeDirectory = "/home/${username}";
           stateVersion = "25.11";
         };
-      };
-
-      hmModule = import ./home;
-
-      nixosModule = _: {
-        imports = [
-          ./modules
-          agenix.nixosModules.default
-          disko.nixosModules.disko
-          authentik-nix.nixosModules.default
-          nix-minecraft.nixosModules.minecraft-servers
-          { nixpkgs.overlays = [ inputs.nix-minecraft.overlay ]; }
-        ];
-      };
-
-      nixosUnstableModule = _: {
-        imports = [
-          jovian-nixos.nixosModules.default
-        ];
       };
 
     in
@@ -114,10 +98,8 @@
         }) (nixpkgs.lib.filterAttrs (hostName: hostConfig: hostConfig ? deploy) hosts);
       };
 
-      homeModules.default = hmModule;
-
-      nixosModules.default = import ./modules;
-
+      homeModules.default = import ./home;
+      nixosModules.default = import ./nixos;
       overlays = import ./overlays { inherit inputs; };
 
       darwinConfigurations."Xaviers-MacBook-Pro" = nix-darwin.lib.darwinSystem {
@@ -134,7 +116,7 @@
           pkgs = nixpkgs.legacyPackages.${flake-utils.lib.system.x86_64-linux};
           modules = [
             hmBaseConfig
-            hmModule
+            ./home
             profileConfig
           ];
           extraSpecialArgs = {
@@ -153,16 +135,13 @@
           inherit (hostConfig) system;
           specialArgs = {
             inherit inputs;
+            inherit hostConfig;
           };
           modules = [
+            ./nixos
             ./secrets
             hostConfig.cfg
-            nixosModule
-          ]
-          # unstable modules
-          ++ (nixpkgs.lib.optionals (hostConfig.useUnstable or false) [
-            nixosUnstableModule
-          ]);
+          ];
         }
       ) hosts;
     }

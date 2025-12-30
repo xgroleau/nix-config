@@ -8,7 +8,7 @@
 
 let
   cfg = config.modules.home;
-  profiles = import ../../home/profiles;
+  profiles = import ../../../home/profiles;
 in
 {
 
@@ -31,13 +31,11 @@ in
     };
   };
 
-  imports = [ inputs.home-manager.nixosModules.home-manager ];
-
   config = lib.mkIf cfg.enable {
 
     home-manager = {
       useUserPackages = true;
-      sharedModules = [ ../../home ];
+      sharedModules = [ ../../../home ];
       extraSpecialArgs = {
         inherit inputs;
       };
