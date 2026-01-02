@@ -21,6 +21,7 @@ in
     ./modules/nix
     ./modules/keyboards
     inputs.stylix.homeModules.stylix
+    inputs.direnv-instant.homeModules.direnv-instant
   ];
 
   config = {
