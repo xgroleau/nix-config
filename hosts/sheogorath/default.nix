@@ -244,6 +244,7 @@ in
         environment.BORG_RSH = "ssh -i /etc/ssh/ssh_host_ed25519_key";
         compression = "auto,lzma";
         startAt = "*-*-* 04:00:00";
+        failOnWarnings = false;
         postHook = ''
           if [ $exitStatus -ne 0 ]; then
              echo -e "From: sheogorath@gmx.com\nTo: xavgroleau@gmail.com\nSubject: Borg unraid\n\nFailed to backup borg job unraid with exitcode $exitStatus\n" | ${pkgs.msmtp}/bin/msmtp -a default xavgroleau@gmail.com
