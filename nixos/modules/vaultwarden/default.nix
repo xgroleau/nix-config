@@ -43,7 +43,7 @@ in
       enable = true;
       domain = cfg.domain;
       package = pkgs.unstable.vaultwarden;
-      webVaultPackage = pkgs.unstable.webVaultPackage;
+      webVaultPackage = pkgs.unstable.vaultwarden.webVaultPackage;
       environmentFile = cfg.envFile;
       dbBackend = "sqlite";
       config = {
