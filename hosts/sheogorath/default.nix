@@ -233,7 +233,7 @@ in
       };
 
       vaultwarden = {
-        enable = false;
+        enable = true;
         port = 10800;
         dataDir = "/vault/vaultwarden";
         domain = "vaultwarden.${domain}";
