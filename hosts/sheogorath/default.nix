@@ -77,6 +77,7 @@ in
           "miniflux.${domain}" = "localhost:10500";
           "ntfy.${domain}" = "localhost:10600";
           "paperless.${domain}" = "localhost:10700";
+          "vaultwarden.${domain}" = "localhost:10800";
 
           "opencloud.${domain}" = "localhost:11200";
           "collabora.opencloud.${domain}" = "localhost:11210";
@@ -229,6 +230,14 @@ in
         password = "noobreport";
         openFirewall = true;
         dataDir = "/data/valheim";
+      };
+
+      vaultwarden = {
+        enable = false;
+        port = 10800;
+        dataDir = "/vault/vaultwarden";
+        domain = "vaultwarden.${domain}";
+        envFile = config.age.secrets.vaultwardenEnv.path;
       };
     };
 
