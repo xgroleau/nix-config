@@ -242,6 +242,7 @@ in
                 --o:ssl.ssl_verification=true \
                 --o:ssl.termination=true \
                 --o:welcome.enable=false \
+                --o:home_mode.enable=true \
                 --o:net.frame_ancestors=${cfg.domain}
               '';
             };
