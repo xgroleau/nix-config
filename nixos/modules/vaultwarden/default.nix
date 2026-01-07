@@ -24,9 +24,9 @@ in
       description = "Domain of the vaultwarden instance.";
     };
 
-    dataDir = lib.mkOption {
+    backupDir = lib.mkOption {
       type = types.str;
-      description = "Path to where the data will be stored";
+      description = "Path to where the data will be backedup";
     };
 
     envFile = lib.mkOption {
@@ -54,12 +54,8 @@ in
       };
     };
 
-    # TODO: Remove when https://github.com/NixOS/nixpkgs/issues/289473 fixed
-    systemd.services.backup-vaultwarden.environment.DATA_FOLDER = lib.mkForce cfg.dataDir;
-    services.vaultwarden.config.DATA_FOLDER = lib.mkForce cfg.dataDir;
-
     systemd.tmpfiles.settings.vaultwarden = {
-      "${cfg.dataDir}" = {
+      "${cfg.backupDir}" = {
         d = {
           mode = "0700";
           user = config.users.users.vaultwarden.name;

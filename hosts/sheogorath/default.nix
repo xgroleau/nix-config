@@ -235,7 +235,7 @@ in
       vaultwarden = {
         enable = true;
         port = 10800;
-        dataDir = "/vault/vaultwarden";
+        backupDir = "/data/backups/vaultwarden";
         domain = "vaultwarden.${domain}";
         envFile = config.age.secrets.vaultwardenEnv.path;
       };
