@@ -24,6 +24,13 @@ in
       description = "Domain of the vaultwarden instance.";
     };
 
+    # TODO: Add datadir once we this is completed
+    # https://github.com/NixOS/nixpkgs/issues/289473
+    # dataDir = lib.mkOption {
+    #   type = types.str;
+    #   description = "Path to where the data will be backedup";
+    # };
+
     backupDir = lib.mkOption {
       type = types.str;
       description = "Path to where the data will be backedup";
