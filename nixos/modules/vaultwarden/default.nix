@@ -54,8 +54,9 @@ in
       };
     };
 
-    # TODO: Remove when https://github.com/NixOS/nixpkgs/issues/289473
+    # TODO: Remove when https://github.com/NixOS/nixpkgs/issues/289473 fixed
     systemd.services.backup-vaultwarden.environment.DATA_FOLDER = lib.mkForce cfg.dataDir;
+    services.vaultwarden.config.DATA_FOLDER = lib.mkForce cfg.dataDir;
 
     systemd.tmpfiles.settings.vaultwarden = {
       "${cfg.dataDir}" = {
