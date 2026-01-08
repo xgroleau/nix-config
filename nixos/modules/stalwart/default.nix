@@ -25,7 +25,7 @@ in
         options = {
           admin_password = lib.mkOption {
             type = types.str;
-            description = "Admin credentials file";
+            description = "Admin credentials file, note that it needs to not have a \\n, so open vim as `vim -b`";
           };
         };
 
