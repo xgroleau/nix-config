@@ -66,7 +66,7 @@ in
         mediaserver-deluge = {
           autoStart = true;
           dependsOn = [ "mediaserver-gluetun" ];
-          image = "linuxserver/deluge:2.2.0@sha256:cc70fda59aadce8151289f0f158e6727600e64e2d4a67fa055d331cb755f59b6";
+          image = "linuxserver/deluge:2.2.0@sha256:8e0d495f10f2ee29919f229ae0b32d92f2b7a5d5339fc6f171f19f3f94b9ed56";
           volumes = [
             "${cfg.dataDir}/deluge:/config"
             "${cfg.downloadDir}:/downloads"
