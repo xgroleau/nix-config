@@ -38,6 +38,10 @@ rec {
           shell.alacritty.enable = true;
           keyboards.kanata.enable = true;
         };
+
+        home.packages = with pkgs; [
+          thunderbird
+        ];
       };
     };
 
@@ -61,6 +65,7 @@ rec {
           mattermost-desktop
           slack
           spotify
+          thunderbird
         ];
       };
     };
