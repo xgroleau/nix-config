@@ -1,7 +1,13 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   domain = "xgroleau.com";
+  mkLocalHost = port: "localhost:${toString port}";
   backupFolders = [
     "/vault"
     "/documents"
@@ -68,23 +74,19 @@ in
         dataDir = "/data/caddy";
         email = "xavgroleau@gmail.com";
         reverseProxies = {
-          "authentik.${domain}" = "localhost:9000";
-
-          "firefly.${domain}" = "localhost:12300";
-
-          "immich.${domain}" = "localhost:10300";
-          "mealie.${domain}" = "localhost:10400";
-          "miniflux.${domain}" = "localhost:10500";
-          "ntfy.${domain}" = "localhost:10600";
-          "paperless.${domain}" = "localhost:10700";
-          "vaultwarden.${domain}" = "localhost:10800";
-
-          "opencloud.${domain}" = "localhost:11200";
-          "collabora.opencloud.${domain}" = "localhost:11210";
-          "companion.opencloud.${domain}" = "localhost:11220";
-
-          "jellyfin.${domain}" = "localhost:8096";
-          "jellyseerr.${domain}" = "localhost:5055";
+          "authentik.${domain}" = mkLocalHost config.modules.authentik.port;
+          "firefly.${domain}" = mkLocalHost config.modules.firefly-iii.port;
+          "immich.${domain}" = mkLocalHost config.modules.immich.port;
+          "jellyfin.${domain}" = mkLocalHost (config.services.jellyfin.port or 8096);
+          "jellyseerr.${domain}" = mkLocalHost (config.services.jellyseerr.port or 5055);
+          "mealie.${domain}" = mkLocalHost config.modules.mealie.port;
+          "miniflux.${domain}" = mkLocalHost config.modules.miniflux.port;
+          "ntfy.${domain}" = mkLocalHost config.modules.ntfy.port;
+          "opencloud.${domain}" = mkLocalHost config.modules.opencloud.port;
+          "collabora.opencloud.${domain}" = mkLocalHost config.modules.opencloud.collabora.collaboraPort;
+          "companion.opencloud.${domain}" = mkLocalHost config.modules.opencloud.collabora.companionPort;
+          "paperless.${domain}" = mkLocalHost config.modules.paperlessNgx.port;
+          "vaultwarden.${domain}" = mkLocalHost config.modules.vaultwarden.port;
 
           "overseerr.${domain}" = "unraid:5055"; # Temporary
           "overseerr.sheogorath.duckdns.org" = "unraid:5055"; # Temporary
