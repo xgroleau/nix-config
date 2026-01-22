@@ -24,7 +24,7 @@ jobs:
 
       - name: Make space
         if: startsWith(matrix.system.platform, 'ubuntu')
-        uses: wimpysworld/nothing-but-nix@v6
+        uses: wimpysworld/nothing-but-nix@v8
 
       - name: Install Nix
         uses: DeterminateSystems/determinate-nix-action@v3.14.0
