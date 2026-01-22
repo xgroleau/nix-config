@@ -13,7 +13,7 @@ in
   imports = [ ];
 
   options.modules.ntfy = with lib.types; {
-    enable = lib.mkEnableOption ''Enables the ntfy module to notify services'';
+    enable = lib.mkEnableOption "Enables the ntfy module to notify services";
 
     url = lib.mkOption {
       type = types.str;

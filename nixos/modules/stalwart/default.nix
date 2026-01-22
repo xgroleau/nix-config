@@ -11,7 +11,7 @@ in
 {
 
   options.modules.stalwart = with lib.types; {
-    enable = lib.mkEnableOption ''Enables the ntfy module to notify services'';
+    enable = lib.mkEnableOption "Enables the ntfy module to notify services";
 
     openFirewall = lib.mkEnableOption "Open the required ports in the firewall";
 
