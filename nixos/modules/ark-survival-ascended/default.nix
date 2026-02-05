@@ -66,6 +66,13 @@ in
     };
 
     systemd.tmpfiles.settings.arkSurvivalAscended = {
+      "${cfg.dataDir}" = {
+        d = {
+          mode = "0777";
+          user = "25000";
+          group = "25000";
+        };
+      };
       "${cfg.dataDir}/steam" = {
         d = {
           mode = "0777";
