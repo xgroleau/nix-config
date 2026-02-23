@@ -66,7 +66,9 @@ in
         mediaserver-deluge = {
           autoStart = true;
           dependsOn = [ "mediaserver-gluetun" ];
-          image = "linuxserver/deluge:2.2.0@sha256:5149ae326b3c291d4d30d540bce4658f2f815b19ff43b01bb1f6c5a593ec6b5e";
+          #TODO:  Waiting on https://github.com/linuxserver/docker-deluge/issues/229
+          # image = "linuxserver/deluge:2.2.0@sha256:5149ae326b3c291d4d30d540bce4658f2f815b19ff43b01bb1f6c5a593ec6b5e";
+          image = "linuxserver/deluge:2.2.0-r1-ls364";
           volumes = [
             "${cfg.dataDir}/deluge:/config"
             "${cfg.downloadDir}:/downloads"
