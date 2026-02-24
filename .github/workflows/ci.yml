@@ -27,7 +27,7 @@ jobs:
         uses: wimpysworld/nothing-but-nix@v10
 
       - name: Install Nix
-        uses: DeterminateSystems/determinate-nix-action@v3.16.1
+        uses: DeterminateSystems/determinate-nix-action@v3.16.3
 
       - name: Tailscale
         uses: tailscale/github-action@v4
