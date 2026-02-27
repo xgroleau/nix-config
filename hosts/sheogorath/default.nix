@@ -192,12 +192,12 @@ in
       #   packwizPackUrl = "https://raw.githubusercontent.com/xgroleau/yofo-modpack/refs/tags/v1.0.5/pack.toml";
       # };
 
-      arkSurvivalAscended = {
-        enable = true;
-        port = 7777;
-        openFirewall = true;
-        dataDir = "/data/arkSurvivalAscended";
-      };
+      # arkSurvivalAscended = {
+      #   enable = true;
+      #   port = 7777;
+      #   openFirewall = true;
+      #   dataDir = "/data/arkSurvivalAscended";
+      # };
 
       # palworld = {
       #   enable = true;
