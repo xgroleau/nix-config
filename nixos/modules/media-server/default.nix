@@ -157,6 +157,12 @@ in
         openFirewall = cfg.openFirewall;
       };
 
+      flaresolverr = {
+        enable = true;
+        port = 8191;
+        openFirewall = cfg.openFirewall;
+      };
+
       radarr = {
         inherit group;
         enable = true;
