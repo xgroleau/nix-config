@@ -3,7 +3,7 @@
     "extends": ["config:recommended"],
     "lockFileMaintenance": {
         "enabled": true,
-        "schedule": "at any time"
+        "extends": ["schedule:daily"]
     },
     "nix": {
         "enabled": true
