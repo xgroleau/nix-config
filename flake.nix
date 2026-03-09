@@ -15,7 +15,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    authentik-nix.url = "github:nix-community/authentik-nix?ref=version/2025.12.4";
+    authentik-nix.url = "github:nix-community/authentik-nix?ref=version/2026.2.1";
 
     agenix = {
       url = "github:ryantm/agenix";
