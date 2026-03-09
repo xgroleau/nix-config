@@ -31,11 +31,13 @@
             "description": "Track version-like GitHub refs in flake inputs",
             "managerFilePatterns": ["/(^|/)flake\\.nix$/"],
             "matchStrings": [
-                "url\\s*=\\s*\"github:(?<depName>[^\\s\"/]+/[^\\s\"/?]+)/(?<currentValue>[^\\s\";]*\\d[^\\s\";]*)\";",
-                "url\\s*=\\s*\"github:(?<depName>[^\\s\"/]+/[^\\s\"/?]+)\\?ref=(?<currentValue>[^\\s\";]*\\d[^\\s\";]*)\";"
+                "(?<depName>[\\w-]+)\\.url\\s*=\\s*\"github:(?<packageName>[^\\s\"/]+/[^\\s\"/?]+)/(?<currentValue>[^\\s\";]*\\d[^\\s\";]*)\";",
+                "(?<depName>[\\w-]+)\\.url\\s*=\\s*\"github:(?<packageName>[^\\s\"/]+/[^\\s\"/?]+)\\?ref=(?<currentValue>[^\\s\";]*\\d[^\\s\";]*)\";",
+                "(?<depName>[\\w-]+)\\s*=\\s*\\{\\s*url\\s*=\\s*\"github:(?<packageName>[^\\s\"/]+/[^\\s\"/?]+)/(?<currentValue>[^\\s\";]*\\d[^\\s\";]*)\";",
+                "(?<depName>[\\w-]+)\\s*=\\s*\\{\\s*url\\s*=\\s*\"github:(?<packageName>[^\\s\"/]+/[^\\s\"/?]+)\\?ref=(?<currentValue>[^\\s\";]*\\d[^\\s\";]*)\";"
             ],
             "datasourceTemplate": "git-refs",
-            "packageNameTemplate": "https://github.com/{{depName}}",
+            "packageNameTemplate": "https://github.com/{{{packageName}}}",
             "versioningTemplate": "regex:^(?<prefix>[^0-9]*)(?<major>\\d{2,4})\\.(?<minor>\\d+)(?:\\.(?<patch>\\d+))?$"
         }
     ],
@@ -62,15 +64,26 @@
             "description": "Limit nixpkgs branch upgrades to nixos-* release branches",
             "matchManagers": ["custom.regex"],
             "matchDatasources": ["git-refs"],
-            "matchDepNames": ["nixos/nixpkgs"],
+            "matchDepNames": ["nixpkgs"],
             "allowedVersions": "/^nixos-\\d+\\.\\d+$/"
         },
         {
             "description": "Limit authentik-nix upgrades to version/* tags",
             "matchManagers": ["custom.regex"],
             "matchDatasources": ["git-refs"],
-            "matchDepNames": ["nix-community/authentik-nix"],
+            "matchDepNames": ["authentik-nix"],
             "allowedVersions": "/^version\\/\\d+\\.\\d+\\.\\d+$/"
+        },
+        {
+            "description": "Regenerate flake.lock when a flake input ref changes via regex manager",
+            "matchManagers": ["custom.regex"],
+            "matchFileNames": ["flake.nix"],
+            "matchDatasources": ["git-refs"],
+            "postUpgradeTasks": {
+                "commands": ["nix flake lock --update-input {{depName}}"],
+                "fileFilters": ["flake.lock"],
+                "executionMode": "update"
+            }
         }
     ]
 }
