@@ -25,6 +25,18 @@
                 "\\w*[iI]mage\\s*=\\s*\"(?<depName>[^\\n\\r:]+):(?<currentValue>[^\\n\\r@\"]+)(?:@(?<currentDigest>sha256:[A-Fa-f0-9]+))?\""
             ],
             "datasourceTemplate": "docker"
+        },
+        {
+            "customType": "regex",
+            "description": "Track version-like GitHub refs in flake inputs",
+            "managerFilePatterns": ["/(^|/)flake\\.nix$/"],
+            "matchStrings": [
+                "url\\s*=\\s*\"github:(?<depName>[^\\s\"/]+/[^\\s\"/?]+)/(?<currentValue>[^\\s\";]*\\d[^\\s\";]*)\";",
+                "url\\s*=\\s*\"github:(?<depName>[^\\s\"/]+/[^\\s\"/?]+)\\?ref=(?<currentValue>[^\\s\";]*\\d[^\\s\";]*)\";"
+            ],
+            "datasourceTemplate": "git-refs",
+            "packageNameTemplate": "https://github.com/{{depName}}",
+            "versioningTemplate": "regex:^(?<prefix>[^0-9]*)(?<major>\\d{2,4})\\.(?<minor>\\d+)(?:\\.(?<patch>\\d+))?$"
         }
     ],
     "packageRules": [
@@ -45,6 +57,20 @@
             "matchUpdateTypes": ["digest"],
             "dependencyDashboardApproval": false,
             "automerge": true
+        },
+        {
+            "description": "Limit nixpkgs branch upgrades to nixos-* release branches",
+            "matchManagers": ["custom.regex"],
+            "matchDatasources": ["git-refs"],
+            "matchDepNames": ["nixos/nixpkgs"],
+            "allowedVersions": "/^nixos-\\d+\\.\\d+$/"
+        },
+        {
+            "description": "Limit authentik-nix upgrades to version/* tags",
+            "matchManagers": ["custom.regex"],
+            "matchDatasources": ["git-refs"],
+            "matchDepNames": ["nix-community/authentik-nix"],
+            "allowedVersions": "/^version\\/\\d+\\.\\d+\\.\\d+$/"
         }
     ]
 }
