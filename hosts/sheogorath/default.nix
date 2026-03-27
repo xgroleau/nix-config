@@ -172,6 +172,12 @@ in
         passwordFile = config.age.secrets.gmxPass.path;
       };
 
+      n8n = {
+        enable = true;
+        port = 5678;
+        # dataDir = "/vault/n8n8"; Read only for now?
+      };
+
       ntfy = {
         enable = true;
         url = "https://ntfy.${domain}";
@@ -219,7 +225,7 @@ in
       };
 
       stalwart = {
-        enable = true;
+        enable = false;
         dataDir = "/vault/stalwart";
         options.admin_password = config.age.secrets.stalwartEnv.path;
       };

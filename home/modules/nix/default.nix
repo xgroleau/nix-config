@@ -15,7 +15,9 @@ in
     builders = lib.mkEnableOption "Enable remote builders";
   };
 
-  config = {
+  config = lib.mkIf (cfg.caches || cfg.builders) {
+    nix.package = lib.mkDefault pkgs.nix;
+
     nix.settings = lib.mkMerge [
       (lib.mkIf cfg.caches {
         substituters = [

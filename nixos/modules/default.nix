@@ -25,6 +25,7 @@
     ./miniflux
     ./monitoring
     ./msmtp
+    ./n8n
     ./opencloud
     ./palworld
     ./ssh

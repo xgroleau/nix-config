@@ -35,6 +35,8 @@ in
     };
 
     nix = {
+      # Handled by determinate nix
+      enable = false;
       package = pkgs.nixVersions.latest;
       extraOptions = ''
         experimental-features = nix-command flakes
