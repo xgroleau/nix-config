@@ -29,6 +29,7 @@ in
       enable = true;
       openFirewall = cfg.openFirewall;
       environment.N8N_PORT = cfg.port;
+      environment.N8N_SECURE_COOKIE = false;
     };
 
   };
