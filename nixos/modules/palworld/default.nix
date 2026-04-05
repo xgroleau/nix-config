@@ -8,6 +8,15 @@
 let
   cfg = config.modules.palworld;
   join = builtins.concatStringsSep " ";
+  steamRun = (pkgs.steam.override {
+    extraPreBwrapCmds = ''
+      # Skip host automount trees that bubblewrap cannot remount reliably.
+      ignored+=(/mnt)
+    '';
+  }).run;
+  steamcmd = pkgs.steamcmd.override {
+    "steam-run" = steamRun;
+  };
 in
 {
 
@@ -73,14 +82,14 @@ in
           serviceConfig = {
             TimeoutStartSec = "20min";
             ExecStartPre = join [
-              "${pkgs.steamcmd}/bin/steamcmd"
+              "${steamcmd}/bin/steamcmd"
               "+force_install_dir ${cfg.dataDir}"
               "+login anonymous"
               "+app_update 2394010"
               "+quit"
             ];
             ExecStart = join [
-              "${pkgs.steam-run}/bin/steam-run ${cfg.dataDir}/Pal/Binaries/Linux/PalServer-Linux-Test Pal"
+              "${steamRun}/bin/steam-run ${cfg.dataDir}/Pal/Binaries/Linux/PalServer-Linux-Test Pal"
               "--port ${toString cfg.port}"
               "--players ${toString cfg.maxPlayers}"
               "--useperfthreads"
