@@ -8,15 +8,6 @@
 let
   cfg = config.modules.valheim;
   join = builtins.concatStringsSep " ";
-  steamRun = (pkgs.steam.override {
-    extraPreBwrapCmds = ''
-      # Skip host automount trees that bubblewrap cannot remount reliably.
-      ignored+=(/mnt)
-    '';
-  }).run;
-  steamcmd = pkgs.steamcmd.override {
-    "steam-run" = steamRun;
-  };
 in
 {
 
@@ -89,7 +80,7 @@ in
           serviceConfig = {
             TimeoutStartSec = "20min";
             ExecStartPre = join [
-              "${steamcmd}/bin/steamcmd"
+              "${pkgs.steamcmd}/bin/steamcmd"
               "+force_install_dir ${cfg.dataDir}"
               "+login anonymous"
               "+app_update 896660"
@@ -99,7 +90,7 @@ in
               "+quit"
             ];
             ExecStart = join [
-              "${steamRun}/bin/steam-run ${cfg.dataDir}/valheim_server.x86_64"
+              "${pkgs.steam-run}/bin/steam-run ${cfg.dataDir}/valheim_server.x86_64"
               "-port ${toString cfg.port}"
               "-nographics"
               "-batchmode"
