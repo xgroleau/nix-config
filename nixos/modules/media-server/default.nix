@@ -187,7 +187,7 @@ in
 
       jellyfin = {
         inherit group;
-        enable = false;
+        enable = true;
         openFirewall = cfg.openFirewall;
         dataDir = cfg.dataDir + "/jellyfin";
       };
