@@ -190,6 +190,7 @@ in
         enable = true;
         openFirewall = cfg.openFirewall;
         dataDir = cfg.dataDir + "/jellyfin";
+        package = pkgs.unstable.jellyfin;
       };
 
       jellyseerr = {
