@@ -269,6 +269,8 @@ in
             ];
           };
         };
+
+        systemd.services.promtail.serviceConfig.StateDirectory = "promtail";
       }
 
       (lib.mkIf containerSystemdEnabled {
