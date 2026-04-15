@@ -111,6 +111,10 @@ in
                 name = "nixos-monitoring";
                 rules = [
                   {
+                    record = "node_systemd_unit_state";
+                    expr = "nixos_container_systemd_unit_state";
+                  }
+                  {
                     alert = "NodeDown";
                     expr = "up == 0";
                     for = "5m";
@@ -192,7 +196,25 @@ in
                     expr = ''node_systemd_unit_state{state="failed"} == 1'';
                     for = "5m";
                     annotations = {
-                      summary = "{{$labels.instance}} failed to (re)start the following service {{$labels.name}}.";
+                      summary = "{{$labels.instance}}{{if $labels.container}} container {{$labels.container}}{{end}} failed to (re)start service {{$labels.name}}.";
+                    };
+                  }
+                  {
+                    alert = "NixosContainerSystemDMetricsStale";
+                    expr = ''time() - nixos_container_systemd_scrape_timestamp_seconds > 300'';
+                    for = "5m";
+                    annotations = {
+                      summary = "{{$labels.instance}} has stale container systemd metrics.";
+                      description = "The monitoring target has not published fresh container systemd metrics for more than 5 minutes.";
+                    };
+                  }
+                  {
+                    alert = "NixosContainerDown";
+                    expr = "nixos_container_systemd_up == 0";
+                    for = "5m";
+                    annotations = {
+                      summary = "{{$labels.instance}} cannot query systemd in container {{$labels.container}}.";
+                      description = "The monitoring target cannot query systemd units inside container {{$labels.container}} for more than 5 minutes.";
                     };
                   }
                   {
@@ -276,11 +298,11 @@ in
 
           common = {
             instance_addr = "0.0.0.0";
-            path_prefix = "/tmp/loki";
+            path_prefix = "/var/lib/loki";
             storage = {
               filesystem = {
-                chunks_directory = "/tmp/loki/chunks";
-                rules_directory = "/tmp/loki/rules";
+                chunks_directory = "/var/lib/loki/chunks";
+                rules_directory = "/var/lib/loki/rules";
               };
             };
             replication_factor = 1;
