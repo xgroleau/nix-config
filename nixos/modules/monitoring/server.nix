@@ -201,7 +201,7 @@ in
                   }
                   {
                     alert = "NixosContainerSystemDMetricsStale";
-                    expr = ''time() - nixos_container_systemd_scrape_timestamp_seconds > 300'';
+                    expr = "time() - nixos_container_systemd_scrape_timestamp_seconds > 300";
                     for = "5m";
                     annotations = {
                       summary = "{{$labels.instance}} has stale container systemd metrics.";
