@@ -7,6 +7,7 @@
 
 let
   cfg = config.modules.miniflux;
+  postgresqlPort = 5434;
 in
 {
 
@@ -80,7 +81,7 @@ in
           # db setup port
           systemd.services.miniflux-dbsetup.serviceConfig.Environment = [
             "PGHOST=/run/postgresql"
-            "PGPORT=5434"
+            "PGPORT=${toString postgresqlPort}"
           ];
 
           services = {
@@ -95,20 +96,25 @@ in
                 CLEANUP_FREQUENCY = 48;
 
                 # Change the default port value
-                DATABASE_URL = lib.mkForce "user=miniflux host=/run/postgresql port=5434 dbname=miniflux";
+                DATABASE_URL = lib.mkForce "user=miniflux host=/run/postgresql port=${toString postgresqlPort} dbname=miniflux";
               };
             };
 
             # Some override of the internal services
             postgresql = {
               dataDir = "${cfg.dataDir}/postgres";
-              settings.port = 5434;
+              settings.port = postgresqlPort;
             };
             postgresqlBackup = {
               enable = true;
               backupAll = true;
               location = cfg.backupDir;
             };
+          };
+
+          systemd.services.postgresqlBackup.environment = {
+            PGHOST = "/run/postgresql";
+            PGPORT = toString postgresqlPort;
           };
 
           # Create the sub folder

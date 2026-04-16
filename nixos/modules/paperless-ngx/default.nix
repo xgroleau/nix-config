@@ -7,6 +7,7 @@
 
 let
   cfg = config.modules.paperlessNgx;
+  postgresqlPort = 5433;
 in
 {
 
@@ -120,7 +121,7 @@ in
                 ];
                 PAPERLESS_OCR_LANGUAGE = "fra+eng";
                 PAPERLESS_FILENAME_FORMAT = "{{ created_year }}/{{ document_type }}/{{ correspondent }}/{{ title }}";
-                PAPERLESS_DBPORT = 5433;
+                PAPERLESS_DBPORT = postgresqlPort;
                 PAPERLESS_OCR_USER_ARGS = {
                   optimize = 1;
                   pdfa_image_compression = "lossless";
@@ -131,13 +132,18 @@ in
             # Some override of the internal services
             postgresql = {
               dataDir = "${cfg.dataDir}/postgres";
-              settings.port = 5433;
+              settings.port = postgresqlPort;
             };
             postgresqlBackup = {
               enable = true;
               backupAll = true;
               location = cfg.backupDir;
             };
+          };
+
+          systemd.services.postgresqlBackup.environment = {
+            PGHOST = "/run/postgresql";
+            PGPORT = toString postgresqlPort;
           };
 
           # Create the sub folder
