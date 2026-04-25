@@ -1,38 +1,26 @@
-name: CI
+name: Cache Warm
 on:
-  - push
+  workflow_dispatch:
+  workflow_run:
+    workflows: [ "CI" ]
+    branches: [ main ]
+    types:
+      - completed
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.head_branch || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  check:
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Make space
-        uses: wimpysworld/nothing-but-nix@v10
-
-      - name: Install Nix
-        uses: DeterminateSystems/determinate-nix-action@v3.18.1
-
-      - name: Run ci checks
-        run: |
-          nix flake check
-
   build:
-    needs: check
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
         system:
-          - { name: azura, platform: ubuntu-24.04 }
-          - { name: namira, platform: ubuntu-24.04 }
-          - { name: sheogorath, platform: ubuntu-24.04 }
-          - { name: jyggalag, platform: ubuntu-24.04-arm }
+          - { name: vaermina, platform: ubuntu-24.04, kind: nixos }
+          - { name: Xaviers-MacBook-Pro, platform: macos-14, kind: darwin }
 
     runs-on: ${{ matrix.system.platform }}
     steps:
@@ -61,5 +49,11 @@ jobs:
           token: ${{ secrets.ATTIC_TOKEN }}
 
       - name: Build ${{ matrix.system.name }}
+        if: matrix.system.kind == 'nixos'
         run: |
           nix run nixpkgs#nixos-rebuild -- build --flake .#${{ matrix.system.name }}
+
+      - name: Build (darwin) ${{ matrix.system.name }}
+        if: matrix.system.kind == 'darwin'
+        run: |
+          nix build '.#darwinConfigurations."${{ matrix.system.name }}".system'
