@@ -26,10 +26,12 @@
     # Steam deck experience
     jovian = {
       decky-loader.enable = true;
-      steam.autoStart = true;
-      steam.desktopSession = "plasma";
-      steam.enable = true;
-      steam.user = "console";
+      steam = {
+        autoStart = true;
+        desktopSession = "plasma";
+        enable = true;
+        user = "console";
+      };
     };
 
     # Other services
