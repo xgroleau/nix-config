@@ -5,12 +5,23 @@
   ...
 }:
 
+let
+  autoUpgradeFlake = "github:xgroleau/nix-dotfiles#${config.networking.hostName}";
+in
 {
   imports = [ ./base-config.nix ];
 
   config = {
     programs.ssh.startAgent = true;
     services.gnome.gcr-ssh-agent.enable = false;
+
+    system.autoUpgrade = {
+      enable = true;
+      flake = autoUpgradeFlake;
+      dates = "daily";
+      randomizedDelaySec = "45min";
+      allowReboot = false;
+    };
 
     # flatpak
     xdg.portal = {

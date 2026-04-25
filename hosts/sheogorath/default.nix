@@ -287,12 +287,6 @@ in
       fail2ban.enable = true;
     };
 
-    nix.gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-    };
-
     networking = {
       useDHCP = true;
       hostId = "819a6cd7";

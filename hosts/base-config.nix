@@ -43,6 +43,12 @@ in
           "@wheel"
         ];
       };
+
+      gc = lib.mkDefault {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than 30d";
+      };
     };
 
     time.timeZone = "America/Toronto";
