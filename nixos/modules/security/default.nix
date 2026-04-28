@@ -55,7 +55,6 @@ in
           ];
 
           settings = {
-            lapi.credentialsFile = "/var/lib/crowdsec/local_api_credentials.yaml";
             general.api.server.enable = true;
           };
 
