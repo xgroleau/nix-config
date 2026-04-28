@@ -55,6 +55,9 @@ in
           ];
 
           settings = {
+            # TODO: drop once https://github.com/NixOS/nixpkgs/pull/446307 lands —
+            # module currently fails to evaluate when this is null (the default).
+            lapi.credentialsFile = "/var/lib/crowdsec/state/local_api_credentials.yaml";
             general.api.server.enable = true;
           };
 
