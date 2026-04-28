@@ -33,6 +33,7 @@
     ./tailscale
     ./valheim
     ./paperless-ngx
+    ./security
     ./vaultwarden
     ./xserver
   ];

@@ -11,6 +11,11 @@ in
 {
 
   config = {
+    modules.security = {
+      enable = true;
+      crowdsec.enable = true;
+      fail2ban.enable = true;
+    };
 
     nix = {
       settings.trusted-users = [ "@builder" ];

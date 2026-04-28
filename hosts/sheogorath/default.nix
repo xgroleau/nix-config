@@ -283,8 +283,6 @@ in
         interface = "0.0.0.0";
         user = "root";
       };
-
-      fail2ban.enable = true;
     };
 
     networking = {
