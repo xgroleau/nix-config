@@ -43,7 +43,9 @@ in
       (lib.mkIf cfg.crowdsec.enable {
         services.crowdsec = {
           enable = true;
-          autoUpdateService = true;
+          # TODO: re-enable once https://github.com/NixOS/nixpkgs/pull/446307 lands —
+          # update-hub timer runs as `crowdsec` and can't `systemctl reload crowdsec.service`.
+          autoUpdateService = false;
           openFirewall = false;
 
           hub.collections = [
