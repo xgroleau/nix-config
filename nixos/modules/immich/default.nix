@@ -200,8 +200,9 @@ in
 
       "${cfg.backupDir}" = {
         d = {
-          mode = "0777";
+          mode = "0700";
           user = "root";
+          group = "root";
         };
       };
     };

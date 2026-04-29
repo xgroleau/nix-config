@@ -188,6 +188,16 @@ in
       );
     };
 
+    # Allow to write to backupdir
+    users.users.postgres = lib.mkDefault {
+      isSystemUser = true;
+      group = "postgres";
+      uid = config.ids.uids.postgres;
+    };
+    users.groups.postgres = lib.mkDefault {
+      gid = config.ids.gids.postgres;
+    };
+
     # Create the folder if it doesn't exist
     systemd.tmpfiles.settings.authentik = {
       "${cfg.dataDir}" = {
@@ -206,8 +216,9 @@ in
 
       "${cfg.backupDir}" = {
         d = {
-          user = "root";
-          mode = "777";
+          user = "postgres";
+          group = "postgres";
+          mode = "700";
         };
       };
     };

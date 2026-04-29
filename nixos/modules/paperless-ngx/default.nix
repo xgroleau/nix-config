@@ -180,6 +180,16 @@ in
       groups.paperless = {
         gid = config.ids.gids.paperless;
       };
+
+      # Allow to write to backupdir
+      users.postgres = lib.mkDefault {
+        isSystemUser = true;
+        group = "postgres";
+        uid = config.ids.uids.postgres;
+      };
+      groups.postgres = lib.mkDefault {
+        gid = config.ids.gids.postgres;
+      };
     };
 
     # Create the folder if it doesn't exist
@@ -202,9 +212,9 @@ in
 
       "${cfg.backupDir}" = {
         d = {
-          user = "paperless";
-          group = "paperless";
-          mode = "750";
+          user = "postgres";
+          group = "postgres";
+          mode = "700";
         };
       };
 
