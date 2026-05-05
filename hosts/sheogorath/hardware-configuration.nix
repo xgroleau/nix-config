@@ -52,6 +52,16 @@
   };
 
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      intel-compute-runtime
+      vpl-gpu-rt
+      libva-utils
+      intel-gpu-tools
+    ];
+  };
 
   systemd.services.zfs-mount.enable = false;
   services = {

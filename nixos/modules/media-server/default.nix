@@ -208,6 +208,10 @@ in
       };
     };
 
+    users.users.jellyfin.extraGroups = [
+      "render"
+      "video"
+    ];
     users.groups.media.members = with config.services; [
       bazarr.user
       radarr.user
