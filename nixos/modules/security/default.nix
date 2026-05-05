@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 
@@ -43,8 +44,9 @@ in
       (lib.mkIf cfg.crowdsec.enable {
         services.crowdsec = {
           enable = true;
-          # TODO: re-enable once https://github.com/NixOS/nixpkgs/pull/446307 lands —
-          # update-hub timer runs as `crowdsec` and can't `systemctl reload crowdsec.service`.
+          # TODO: Remove once we have v1.7.7
+          package = pkgs.unstable.crowdsec;
+          # TODO: re-enable once https://github.com/NixOS/nixpkgs/pull/446307 lands
           autoUpdateService = false;
           openFirewall = false;
 
