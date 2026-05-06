@@ -90,7 +90,6 @@ in
           "vaultwarden.${domain}" = mkLocalHost config.modules.vaultwarden.port;
 
           "overseerr.${domain}" = "unraid:5055"; # Temporary
-          "overseerr.sheogorath.duckdns.org" = "unraid:5055"; # Temporary
           "foundry.${domain}" = "unraid:30000"; # Temporary
           "ddbi.${domain}" = "unraid:30001"; # Temporary
         };

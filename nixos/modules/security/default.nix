@@ -104,6 +104,8 @@ in
             log_level = "info";
           };
         };
+
+        users.users.crowdsec.extraGroups = lib.mkIf caddyEnabled [ "caddy" ];
       })
 
       (lib.mkIf cfg.fail2ban.enable {
