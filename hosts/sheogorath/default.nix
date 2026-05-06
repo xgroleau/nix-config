@@ -289,9 +289,14 @@ in
       useDHCP = true;
       hostId = "819a6cd7";
       hostName = "sheogorath";
+
+      # Let's avoid tailscale for unraid as it's local anyway
+      hosts = {
+        "192.168.1.106" = [ "unraid" ];
+      };
+
     };
 
-    # nfs mounts
     fileSystems."/mnt/nfs/shows" = {
       device = "unraid:/mnt/user/shows";
       fsType = "nfs";
