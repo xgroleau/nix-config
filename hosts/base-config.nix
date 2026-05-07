@@ -107,6 +107,8 @@ in
     ];
 
     services.resolved.enable = true;
+    virtualisation.containers.containersConf.settings.network.dns_servers =
+      config.networking.nameservers;
 
     #Increase number of file descriptor
     systemd.services.nix-daemon.serviceConfig.LimitNOFILE = lib.mkForce 32768;
