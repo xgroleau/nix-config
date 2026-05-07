@@ -116,6 +116,8 @@ in
         {
           nixpkgs.pkgs = pkgs;
           imports = [ inputs.authentik-nix.nixosModules.default ];
+
+          networking.useHostResolvConf = true;
           systemd.services.authentik-ldap.serviceConfig.Environment = [
             "AUTHENTIK_LISTEN__LDAP=0.0.0.0:${toString cfg.ldap.ldapPort}"
             "AUTHENTIK_LISTEN__LDAPS=0.0.0.0:${toString cfg.ldap.ldapsPort}"
@@ -170,7 +172,6 @@ in
     };
 
     networking = {
-      useHostResolvConf = true;
       firewall = lib.mkIf cfg.openFirewall (
         lib.mkMerge [
           { allowedTCPPorts = [ cfg.port ]; }

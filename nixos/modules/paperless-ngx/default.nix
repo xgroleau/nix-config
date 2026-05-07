@@ -97,6 +97,7 @@ in
         { ... }:
         {
           nixpkgs.pkgs = pkgs;
+          networking.useHostResolvConf = true;
 
           services = {
             paperless = {
@@ -162,7 +163,6 @@ in
     };
 
     networking = {
-      useHostResolvConf = true;
       firewall = lib.mkIf cfg.openFirewall (
         lib.mkMerge [
           { allowedTCPPorts = [ cfg.port ]; }

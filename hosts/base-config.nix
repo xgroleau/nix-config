@@ -106,6 +106,8 @@ in
       "8.8.4.4"
     ];
 
+    services.resolved.enable = true;
+
     #Increase number of file descriptor
     systemd.services.nix-daemon.serviceConfig.LimitNOFILE = lib.mkForce 32768;
   };

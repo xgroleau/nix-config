@@ -78,6 +78,8 @@ in
         { ... }:
         {
           nixpkgs.pkgs = pkgs;
+          networking.useHostResolvConf = true;
+
           # db setup port
           systemd.services.miniflux-dbsetup.serviceConfig.Environment = [
             "PGHOST=/run/postgresql"
@@ -133,7 +135,6 @@ in
     };
 
     networking = {
-      useHostResolvConf = true;
       firewall = lib.mkIf cfg.openFirewall (
         lib.mkMerge [
           { allowedTCPPorts = [ cfg.port ]; }
