@@ -194,7 +194,7 @@ in
                   {
                     alert = "SystemDUnitDown";
                     expr = ''node_systemd_unit_state{state="failed"} == 1'';
-                    for = "5m";
+                    for = "10m";
                     annotations = {
                       summary = "{{$labels.instance}}{{if $labels.container}} container {{$labels.container}}{{end}} failed to (re)start service {{$labels.name}}.";
                     };
