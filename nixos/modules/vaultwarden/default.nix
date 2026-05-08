@@ -70,5 +70,75 @@ in
         };
       };
     };
+
+    modules.authentik.blueprints.vaultwarden = lib.mkIf config.modules.authentik.enable ''
+      version: 1
+      entries:
+        # Custom scope mapping — overrides the default `email` scope to add
+        # `email_verified: true` claim, which vaultwarden requires.
+        - id: vaultwarden-email-verified-scope
+          model: authentik_providers_oauth2.scopemapping
+          identifiers:
+            name: Email verified scope
+          attrs:
+            name: Email verified scope
+            scope_name: email
+            description: Email as verfied for vaultwarden
+            expression: |
+              return {
+                  "email": request.user.email,
+                  "email_verified": True
+              }
+
+        - id: vaultwarden-provider
+          model: authentik_providers_oauth2.oauth2provider
+          identifiers:
+            name: Vaultwarden
+          attrs:
+            name: Vaultwarden
+            client_type: confidential
+            client_id: !Env VAULTWARDEN_OIDC_CLIENT_ID
+            client_secret: !Env VAULTWARDEN_OIDC_CLIENT_SECRET
+
+            authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-explicit-consent]]
+            invalidation_flow:  !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
+
+            access_code_validity:    minutes=1
+            access_token_validity:   minutes=8
+            refresh_token_validity:  days=30
+            refresh_token_threshold: hours=1
+
+            include_claims_in_id_token: true
+            issuer_mode: per_provider
+            sub_mode: hashed_user_id
+            logout_method: backchannel
+
+            signing_key: !Find [authentik_crypto.certificatekeypair, [name, authentik Self-signed Certificate]]
+
+            redirect_uris:
+              - matching_mode: strict
+                url: "https://${cfg.domain}/identity/connect/oidc-signin"
+
+            property_mappings:
+              - !KeyOf vaultwarden-email-verified-scope
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, openid]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, profile]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, offline_access]]
+
+        - id: vaultwarden-app
+          model: authentik_core.application
+          identifiers:
+            slug: vaultwarden
+          attrs:
+            name: Vaultwarden
+            slug: vaultwarden
+            provider: !KeyOf vaultwarden-provider
+            group: cloud
+            meta_description: A lightweight bitwarden compatible setup
+            meta_launch_url: https://${cfg.domain}
+            meta_icon: https://${cfg.domain}/favicon.ico
+            open_in_new_tab: true
+            policy_engine_mode: any
+    '';
   };
 }

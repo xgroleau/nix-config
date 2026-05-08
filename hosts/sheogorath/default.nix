@@ -116,6 +116,7 @@ in
       immich = {
         enable = true;
         port = 10300;
+        url = "https://immich.${domain}";
         configDir = "/vault/immich";
         dataDir = "/documents/immich";
         backupDir = "/data/backups/immich";
@@ -150,6 +151,7 @@ in
       mealie = {
         enable = true;
         port = 10400;
+        url = "https://mealie.${domain}";
         credentialsFile = config.age.secrets.mealieEnv.path;
         dataDir = "/vault/mealie";
       };

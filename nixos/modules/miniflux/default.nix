@@ -142,6 +142,73 @@ in
       );
     };
 
+    modules.authentik.blueprints.miniflux = lib.mkIf config.modules.authentik.enable ''
+      version: 1
+      entries:
+        - id: miniflux-provider
+          model: authentik_providers_oauth2.oauth2provider
+          identifiers:
+            name: miniflux
+          attrs:
+            name: miniflux
+            client_type: confidential
+            client_id: !Env MINIFLUX_OIDC_CLIENT_ID
+            client_secret: !Env MINIFLUX_OIDC_CLIENT_SECRET
+
+            authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-explicit-consent]]
+            invalidation_flow:  !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
+
+            access_code_validity:    minutes=1
+            access_token_validity:   minutes=5
+            refresh_token_validity:  days=30
+            refresh_token_threshold: seconds=0
+
+            include_claims_in_id_token: true
+            issuer_mode: per_provider
+            sub_mode: hashed_user_id
+            logout_method: backchannel
+
+            signing_key: !Find [authentik_crypto.certificatekeypair, [name, authentik Self-signed Certificate]]
+
+            redirect_uris:
+              - matching_mode: strict
+                url: "${cfg.url}/oauth2/oidc/callback"
+
+            property_mappings:
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, openid]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, email]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, profile]]
+
+        - id: miniflux-app
+          model: authentik_core.application
+          identifiers:
+            slug: miniflux
+          attrs:
+            name: miniflux
+            slug: miniflux
+            provider: !KeyOf miniflux-provider
+            group: cloud
+            meta_description: RSS reader
+            meta_launch_url: ${cfg.url}
+            meta_icon: ${cfg.url}/favicon.ico
+            open_in_new_tab: true
+            policy_engine_mode: any
+
+        # Gate access to the app on membership in the `cloud` group
+        - id: miniflux-cloud-binding
+          model: authentik_policies.policybinding
+          identifiers:
+            target: !KeyOf miniflux-app
+            order: 0
+          attrs:
+            enabled: true
+            order: 0
+            negate: false
+            failure_result: false
+            timeout: 30
+            group: !Find [authentik_core.group, [name, cloud]]
+    '';
+
     # Allow to write to backupdir
     users.users.postgres = lib.mkDefault {
       isSystemUser = true;

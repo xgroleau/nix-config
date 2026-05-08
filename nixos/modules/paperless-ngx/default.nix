@@ -198,9 +198,9 @@ in
         - id: paperless-provider
           model: authentik_providers_oauth2.oauth2provider
           identifiers:
-            name: Provider for Paperless-ngx
+            name: Paperless-ngx
           attrs:
-            name: Provider for Paperless-ngx
+            name: Paperless-ngx
             client_type: confidential
             client_id: !Env PAPERLESS_OIDC_CLIENT_ID
             client_secret: !Env PAPERLESS_OIDC_CLIENT_SECRET
@@ -244,6 +244,20 @@ in
             meta_icon: ${cfg.url}/favicon.ico
             open_in_new_tab: true
             policy_engine_mode: any
+
+        # Gate access to the app on membership in the `cloud` group
+        - id: paperless-cloud-binding
+          model: authentik_policies.policybinding
+          identifiers:
+            target: !KeyOf paperless-app
+            order: 0
+          attrs:
+            enabled: true
+            order: 0
+            negate: false
+            failure_result: false
+            timeout: 30
+            group: !Find [authentik_core.group, [name, cloud]]
     '';
 
     # Create the folder if it doesn't exist

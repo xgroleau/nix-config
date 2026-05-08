@@ -26,6 +26,11 @@ in
       description = "The port to use";
     };
 
+    url = lib.mkOption {
+      type = types.str;
+      description = "Public URL of immich (used for OIDC redirect URIs and launcher).";
+    };
+
     configDir = lib.mkOption {
       type = lib.types.str;
       description = "Path to the config file";
@@ -206,5 +211,79 @@ in
         };
       };
     };
+
+    modules.authentik.blueprints.immich = lib.mkIf config.modules.authentik.enable ''
+      version: 1
+      entries:
+        - id: immich-provider
+          model: authentik_providers_oauth2.oauth2provider
+          identifiers:
+            name: Immich
+          attrs:
+            name: Immich
+            client_type: confidential
+            client_id: !Env IMMICH_OIDC_CLIENT_ID
+            client_secret: !Env IMMICH_OIDC_CLIENT_SECRET
+
+            authentication_flow: !Find [authentik_flows.flow, [slug, default-authentication-flow]]
+            authorization_flow:  !Find [authentik_flows.flow, [slug, default-provider-authorization-explicit-consent]]
+            invalidation_flow:   !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
+
+            access_code_validity:    minutes=1
+            access_token_validity:   minutes=5
+            refresh_token_validity:  days=30
+            refresh_token_threshold: seconds=0
+
+            include_claims_in_id_token: true
+            issuer_mode: per_provider
+            sub_mode: hashed_user_id
+            logout_method: backchannel
+
+            signing_key: !Find [authentik_crypto.certificatekeypair, [name, authentik Self-signed Certificate]]
+
+            redirect_uris:
+              # Mobile app uses a custom URL scheme
+              - matching_mode: strict
+                url: "app.immich:///oauth-callback"
+              - matching_mode: strict
+                url: "${cfg.url}/auth/login"
+              - matching_mode: strict
+                url: "${cfg.url}/oauth-callback"
+
+            property_mappings:
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, openid]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, email]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, profile]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, offline_access]]
+
+        - id: immich-app
+          model: authentik_core.application
+          identifiers:
+            slug: immich
+          attrs:
+            name: Immich
+            slug: immich
+            provider: !KeyOf immich-provider
+            group: cloud
+            meta_description: Cloud backup for photo (e.g. Google Photos)
+            meta_launch_url: ${cfg.url}
+            meta_icon: ${cfg.url}/favicon.ico
+            open_in_new_tab: true
+            policy_engine_mode: any
+
+        # Gate access to the app on membership in the `cloud` group
+        - id: immich-cloud-binding
+          model: authentik_policies.policybinding
+          identifiers:
+            target: !KeyOf immich-app
+            order: 0
+          attrs:
+            enabled: true
+            order: 0
+            negate: false
+            failure_result: false
+            timeout: 30
+            group: !Find [authentik_core.group, [name, cloud]]
+    '';
   };
 }
