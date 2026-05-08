@@ -192,16 +192,8 @@ in
       };
     };
 
-    # Authentik blueprint — declares the OAuth2 provider + application for
-    # paperless. Resolved client credentials come from authentik's env file
-    # (must contain PAPERLESS_OIDC_CLIENT_ID and PAPERLESS_OIDC_CLIENT_SECRET).
-    modules.authentik.blueprints.paperless = ''
+    modules.authentik.blueprints.paperless = lib.mkIf config.modules.authentik.enable ''
       version: 1
-      metadata:
-        name: paperless
-        labels:
-          blueprints.goauthentik.io/instantiate: "true"
-
       entries:
         - id: paperless-provider
           model: authentik_providers_oauth2.oauth2provider
@@ -249,6 +241,7 @@ in
             group: cloud
             meta_description: Document management software
             meta_launch_url: ${cfg.url}
+            meta_icon: ${cfg.url}/favicon.ico
             open_in_new_tab: true
             policy_engine_mode: any
     '';
