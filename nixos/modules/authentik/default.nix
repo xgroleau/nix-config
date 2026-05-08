@@ -9,14 +9,14 @@
 let
   cfg = config.modules.authentik;
 
-  # Render each blueprint string to a YAML file in the nix store, then
-  # collect them in a single directory we can bind-mount into the container.
-  # Authentik scans /blueprints/ recursively at startup and every 60 min.
-  blueprintsDir = pkgs.linkFarm "authentik-blueprints" (
-    lib.mapAttrsToList (name: content: {
-      name = "${name}.yaml";
-      path = pkgs.writeText "${name}.yaml" content;
-    }) cfg.blueprints
+  # Yaml directly to the nix store
+  blueprintsDir = pkgs.runCommand "authentik-blueprints" { } (
+    lib.concatStringsSep "\n" (
+      [ "mkdir -p $out" ]
+      ++ lib.mapAttrsToList (
+        name: content: "install -m 0644 ${pkgs.writeText "${name}.yaml" content} $out/${name}.yaml"
+      ) cfg.blueprints
+    )
   );
 in
 {
@@ -132,16 +132,28 @@ in
           hostPath = cfg.mediaDir;
           isReadOnly = false;
         };
-      }
-      // lib.optionalAttrs (cfg.blueprints != { }) {
-        "/blueprints/local" = {
-          hostPath = "${blueprintsDir}";
-          isReadOnly = true;
-        };
       };
 
       config =
-        { ... }:
+        { config, ... }:
+        let
+          # authentik-nix sets blueprints_dir to ${staticWorkdirDeps}/blueprints
+          # (a nix-store path), which means we can't drop additional blueprint
+          # files there
+          #
+          # TODO: remove once https://github.com/nix-community/authentik-nix/issues/98 is fixed
+          upstreamBlueprints = "${config.services.authentik.authentikComponents.staticWorkdirDeps}/blueprints";
+          mergedBlueprints =
+            if cfg.blueprints == { } then
+              upstreamBlueprints
+            else
+              pkgs.runCommand "authentik-blueprints-merged" { } ''
+                mkdir -p $out/local
+                cp -r ${upstreamBlueprints}/. $out/
+                cp ${blueprintsDir}/*.yaml $out/local/
+                chmod -R u+w $out
+              '';
+        in
         {
           nixpkgs.pkgs = pkgs;
           imports = [ inputs.authentik-nix.nixosModules.default ];
@@ -166,6 +178,7 @@ in
                   metrics = "0.0.0.0:${toString cfg.metricsPort}";
                 };
                 paths.media = "/var/lib/authentik/media";
+                blueprints_dir = lib.mkForce "${mergedBlueprints}";
               };
             };
 
