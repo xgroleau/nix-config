@@ -139,6 +139,20 @@ in
             meta_icon: https://${cfg.domain}/favicon.ico
             open_in_new_tab: true
             policy_engine_mode: any
+
+        # Gate access to the app on membership in the `cloud` group
+        - id: vaultwarden-cloud-binding
+          model: authentik_policies.policybinding
+          identifiers:
+            target: !KeyOf vaultwarden-app
+            order: 0
+          attrs:
+            enabled: true
+            order: 0
+            negate: false
+            failure_result: false
+            timeout: 30
+            group: !Find [authentik_core.group, [name, cloud]]
     '';
   };
 }
