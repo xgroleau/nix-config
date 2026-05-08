@@ -304,5 +304,217 @@ in
         };
       };
     };
+
+    modules.authentik.blueprints.opencloud = lib.mkIf config.modules.authentik.enable ''
+      version: 1
+      entries:
+        - id: opencloud-provider
+          model: authentik_providers_oauth2.oauth2provider
+          identifiers:
+            name: opencloud
+          attrs:
+            name: opencloud
+            client_type: public
+            client_id: !Env OPENCLOUD_OIDC_CLIENT_ID
+
+            authentication_flow: !Find [authentik_flows.flow, [slug, default-authentication-flow]]
+            authorization_flow:  !Find [authentik_flows.flow, [slug, default-provider-authorization-explicit-consent]]
+            invalidation_flow:   !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
+
+            access_code_validity:    minutes=1
+            access_token_validity:   hours=24
+            refresh_token_validity:  days=30
+            refresh_token_threshold: seconds=0
+
+            include_claims_in_id_token: true
+            issuer_mode: per_provider
+            sub_mode: hashed_user_id
+            logout_method: backchannel
+
+            signing_key: !Find [authentik_crypto.certificatekeypair, [name, authentik Self-signed Certificate]]
+
+            redirect_uris:
+              - matching_mode: strict
+                url: "https://${cfg.domain}/"
+              - matching_mode: strict
+                url: "https://${cfg.domain}/oidc-callback.html"
+              - matching_mode: strict
+                url: "https://${cfg.domain}/oidc-silent-redirect.html"
+
+            property_mappings:
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, openid]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, email]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, profile]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, entitlements]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, offline_access]]
+
+            jwt_federation_providers:
+              - !KeyOf opencloud-provider
+              - !KeyOf opencloud-desktop-provider
+              - !KeyOf opencloud-android-provider
+
+        - id: opencloud-desktop-provider
+          model: authentik_providers_oauth2.oauth2provider
+          identifiers:
+            name: opencloud-desktop
+          attrs:
+            name: opencloud-desktop
+            client_type: public
+            client_id: !Env OPENCLOUD_DESKTOP_OIDC_CLIENT_ID
+
+            authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-explicit-consent]]
+            invalidation_flow:  !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
+
+            access_code_validity:    minutes=1
+            access_token_validity:   minutes=5
+            refresh_token_validity:  days=30
+            refresh_token_threshold: seconds=0
+
+            include_claims_in_id_token: true
+            issuer_mode: per_provider
+            sub_mode: hashed_user_id
+            logout_method: backchannel
+
+            signing_key: !Find [authentik_crypto.certificatekeypair, [name, authentik Self-signed Certificate]]
+
+            redirect_uris:
+              - matching_mode: regex
+                url: "http://127.0.0.1.*"
+              - matching_mode: regex
+                url: "http://localhost.*"
+
+            property_mappings:
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, openid]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, email]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, profile]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, entitlements]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, offline_access]]
+
+            jwt_federation_providers:
+              - !KeyOf opencloud-provider
+              - !KeyOf opencloud-desktop-provider
+              - !KeyOf opencloud-android-provider
+
+        - id: opencloud-android-provider
+          model: authentik_providers_oauth2.oauth2provider
+          identifiers:
+            name: opencloud-android
+          attrs:
+            name: opencloud-android
+            client_type: public
+            client_id: !Env OPENCLOUD_ANDROID_OIDC_CLIENT_ID
+
+            authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-explicit-consent]]
+            invalidation_flow:  !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
+
+            access_code_validity:    minutes=1
+            access_token_validity:   minutes=5
+            refresh_token_validity:  days=30
+            refresh_token_threshold: seconds=0
+
+            include_claims_in_id_token: true
+            issuer_mode: per_provider
+            sub_mode: hashed_user_id
+            logout_method: backchannel
+
+            signing_key: !Find [authentik_crypto.certificatekeypair, [name, authentik Self-signed Certificate]]
+
+            redirect_uris:
+              - matching_mode: strict
+                url: "oc://android.opencloud.eu"
+
+            # Note: android omits the entitlements scope (kept consistent with the export)
+            property_mappings:
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, openid]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, email]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, profile]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, offline_access]]
+
+            jwt_federation_providers:
+              - !KeyOf opencloud-provider
+              - !KeyOf opencloud-desktop-provider
+              - !KeyOf opencloud-android-provider
+
+        - id: opencloud-app
+          model: authentik_core.application
+          identifiers:
+            slug: opencloud
+          attrs:
+            name: opencloud
+            slug: opencloud
+            provider: !KeyOf opencloud-provider
+            group: cloud
+            meta_description: Google drive alternative
+            meta_launch_url: https://${cfg.domain}
+            meta_icon: https://${cfg.domain}/favicon.ico
+            open_in_new_tab: true
+            policy_engine_mode: any
+
+        # Slug fixed from "opecloud-desktop" (typo in original) to "opencloud-desktop"
+        - id: opencloud-desktop-app
+          model: authentik_core.application
+          identifiers:
+            slug: opencloud-desktop
+          attrs:
+            name: opencloud-desktop
+            slug: opencloud-desktop
+            provider: !KeyOf opencloud-desktop-provider
+            group: cloud
+            meta_launch_url: blank://blank
+            open_in_new_tab: false
+            policy_engine_mode: any
+
+        - id: opencloud-android-app
+          model: authentik_core.application
+          identifiers:
+            slug: opencloud-android
+          attrs:
+            name: opencloud-android
+            slug: opencloud-android
+            provider: !KeyOf opencloud-android-provider
+            group: cloud
+            meta_launch_url: blank://blank
+            open_in_new_tab: false
+            policy_engine_mode: any
+
+        - id: opencloud-cloud-binding
+          model: authentik_policies.policybinding
+          identifiers:
+            target: !KeyOf opencloud-app
+            order: 0
+          attrs:
+            enabled: true
+            order: 0
+            negate: false
+            failure_result: false
+            timeout: 30
+            group: !Find [authentik_core.group, [name, cloud]]
+
+        - id: opencloud-desktop-cloud-binding
+          model: authentik_policies.policybinding
+          identifiers:
+            target: !KeyOf opencloud-desktop-app
+            order: 0
+          attrs:
+            enabled: true
+            order: 0
+            negate: false
+            failure_result: false
+            timeout: 30
+            group: !Find [authentik_core.group, [name, cloud]]
+
+        - id: opencloud-android-cloud-binding
+          model: authentik_policies.policybinding
+          identifiers:
+            target: !KeyOf opencloud-android-app
+            order: 0
+          attrs:
+            enabled: true
+            order: 0
+            negate: false
+            failure_result: false
+            timeout: 30
+            group: !Find [authentik_core.group, [name, cloud]]
+    '';
   };
 }
