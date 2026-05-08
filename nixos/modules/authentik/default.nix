@@ -231,6 +231,29 @@ in
       );
     };
 
+    modules.authentik.blueprints.groups = ''
+      version: 1
+      entries:
+        - model: authentik_core.group
+          identifiers: { name: user }
+          attrs: { name: user, is_superuser: false }
+        - model: authentik_core.group
+          identifiers: { name: media }
+          attrs: { name: media, is_superuser: false }
+        - model: authentik_core.group
+          identifiers: { name: cloud }
+          attrs: { name: cloud, is_superuser: false }
+        - model: authentik_core.group
+          identifiers: { name: ldapsearch }
+          attrs: { name: ldapsearch, is_superuser: false }
+        - model: authentik_core.group
+          identifiers: { name: guest }
+          attrs: { name: guest, is_superuser: false }
+        - model: authentik_core.group
+          identifiers: { name: admin }
+          attrs: { name: admin, is_superuser: false }
+    '';
+
     # Allow to write to backupdir
     users.users.postgres = lib.mkDefault {
       isSystemUser = true;
