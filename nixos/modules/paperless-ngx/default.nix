@@ -192,6 +192,67 @@ in
       };
     };
 
+    # Authentik blueprint — declares the OAuth2 provider + application for
+    # paperless. Resolved client credentials come from authentik's env file
+    # (must contain PAPERLESS_OIDC_CLIENT_ID and PAPERLESS_OIDC_CLIENT_SECRET).
+    modules.authentik.blueprints.paperless = ''
+      version: 1
+      metadata:
+        name: paperless
+        labels:
+          blueprints.goauthentik.io/instantiate: "true"
+
+      entries:
+        - id: paperless-provider
+          model: authentik_providers_oauth2.oauth2provider
+          identifiers:
+            name: Provider for Paperless-ngx
+          attrs:
+            name: Provider for Paperless-ngx
+            client_type: confidential
+            client_id: !Env PAPERLESS_OIDC_CLIENT_ID
+            client_secret: !Env PAPERLESS_OIDC_CLIENT_SECRET
+
+            authorization_flow: !Find [authentik_flows.flow, [slug, default-provider-authorization-explicit-consent]]
+            invalidation_flow:  !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
+
+            access_code_validity:    minutes=1
+            access_token_validity:   minutes=5
+            refresh_token_validity:  days=30
+            refresh_token_threshold: seconds=0
+
+            include_claims_in_id_token: true
+            issuer_mode: per_provider
+            sub_mode: user_email
+            logout_method: backchannel
+
+            signing_key: !Find [authentik_crypto.certificatekeypair, [name, authentik Self-signed Certificate]]
+
+            redirect_uris:
+              - matching_mode: strict
+                url: "${cfg.url}/accounts/oidc/authentik/login/callback/"
+
+            property_mappings:
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, openid]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, email]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, profile]]
+              - !Find [authentik_providers_oauth2.scopemapping, [scope_name, offline_access]]
+
+        - id: paperless-app
+          model: authentik_core.application
+          identifiers:
+            slug: paperless
+          attrs:
+            name: Paperless-ngx
+            slug: paperless
+            provider: !KeyOf paperless-provider
+            group: cloud
+            meta_description: Document management software
+            meta_launch_url: ${cfg.url}
+            open_in_new_tab: true
+            policy_engine_mode: any
+    '';
+
     # Create the folder if it doesn't exist
     systemd.tmpfiles.settings.paperlessNgx = {
       "${cfg.dataDir}" = {

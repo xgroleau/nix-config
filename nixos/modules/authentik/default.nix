@@ -8,6 +8,16 @@
 
 let
   cfg = config.modules.authentik;
+
+  # Render each blueprint string to a YAML file in the nix store, then
+  # collect them in a single directory we can bind-mount into the container.
+  # Authentik scans /blueprints/ recursively at startup and every 60 min.
+  blueprintsDir = pkgs.linkFarm "authentik-blueprints" (
+    lib.mapAttrsToList (name: content: {
+      name = "${name}.yaml";
+      path = pkgs.writeText "${name}.yaml" content;
+    }) cfg.blueprints
+  );
 in
 {
 
@@ -79,6 +89,19 @@ in
       default = 9300;
       description = "the port for http access";
     };
+
+    blueprints = lib.mkOption {
+      type = types.attrsOf types.lines;
+      default = { };
+      description = ''
+        Authentik blueprints to install. Each entry becomes a YAML file
+        at /blueprints/local/<name>.yaml inside the container, applied on
+        startup and re-applied every 60 minutes.
+
+        Other modules contribute by setting
+          modules.authentik.blueprints.<their-name> = "..."
+      '';
+    };
   };
 
   # We use a contianer so other services can have a different PG version
@@ -108,6 +131,12 @@ in
         "/var/lib/authentik/media" = {
           hostPath = cfg.mediaDir;
           isReadOnly = false;
+        };
+      }
+      // lib.optionalAttrs (cfg.blueprints != { }) {
+        "/blueprints/local" = {
+          hostPath = "${blueprintsDir}";
+          isReadOnly = true;
         };
       };
 
