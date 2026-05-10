@@ -324,7 +324,7 @@ in
             providers:
               - !Find [authentik_providers_ldap.ldapprovider, [name, LDAP]]
             config:
-              authentik_host: ""
+              authentik_host: !Env AUTHENTIK_HOST
               authentik_host_browser: ""
               authentik_host_insecure: false
               log_level: info
