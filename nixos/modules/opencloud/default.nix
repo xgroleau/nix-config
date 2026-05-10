@@ -349,9 +349,9 @@ in
               - !Find [authentik_providers_oauth2.scopemapping, [scope_name, offline_access]]
 
             jwt_federation_providers:
-              - !KeyOf opencloud-provider
-              - !KeyOf opencloud-desktop-provider
-              - !KeyOf opencloud-android-provider
+              - !Find [authentik_providers_oauth2.oauth2provider, [name, opencloud]]
+              - !Find [authentik_providers_oauth2.oauth2provider, [name, opencloud-desktop]]
+              - !Find [authentik_providers_oauth2.oauth2provider, [name, opencloud-android]]
 
         - id: opencloud-desktop-provider
           model: authentik_providers_oauth2.oauth2provider
@@ -391,9 +391,9 @@ in
               - !Find [authentik_providers_oauth2.scopemapping, [scope_name, offline_access]]
 
             jwt_federation_providers:
-              - !KeyOf opencloud-provider
-              - !KeyOf opencloud-desktop-provider
-              - !KeyOf opencloud-android-provider
+              - !Find [authentik_providers_oauth2.oauth2provider, [name, opencloud]]
+              - !Find [authentik_providers_oauth2.oauth2provider, [name, opencloud-desktop]]
+              - !Find [authentik_providers_oauth2.oauth2provider, [name, opencloud-android]]
 
         - id: opencloud-android-provider
           model: authentik_providers_oauth2.oauth2provider
@@ -431,9 +431,9 @@ in
               - !Find [authentik_providers_oauth2.scopemapping, [scope_name, offline_access]]
 
             jwt_federation_providers:
-              - !KeyOf opencloud-provider
-              - !KeyOf opencloud-desktop-provider
-              - !KeyOf opencloud-android-provider
+              - !Find [authentik_providers_oauth2.oauth2provider, [name, opencloud]]
+              - !Find [authentik_providers_oauth2.oauth2provider, [name, opencloud-desktop]]
+              - !Find [authentik_providers_oauth2.oauth2provider, [name, opencloud-android]]
 
         - id: opencloud-app
           model: authentik_core.application
