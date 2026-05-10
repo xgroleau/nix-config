@@ -268,9 +268,9 @@ in
           attrs:
             name: LDAP
             base_dn: DC=ldap,DC=xgroleau,DC=com
-            bind_mode: direct
-            search_mode: direct
-            mfa_support: false
+            bind_mode: cached
+            search_mode: cached
+            mfa_support: true
             uid_start_number: 2000
             gid_start_number: 4000
             authorization_flow: !Find [authentik_flows.flow, [slug, default-authentication-flow]]
@@ -294,8 +294,8 @@ in
             username: ldapservice
           attrs:
             username: ldapservice
-            name: LDAP Service Account
-            type: service_account
+            name: ldapservice
+            type: internal
             is_active: true
             path: users
             groups:
