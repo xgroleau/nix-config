@@ -323,6 +323,25 @@ in
             type: ldap
             providers:
               - !Find [authentik_providers_ldap.ldapprovider, [name, LDAP]]
+            config:
+              authentik_host: ""
+              authentik_host_browser: ""
+              authentik_host_insecure: false
+              log_level: info
+              object_naming_template: "ak-outpost-%(name)s"
+              container_image: null
+              docker_network: null
+              docker_map_ports: true
+              docker_labels: null
+              kubernetes_replicas: 1
+              kubernetes_namespace: default
+              kubernetes_ingress_class_name: null
+              kubernetes_ingress_secret_name: authentik-outpost-tls
+              kubernetes_ingress_annotations: {}
+              kubernetes_service_type: ClusterIP
+              kubernetes_disabled_components: []
+              kubernetes_image_pull_secrets: []
+              kubernetes_json_patches: null
     '';
 
     # Allow to write to backupdir
