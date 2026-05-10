@@ -92,6 +92,8 @@ in
 
     modules.authentik.blueprints.mealie = lib.mkIf config.modules.authentik.enable ''
       version: 1
+      metadata:
+        name: mealie
       entries:
         - id: mealie-provider
           model: authentik_providers_oauth2.oauth2provider

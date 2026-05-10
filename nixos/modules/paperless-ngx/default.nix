@@ -194,6 +194,8 @@ in
 
     modules.authentik.blueprints.paperless = lib.mkIf config.modules.authentik.enable ''
       version: 1
+      metadata:
+        name: paperless
       entries:
         - id: paperless-provider
           model: authentik_providers_oauth2.oauth2provider

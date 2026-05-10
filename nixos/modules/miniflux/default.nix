@@ -144,6 +144,8 @@ in
 
     modules.authentik.blueprints.miniflux = lib.mkIf config.modules.authentik.enable ''
       version: 1
+      metadata:
+        name: miniflux
       entries:
         - id: miniflux-provider
           model: authentik_providers_oauth2.oauth2provider

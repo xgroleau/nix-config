@@ -214,6 +214,8 @@ in
 
     modules.authentik.blueprints.immich = lib.mkIf config.modules.authentik.enable ''
       version: 1
+      metadata:
+        name: immich
       entries:
         - id: immich-provider
           model: authentik_providers_oauth2.oauth2provider

@@ -307,6 +307,8 @@ in
 
     modules.authentik.blueprints.opencloud = lib.mkIf config.modules.authentik.enable ''
       version: 1
+      metadata:
+        name: opencloud
       entries:
         - id: opencloud-provider
           model: authentik_providers_oauth2.oauth2provider

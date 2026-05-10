@@ -233,6 +233,8 @@ in
 
     modules.authentik.blueprints.groups = ''
       version: 1
+      metadata:
+        name: groups
       entries:
         - model: authentik_core.group
           identifiers: { name: user }
@@ -256,6 +258,8 @@ in
 
     modules.authentik.blueprints.ldap = lib.mkIf cfg.ldap.enable ''
       version: 1
+      metadata:
+        name: ldap
       entries:
         - id: ldap-provider
           model: authentik_providers_ldap.ldapprovider

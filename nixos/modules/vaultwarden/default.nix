@@ -73,6 +73,8 @@ in
 
     modules.authentik.blueprints.vaultwarden = lib.mkIf config.modules.authentik.enable ''
       version: 1
+      metadata:
+        name: vaultwarden
       entries:
         # Custom scope mapping — overrides the default `email` scope to add
         # `email_verified: true` claim, which vaultwarden requires.
