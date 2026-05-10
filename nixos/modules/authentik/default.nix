@@ -268,8 +268,8 @@ in
           attrs:
             name: LDAP
             base_dn: DC=ldap,DC=xgroleau,DC=com
-            bind_mode: cached
-            search_mode: cached
+            bind_mode: direct
+            search_mode: direct
             mfa_support: false
             uid_start_number: 2000
             gid_start_number: 4000
