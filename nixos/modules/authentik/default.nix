@@ -270,7 +270,7 @@ in
             base_dn: DC=ldap,DC=xgroleau,DC=com
             bind_mode: cached
             search_mode: cached
-            mfa_support: true
+            mfa_support: false
             uid_start_number: 2000
             gid_start_number: 4000
             authorization_flow: !Find [authentik_flows.flow, [slug, default-authentication-flow]]
@@ -287,19 +287,6 @@ in
             meta_launch_url: blank://blank
             open_in_new_tab: false
             policy_engine_mode: any
-
-        - id: ldap-search-binding
-          model: authentik_policies.policybinding
-          identifiers:
-            target: !KeyOf ldap-app
-            order: 0
-          attrs:
-            enabled: true
-            order: 0
-            negate: false
-            failure_result: false
-            timeout: 30
-            group: !Find [authentik_core.group, [name, ldapsearch]]
 
         - id: ldapservice-user
           model: authentik_core.user
