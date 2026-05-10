@@ -138,7 +138,7 @@ in
             group: cloud
             meta_description: A lightweight bitwarden compatible setup
             meta_launch_url: https://${cfg.domain}
-            meta_icon: https://${cfg.domain}/favicon.ico
+            meta_icon: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/vaultwarden.svg
             open_in_new_tab: true
             policy_engine_mode: any
 

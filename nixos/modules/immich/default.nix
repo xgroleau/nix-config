@@ -269,7 +269,7 @@ in
             group: cloud
             meta_description: Cloud backup for photo (e.g. Google Photos)
             meta_launch_url: ${cfg.url}
-            meta_icon: ${cfg.url}/favicon.ico
+            meta_icon: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/immich.svg
             open_in_new_tab: true
             policy_engine_mode: any
 

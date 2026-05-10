@@ -433,7 +433,7 @@ in
             group: cloud
             meta_description: Google drive alternative
             meta_launch_url: https://${cfg.domain}
-            meta_icon: https://${cfg.domain}/favicon.ico
+            meta_icon: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/opencloud.svg
             open_in_new_tab: true
             policy_engine_mode: any
 

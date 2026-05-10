@@ -235,7 +235,7 @@ in
             group: media
             meta_description: Jellyfin, a streaming platform
             meta_launch_url: https://jellyfin.xgroleau.com
-            meta_icon: application-icons/jellyfin.svg
+            meta_icon: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/jellyfin.svg
             open_in_new_tab: true
             policy_engine_mode: any
 
@@ -262,7 +262,7 @@ in
             group: media
             meta_description: Allows you to make request to add stuff on jellyfin
             meta_launch_url: https://jellyseerr.xgroleau.com
-            meta_icon: application-icons/jellyseerr.svg
+            meta_icon: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/jellyseerr.svg
             open_in_new_tab: true
             policy_engine_mode: any
 

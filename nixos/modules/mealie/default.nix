@@ -144,7 +144,7 @@ in
             group: cloud
             meta_description: Manage food recipes and grocery shopping list
             meta_launch_url: ${cfg.url}
-            meta_icon: ${cfg.url}/favicon.ico
+            meta_icon: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/mealie.svg
             open_in_new_tab: true
             policy_engine_mode: any
 
