@@ -314,6 +314,15 @@ in
             groups:
               - !Find [authentik_core.group, [name, ldapsearch]]
 
+        - id: ldap-outpost
+          model: authentik_outposts.outpost
+          identifiers:
+            name: LDAP
+          attrs:
+            name: LDAP
+            type: ldap
+            providers:
+              - !Find [authentik_providers_ldap.ldapprovider, [name, LDAP]]
     '';
 
     # Allow to write to backupdir
