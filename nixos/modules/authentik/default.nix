@@ -326,7 +326,7 @@ in
             config:
               authentik_host: !Env AUTHENTIK_HOST
               authentik_host_browser: ""
-              authentik_host_insecure: false
+              authentik_host_insecure: !Env [AUTHENTIK_INSECURE, false]
               log_level: info
               object_naming_template: "ak-outpost-%(name)s"
               container_image: null
