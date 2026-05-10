@@ -256,11 +256,123 @@ in
           attrs: { name: admin, is_superuser: false }
     '';
 
+    modules.authentik.blueprints.recovery = ''
+      version: 1
+      metadata:
+        name: recovery
+      entries:
+        - id: recovery-flow
+          model: authentik_flows.flow
+          identifiers:
+            slug: recovery
+          attrs:
+            name: Recovery
+            title: Recovery
+            designation: recovery
+            authentication: none
+            denied_action: message_continue
+            policy_engine_mode: any
+            layout: stacked
+
+        - id: recovery-identification-stage
+          model: authentik_stages_identification.identificationstage
+          identifiers:
+            name: recovery-authentication-identification
+          attrs:
+            name: recovery-authentication-identification
+            case_insensitive_matching: true
+            pretend_user_exists: true
+            show_matched_user: true
+            user_fields:
+              - username
+              - email
+
+        - id: recovery-email-stage
+          model: authentik_stages_email.emailstage
+          identifiers:
+            name: email-password-reset
+          attrs:
+            name: email-password-reset
+            activate_user_on_success: true
+            subject: authentik
+            template: email/password_reset.html
+            timeout: 10
+            token_expiry: minutes=30
+            use_global_settings: true
+
+        - id: recovery-binding-identification
+          model: authentik_flows.flowstagebinding
+          identifiers:
+            target: !KeyOf recovery-flow
+            order: 0
+          attrs:
+            target: !KeyOf recovery-flow
+            stage: !KeyOf recovery-identification-stage
+            order: 0
+            re_evaluate_policies: true
+
+        - id: recovery-binding-email
+          model: authentik_flows.flowstagebinding
+          identifiers:
+            target: !KeyOf recovery-flow
+            order: 10
+          attrs:
+            target: !KeyOf recovery-flow
+            stage: !KeyOf recovery-email-stage
+            order: 10
+            re_evaluate_policies: true
+
+        - id: recovery-binding-prompt
+          model: authentik_flows.flowstagebinding
+          identifiers:
+            target: !KeyOf recovery-flow
+            order: 20
+          attrs:
+            target: !KeyOf recovery-flow
+            stage: !Find [authentik_stages_prompt.promptstage, [name, default-password-change-prompt]]
+            order: 20
+            re_evaluate_policies: true
+
+        - id: recovery-binding-write
+          model: authentik_flows.flowstagebinding
+          identifiers:
+            target: !KeyOf recovery-flow
+            order: 30
+          attrs:
+            target: !KeyOf recovery-flow
+            stage: !Find [authentik_stages_user_write.userwritestage, [name, default-password-change-write]]
+            order: 30
+            re_evaluate_policies: true
+
+        # Wire the recovery flow into the default brand
+        - model: authentik_brands.brand
+          identifiers:
+            domain: authentik-default
+          attrs:
+            flow_recovery: !KeyOf recovery-flow
+
+        # Attach recovery_flow to the default identification stage so the
+        # "Forgot password?" link shows during login (sources are left to
+        # authentik defaults / manual Google config to avoid Google dependency).
+        - model: authentik_stages_identification.identificationstage
+          identifiers:
+            name: default-authentication-identification
+          attrs:
+            recovery_flow: !KeyOf recovery-flow
+    '';
+
     modules.authentik.blueprints.ldap = lib.mkIf cfg.ldap.enable ''
       version: 1
       metadata:
         name: ldap
       entries:
+        - id: ldap-search-role
+          model: authentik_rbac.role
+          identifiers:
+            name: LDAP Search
+          attrs:
+            name: LDAP Search
+
         - id: ldap-provider
           model: authentik_providers_ldap.ldapprovider
           identifiers:
@@ -275,6 +387,9 @@ in
             gid_start_number: 4000
             authorization_flow: !Find [authentik_flows.flow, [slug, default-authentication-flow]]
             invalidation_flow:  !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
+          permissions:
+            - permission: authentik_providers_ldap.search_full_directory
+              role: !KeyOf ldap-search-role
 
         - id: ldap-app
           model: authentik_core.application
@@ -298,8 +413,11 @@ in
             type: internal
             is_active: true
             path: users
+            password: !Env LDAPSERVICE_PASSWORD
             groups:
               - !Find [authentik_core.group, [name, ldapsearch]]
+            roles:
+              - !KeyOf ldap-search-role
 
         - id: ldap-outpost
           model: authentik_outposts.outpost
@@ -329,6 +447,17 @@ in
               kubernetes_disabled_components: []
               kubernetes_image_pull_secrets: []
               kubernetes_json_patches: null
+
+        # Outpost auto-creates a service account named "Outpost LDAP Service-Account"
+        # at outpost creation time. This entry attaches the LDAP Search role to it
+        # after the outpost (and thus its service account) exists.
+        - id: ldap-outpost-user
+          model: authentik_core.user
+          identifiers:
+            name: Outpost LDAP Service-Account
+          attrs:
+            roles:
+              - !KeyOf ldap-search-role
     '';
 
     # Allow to write to backupdir
