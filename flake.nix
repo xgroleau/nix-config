@@ -132,12 +132,12 @@
           pkgsSource = if (hostConfig.useUnstable or false) then nixpkgs-unstable else nixpkgs;
         in
         pkgsSource.lib.nixosSystem {
-          inherit (hostConfig) system;
           specialArgs = {
             inherit inputs;
             inherit hostConfig;
           };
           modules = [
+            { nixpkgs.hostPlatform = hostConfig.system; }
             ./nixos
             ./secrets
             hostConfig.cfg

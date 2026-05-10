@@ -254,6 +254,73 @@ in
           attrs: { name: admin, is_superuser: false }
     '';
 
+    modules.authentik.blueprints.ldap = lib.mkIf cfg.ldap.enable ''
+      version: 1
+      entries:
+        - id: ldap-provider
+          model: authentik_providers_ldap.ldapprovider
+          identifiers:
+            name: LDAP
+          attrs:
+            name: LDAP
+            base_dn: DC=ldap,DC=xgroleau,DC=com
+            bind_mode: cached
+            search_mode: cached
+            mfa_support: true
+            uid_start_number: 2000
+            gid_start_number: 4000
+            authorization_flow: !Find [authentik_flows.flow, [slug, default-authentication-flow]]
+            invalidation_flow:  !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
+
+        - id: ldap-app
+          model: authentik_core.application
+          identifiers:
+            slug: ldap
+          attrs:
+            name: LDAP
+            slug: ldap
+            provider: !KeyOf ldap-provider
+            meta_launch_url: blank://blank
+            open_in_new_tab: false
+            policy_engine_mode: any
+
+        - id: ldap-search-binding
+          model: authentik_policies.policybinding
+          identifiers:
+            target: !KeyOf ldap-app
+            order: 0
+          attrs:
+            enabled: true
+            order: 0
+            negate: false
+            failure_result: false
+            timeout: 30
+            group: !Find [authentik_core.group, [name, ldapsearch]]
+
+        - id: ldapservice-user
+          model: authentik_core.user
+          identifiers:
+            username: ldapservice
+          attrs:
+            username: ldapservice
+            name: LDAP Service Account
+            type: service_account
+            is_active: true
+            path: users
+            groups:
+              - !Find [authentik_core.group, [name, ldapsearch]]
+
+        - id: ldap-outpost
+          model: authentik_outposts.outpost
+          identifiers:
+            name: LDAP
+          attrs:
+            name: LDAP
+            type: ldap
+            providers:
+              - !KeyOf ldap-provider
+    '';
+
     # Allow to write to backupdir
     users.users.postgres = lib.mkDefault {
       isSystemUser = true;
