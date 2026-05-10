@@ -219,5 +219,65 @@ in
       sonarr.user
       jellyfin.user
     ];
+
+    modules.authentik.blueprints.media-server = lib.mkIf config.modules.authentik.enable ''
+      version: 1
+      metadata:
+        name: media-server
+      entries:
+        - id: jellyfin-app
+          model: authentik_core.application
+          identifiers:
+            slug: jellyfin
+          attrs:
+            name: Jellyfin
+            slug: jellyfin
+            group: media
+            meta_description: Jellyfin, a streaming platform
+            meta_launch_url: https://jellyfin.xgroleau.com
+            meta_icon: application-icons/jellyfin.svg
+            open_in_new_tab: true
+            policy_engine_mode: any
+
+        - id: jellyfin-media-binding
+          model: authentik_policies.policybinding
+          identifiers:
+            target: !KeyOf jellyfin-app
+            order: 0
+          attrs:
+            enabled: true
+            order: 0
+            negate: false
+            failure_result: false
+            timeout: 30
+            group: !Find [authentik_core.group, [name, media]]
+
+        - id: jellyseerr-app
+          model: authentik_core.application
+          identifiers:
+            slug: jellyseerr
+          attrs:
+            name: Jellyseerr
+            slug: jellyseerr
+            group: media
+            meta_description: Allows you to make request to add stuff on jellyfin
+            meta_launch_url: https://jellyseerr.xgroleau.com
+            meta_icon: application-icons/jellyseerr.svg
+            open_in_new_tab: true
+            policy_engine_mode: any
+
+        - id: jellyseerr-media-binding
+          model: authentik_policies.policybinding
+          identifiers:
+            target: !KeyOf jellyseerr-app
+            order: 0
+          attrs:
+            enabled: true
+            order: 0
+            negate: false
+            failure_result: false
+            timeout: 30
+            group: !Find [authentik_core.group, [name, media]]
+    '';
   };
 }
