@@ -458,17 +458,6 @@ in
               kubernetes_disabled_components: []
               kubernetes_image_pull_secrets: []
               kubernetes_json_patches: null
-
-        # Outpost auto-creates a service account named "Outpost LDAP Service-Account"
-        # at outpost creation time. This entry attaches the LDAP Search role to it
-        # after the outpost (and thus its service account) exists.
-        - id: ldap-outpost-user
-          model: authentik_core.user
-          identifiers:
-            name: Outpost LDAP Service-Account
-          attrs:
-            roles:
-              - !Find [authentik_rbac.role, [name, LDAP Search]]
     '';
 
     # Allow to write to backupdir
