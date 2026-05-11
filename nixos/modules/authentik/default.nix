@@ -389,7 +389,7 @@ in
             invalidation_flow:  !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
           permissions:
             - permission: authentik_providers_ldap.search_full_directory
-              role: !KeyOf ldap-search-role
+              role: !Find [authentik_rbac.role, [name, LDAP Search]]
 
         - id: ldap-app
           model: authentik_core.application
@@ -417,7 +417,7 @@ in
             groups:
               - !Find [authentik_core.group, [name, ldapsearch]]
             roles:
-              - !KeyOf ldap-search-role
+              - !Find [authentik_rbac.role, [name, LDAP Search]]
 
         - id: ldap-outpost
           model: authentik_outposts.outpost
@@ -457,7 +457,7 @@ in
             name: Outpost LDAP Service-Account
           attrs:
             roles:
-              - !KeyOf ldap-search-role
+              - !Find [authentik_rbac.role, [name, LDAP Search]]
     '';
 
     # Allow to write to backupdir
