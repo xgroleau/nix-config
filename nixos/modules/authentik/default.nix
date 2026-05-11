@@ -366,6 +366,14 @@ in
       metadata:
         name: ldap
       entries:
+        - id: ldapsearch-group
+          model: authentik_core.group
+          identifiers:
+            name: ldapsearch
+          attrs:
+            name: ldapsearch
+            is_superuser: false
+
         - id: ldap-search-role
           model: authentik_rbac.role
           identifiers:
