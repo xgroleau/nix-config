@@ -45,5 +45,25 @@ in
     systemd.settings.Manager = {
       DefaultLimitNOFILE = 32768;
     };
+
+    systemd.services.reboot-if-stale-kernel = {
+      description = "Reboot if booted kernel/initrd differs from latest generation";
+      serviceConfig.Type = "oneshot";
+      script = ''
+        booted=$(readlink /run/booted-system/{initrd,kernel,kernel-modules})
+        built=$(readlink /run/current-system/{initrd,kernel,kernel-modules})
+        if [ "$booted" != "$built" ]; then
+          ${pkgs.systemd}/bin/shutdown -r +1 "Rebooting for kernel update"
+        fi
+      '';
+    };
+    systemd.timers.reboot-if-stale-kernel = {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnCalendar = "*-*-* 05:30:00";
+        Persistent = true;
+        RandomizedDelaySec = "10min";
+      };
+    };
   };
 }
