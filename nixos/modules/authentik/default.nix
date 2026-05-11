@@ -370,8 +370,6 @@ in
           model: authentik_rbac.role
           identifiers:
             name: LDAP Search
-          attrs:
-            name: LDAP Search
 
         - id: ldap-provider
           model: authentik_providers_ldap.ldapprovider
