@@ -352,12 +352,17 @@ in
             flow_recovery: !Find [authentik_flows.flow, [slug, recovery]]
 
         # Attach recovery_flow to the default identification stage so the
-        # "Forgot password?" link shows during login (sources are left to
-        # authentik defaults / manual Google config to avoid Google dependency).
+        # "Forgot password?" link shows during login. user_fields must be
+        # included because the serializer enforces "user_fields OR sources
+        # must be non-empty" on the full record. sources stays out so Google
+        # remains a manual UI step.
         - model: authentik_stages_identification.identificationstage
           identifiers:
             name: default-authentication-identification
           attrs:
+            user_fields:
+              - email
+              - username
             recovery_flow: !Find [authentik_flows.flow, [slug, recovery]]
     '';
 
@@ -437,7 +442,7 @@ in
             config:
               authentik_host: !Env AUTHENTIK_HOST
               authentik_host_browser: ""
-              authentik_host_insecure: !Env [AUTHENTIK_INSECURE, false]
+              authentik_host_insecure: false
               log_level: info
               object_naming_template: "ak-outpost-%(name)s"
               container_image: null
