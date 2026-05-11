@@ -303,32 +303,32 @@ in
         - id: recovery-binding-identification
           model: authentik_flows.flowstagebinding
           identifiers:
-            target: !KeyOf recovery-flow
+            target: !Find [authentik_flows.flow, [slug, recovery]]
             order: 0
           attrs:
-            target: !KeyOf recovery-flow
-            stage: !KeyOf recovery-identification-stage
+            target: !Find [authentik_flows.flow, [slug, recovery]]
+            stage: !Find [authentik_stages_identification.identificationstage, [name, recovery-authentication-identification]]
             order: 0
             re_evaluate_policies: true
 
         - id: recovery-binding-email
           model: authentik_flows.flowstagebinding
           identifiers:
-            target: !KeyOf recovery-flow
+            target: !Find [authentik_flows.flow, [slug, recovery]]
             order: 10
           attrs:
-            target: !KeyOf recovery-flow
-            stage: !KeyOf recovery-email-stage
+            target: !Find [authentik_flows.flow, [slug, recovery]]
+            stage: !Find [authentik_stages_email.emailstage, [name, email-password-reset]]
             order: 10
             re_evaluate_policies: true
 
         - id: recovery-binding-prompt
           model: authentik_flows.flowstagebinding
           identifiers:
-            target: !KeyOf recovery-flow
+            target: !Find [authentik_flows.flow, [slug, recovery]]
             order: 20
           attrs:
-            target: !KeyOf recovery-flow
+            target: !Find [authentik_flows.flow, [slug, recovery]]
             stage: !Find [authentik_stages_prompt.promptstage, [name, default-password-change-prompt]]
             order: 20
             re_evaluate_policies: true
@@ -336,10 +336,10 @@ in
         - id: recovery-binding-write
           model: authentik_flows.flowstagebinding
           identifiers:
-            target: !KeyOf recovery-flow
+            target: !Find [authentik_flows.flow, [slug, recovery]]
             order: 30
           attrs:
-            target: !KeyOf recovery-flow
+            target: !Find [authentik_flows.flow, [slug, recovery]]
             stage: !Find [authentik_stages_user_write.userwritestage, [name, default-password-change-write]]
             order: 30
             re_evaluate_policies: true
@@ -349,7 +349,7 @@ in
           identifiers:
             domain: authentik-default
           attrs:
-            flow_recovery: !KeyOf recovery-flow
+            flow_recovery: !Find [authentik_flows.flow, [slug, recovery]]
 
         # Attach recovery_flow to the default identification stage so the
         # "Forgot password?" link shows during login (sources are left to
@@ -358,7 +358,7 @@ in
           identifiers:
             name: default-authentication-identification
           attrs:
-            recovery_flow: !KeyOf recovery-flow
+            recovery_flow: !Find [authentik_flows.flow, [slug, recovery]]
     '';
 
     modules.authentik.blueprints.ldap = lib.mkIf cfg.ldap.enable ''
