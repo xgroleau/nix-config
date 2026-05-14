@@ -488,11 +488,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778408709,
-        "narHash": "sha256-DKIuvXXnv4+2wN+AY1qGfQ4uv/2dsOluMCCDEJCJ00g=",
+        "lastModified": 1778656613,
+        "narHash": "sha256-msfEuGxdU3hMykJKkkKfE+kT1Us/3o4XLjdOaQLyYHA=",
         "owner": "Jovian-Experiments",
         "repo": "Jovian-NixOS",
-        "rev": "6d7bfd32efacd9a06c36df65f47c875395547977",
+        "rev": "98800e4d24a3be2d5e9fa47e0dc7c5a1982f99a7",
         "type": "github"
       },
       "original": {
@@ -800,11 +800,11 @@
         "tinted-zed": "tinted-zed"
       },
       "locked": {
-        "lastModified": 1778631076,
-        "narHash": "sha256-2qxjOZGrAUldMIlb2r1aru1rHeAqBsfeu0wK9u5Te1o=",
+        "lastModified": 1778680496,
+        "narHash": "sha256-tUq1WASV0dHLv3j18log8V6Esq0NYkXuzNH2EHsstcg=",
         "owner": "danth",
         "repo": "stylix",
-        "rev": "40522200fb9972bcbcb4cbc5bca1171e34be73bf",
+        "rev": "fc5bec2e44678eeaa221d566d447a0257a884737",
         "type": "github"
       },
       "original": {
