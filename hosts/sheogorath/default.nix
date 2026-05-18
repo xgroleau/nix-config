@@ -51,7 +51,6 @@ in
         port = 15000;
         dataDir = "/data/attic";
         environmentFile = config.age.secrets.atticEnv.path;
-        openFirewall = true;
       };
 
       authentik = {
