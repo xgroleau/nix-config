@@ -50,6 +50,9 @@ in
     # Determinate Nix manages /etc/nix/nix.conf, so let's merge
     environment.etc."nix/nix.custom.conf".text = ''
       extra-trusted-users = @admin
+      extra-substituters = https://nix-community.cachix.org?priority=41 https://numtide.cachix.org?priority=42 http://sheogorath:15000/xgroleau?priority=43
+      extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE= xgroleau:+u4lhV57NLS42SO5JWIURSLg2TaIbWUPe5dYXJojfRA=
+      builders = ssh-ng://builder@sheogorath x86_64-linux - 1 2 nixos-test,benchmark,big-parallel,kvm - - ; ssh-ng://builder@jyggalag aarch64-linux - 1 2 - - -
     '';
 
     # Adding all machines to known host
