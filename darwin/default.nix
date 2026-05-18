@@ -47,6 +47,11 @@ in
       settings.trusted-users = [ "@admin" ];
     };
 
+    # Determinate Nix manages /etc/nix/nix.conf, so let's merge
+    environment.etc."nix/nix.custom.conf".text = ''
+      extra-trusted-users = @admin
+    '';
+
     # Adding all machines to known host
     programs.ssh.knownHosts = lib.mapAttrs (name: value: { publicKey = value; }) keys.machines;
 
