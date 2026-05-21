@@ -62,4 +62,7 @@ jobs:
 
       - name: Build ${{ matrix.system.name }}
         run: |
-          nix run nixpkgs#nixos-rebuild -- build --flake .#${{ matrix.system.name }}
+          nix run github:Mic92/nix-fast-build -- \
+            --skip-cached \
+            --no-nom \
+            --flake ".#nixosConfigurations.${{ matrix.system.name }}.config.system.build.toplevel"
