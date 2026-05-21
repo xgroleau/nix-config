@@ -46,6 +46,11 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    users.deterministicIds.vaultwarden = {
+      uid = 970;
+      gid = 970;
+    };
+
     services.vaultwarden = {
       enable = true;
       domain = cfg.domain;

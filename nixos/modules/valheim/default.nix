@@ -62,6 +62,11 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    users.deterministicIds.${cfg.user} = {
+      uid = 965;
+      gid = 965;
+    };
+
     users.users.${cfg.user} = {
       inherit (cfg) group;
       home = cfg.dataDir;

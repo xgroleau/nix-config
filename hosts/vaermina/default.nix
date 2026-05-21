@@ -60,6 +60,11 @@
       ];
     };
 
+    users.deterministicIds.console = {
+      uid = 1001;
+      gid = 1001;
+    };
+
     users.users.console = {
       isNormalUser = true;
       autoSubUidGidRange = false;

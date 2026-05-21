@@ -208,6 +208,17 @@ in
   config = lib.mkIf cfg.enable (
     lib.mkMerge [
       {
+        users.deterministicIds = {
+          promtail = {
+            uid = 992;
+            gid = 992;
+          };
+          node-exporter = {
+            uid = 988;
+            gid = 988;
+          };
+        };
+
         services.prometheus = {
           exporters = {
             node = {

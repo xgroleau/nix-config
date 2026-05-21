@@ -32,6 +32,11 @@ in
       modelsPath = "${cfg.dataDir}/models";
     in
     lib.mkIf cfg.enable {
+      users.deterministicIds.ollama = {
+        uid = 964;
+        gid = 964;
+      };
+
       services.ollama = {
         enable = true;
         port = cfg.port;
