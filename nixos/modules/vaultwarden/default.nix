@@ -53,6 +53,7 @@ in
       webVaultPackage = pkgs.unstable.vaultwarden.webvault;
       environmentFile = cfg.envFile;
       dbBackend = "sqlite";
+      backupDir = cfg.backupDir;
       config = {
         SIGNUPS_ALLOWED = false;
         ROCKET_ADDRESS = "0.0.0.0";
