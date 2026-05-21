@@ -24,7 +24,6 @@ jobs:
           nix flake check
 
   build:
-    needs: check
     strategy:
       fail-fast: false
       matrix:
