@@ -1,19 +1,15 @@
 name: Cache Warm
 on:
-  workflow_dispatch:
-  workflow_run:
-    workflows: [ "CI" ]
+  push:
     branches: [ main ]
-    types:
-      - completed
+  workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.workflow_run.head_branch || github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     continue-on-error: true
     strategy:
       fail-fast: false
