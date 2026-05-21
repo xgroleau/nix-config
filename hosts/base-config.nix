@@ -11,6 +11,8 @@ let
   overlays = import ../overlays { inherit inputs; };
 in
 {
+  imports = [ ./user-ids.nix ];
+
   config = {
 
     # Custom modules
@@ -82,6 +84,7 @@ in
     users = {
       users.xgroleau = {
         isNormalUser = true;
+        autoSubUidGidRange = false;
         shell = pkgs.zsh;
         initialHashedPassword = "$y$j9T$DFrf44y1.2sqKsnal8hCF/$iXy/x/EAGHzU0jEvCs7L/hFu6tSKLQzbcmLL.35nNBA";
         extraGroups = [

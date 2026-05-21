@@ -62,6 +62,7 @@
 
     users.users.console = {
       isNormalUser = true;
+      autoSubUidGidRange = false;
       extraGroups = [
         "adm"
         "audio"
