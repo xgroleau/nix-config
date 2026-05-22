@@ -56,7 +56,10 @@ in
       };
     };
 
-    networking.hostName = hostname;
+    networking = {
+      hostName = hostname;
+      hostId = "5dd3d7e6";
+    };
 
     system.stateVersion = "25.05";
   };
