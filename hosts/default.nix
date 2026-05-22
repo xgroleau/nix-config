@@ -15,6 +15,11 @@
     };
   };
 
+  molag = {
+    system = "x86_64-linux";
+    cfg = import ./molag;
+  };
+
   namira = {
     system = "x86_64-linux";
     cfg = import ./namira;

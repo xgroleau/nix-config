@@ -130,24 +130,37 @@
       ) profiles;
 
       # Generate a nixos configuration for each hosts
-      nixosConfigurations = nixpkgs.lib.mapAttrs (
-        hostName: hostConfig:
-        let
-          pkgsSource = if (hostConfig.useUnstable or false) then nixpkgs-unstable else nixpkgs;
-        in
-        pkgsSource.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs;
-            inherit hostConfig;
+      nixosConfigurations =
+        (nixpkgs.lib.mapAttrs (
+          hostName: hostConfig:
+          let
+            pkgsSource = if (hostConfig.useUnstable or false) then nixpkgs-unstable else nixpkgs;
+          in
+          pkgsSource.lib.nixosSystem {
+            specialArgs = {
+              inherit inputs;
+              inherit hostConfig;
+            };
+            modules = [
+              { nixpkgs.hostPlatform = hostConfig.system; }
+              ./nixos
+              ./secrets
+              hostConfig.cfg
+            ];
+          }
+        ) hosts)
+        // {
+          # Custom live ISO with bcachefs support, kept lean — doesn't
+          # pull in ./nixos custom modules or ./secrets (agenix). Build:
+          #   nix build .#nixosConfigurations.installer.config.system.build.isoImage
+          installer = nixpkgs.lib.nixosSystem {
+            specialArgs = { inherit inputs; };
+            modules = [
+              { nixpkgs.hostPlatform = "x86_64-linux"; }
+              ./hosts/installer
+            ];
           };
-          modules = [
-            { nixpkgs.hostPlatform = hostConfig.system; }
-            ./nixos
-            ./secrets
-            hostConfig.cfg
-          ];
-        }
-      ) hosts;
+        };
     }
 
     # Utils of each system
