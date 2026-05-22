@@ -12,6 +12,12 @@
     #Custom modules
     modules = {
       ssh.enable = true;
+
+      home = {
+        enable = true;
+        username = "xgroleau";
+        profile = "minimal";
+      };
     };
 
     # Support for the controllers and more
