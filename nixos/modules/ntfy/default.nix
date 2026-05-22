@@ -42,6 +42,11 @@ in
 
   # We use a contianer so other services can have a different PG version
   config = lib.mkIf cfg.enable {
+    users.deterministicIds.ntfy-sh = {
+      uid = 969;
+      gid = 969;
+    };
+
     systemd.services.ntfy-sh.serviceConfig.ReadWritePaths = [ cfg.dataDir ];
     services.ntfy-sh = {
       enable = true;

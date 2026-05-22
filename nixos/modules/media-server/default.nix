@@ -37,6 +37,22 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    users.deterministicIds = {
+      jellyfin = {
+        uid = 968;
+        gid = 968;
+      };
+      bazarr = {
+        uid = 967;
+        gid = 967;
+      };
+      readarr = {
+        uid = 966;
+        gid = 966;
+      };
+      media.gid = 951;
+    };
+
     virtualisation.oci-containers = {
       containers = {
         mediaserver-gluetun = {

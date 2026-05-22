@@ -42,6 +42,11 @@ in
       }
 
       (lib.mkIf cfg.crowdsec.enable {
+        users.deterministicIds.crowdsec = {
+          uid = 989;
+          gid = 989;
+        };
+
         services.crowdsec = {
           enable = true;
           # TODO: Remove once we have v1.7.7

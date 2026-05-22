@@ -67,6 +67,17 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    users.deterministicIds = {
+      grafana = {
+        uid = 991;
+        gid = 991;
+      };
+      loki = {
+        uid = 990;
+        gid = 990;
+      };
+    };
+
     services = {
 
       grafana = {

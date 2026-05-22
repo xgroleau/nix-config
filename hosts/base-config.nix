@@ -18,6 +18,37 @@ in
       tailscale.enable = true;
     };
 
+    users.deterministicIds =
+      let
+        uidGid = id: {
+          uid = id;
+          gid = id;
+        };
+      in
+      {
+        xgroleau = uidGid 1000;
+
+        systemd-oom = uidGid 999;
+        systemd-coredump = uidGid 998;
+        sshd = uidGid 997;
+        nscd = uidGid 996;
+        polkituser = uidGid 995;
+        rtkit = uidGid 994;
+        dhcpcd = uidGid 993;
+        fwupd-refresh = uidGid 987;
+        geoclue = uidGid 986;
+        wpa_supplicant = uidGid 985;
+        flatpak = uidGid 984;
+        nm-iodine = uidGid 983;
+        decky = uidGid 982;
+
+        builder.gid = 950;
+        podman.gid = 952;
+        plugdev.gid = 953;
+        lpadmin.gid = 954;
+        uinput.gid = 955;
+      };
+
     nixpkgs = {
       config = {
         allowUnfree = true;
@@ -82,6 +113,7 @@ in
     users = {
       users.xgroleau = {
         isNormalUser = true;
+        autoSubUidGidRange = false;
         shell = pkgs.zsh;
         initialHashedPassword = "$y$j9T$DFrf44y1.2sqKsnal8hCF/$iXy/x/EAGHzU0jEvCs7L/hFu6tSKLQzbcmLL.35nNBA";
         extraGroups = [

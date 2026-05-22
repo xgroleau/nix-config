@@ -12,6 +12,12 @@
     #Custom modules
     modules = {
       ssh.enable = true;
+
+      home = {
+        enable = true;
+        username = "xgroleau";
+        profile = "minimal";
+      };
     };
 
     # Support for the controllers and more
@@ -60,8 +66,14 @@
       ];
     };
 
+    users.deterministicIds.console = {
+      uid = 1001;
+      gid = 1001;
+    };
+
     users.users.console = {
       isNormalUser = true;
+      autoSubUidGidRange = false;
       extraGroups = [
         "adm"
         "audio"

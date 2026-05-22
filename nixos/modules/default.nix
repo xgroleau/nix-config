@@ -31,6 +31,7 @@
     ./ssh
     ./stalwart
     ./tailscale
+    ./users-ids
     ./valheim
     ./paperless-ngx
     ./security
