@@ -239,5 +239,20 @@ in
         };
       };
     };
+
+    preservation.preserveAt."/persist".directories = [
+      {
+        directory = cfg.dataDir;
+        user = "root";
+        group = "root";
+        mode = "0711";
+      }
+      {
+        directory = cfg.backupDir;
+        user = "postgres";
+        group = "postgres";
+        mode = "0700";
+      }
+    ];
   };
 }

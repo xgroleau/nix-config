@@ -19,6 +19,7 @@ in
     inputs.agenix.nixosModules.default
     inputs.disko.nixosModules.disko
     inputs.authentik-nix.nixosModules.default
+    inputs.preservation.nixosModules.preservation
   ]
   ++ lib.optional (hostConfig.useUnstable or false) inputs.jovian-nixos.nixosModules.default;
 
