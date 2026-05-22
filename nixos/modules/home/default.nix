@@ -47,5 +47,14 @@ in
         };
       };
     };
+
+    preservation.preserveAt."/persist".directories = [
+      {
+        directory = config.users.users.${cfg.username}.home;
+        user = cfg.username;
+        group = config.users.users.${cfg.username}.group;
+        mode = "0700";
+      }
+    ];
   };
 }
