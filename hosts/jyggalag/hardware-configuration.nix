@@ -14,6 +14,8 @@
       "xhci_pci"
       "virtio_pci"
       "usbhid"
+      "virtio_scsi"
+      "sd_mod"
     ];
     initrd.kernelModules = [ ];
     kernelModules = [ ];
