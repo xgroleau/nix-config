@@ -366,5 +366,34 @@ in
         };
       };
     };
+
+    preservation.preserveAt."/persist".directories = [
+      {
+        directory = "/var/lib/grafana";
+        user = "grafana";
+        group = "grafana";
+        mode = "0750";
+      }
+      {
+        directory = "/var/lib/${config.services.prometheus.stateDir}";
+        user = "prometheus";
+        group = "prometheus";
+        mode = "0700";
+      }
+      {
+        directory = "/var/lib/loki";
+        user = "loki";
+        group = "loki";
+        mode = "0750";
+      }
+    ]
+    ++ lib.optionals cfg.alerting.enable [
+      {
+        directory = "/var/lib/alertmanager";
+        user = "alertmanager";
+        group = "alertmanager";
+        mode = "0700";
+      }
+    ];
   };
 }

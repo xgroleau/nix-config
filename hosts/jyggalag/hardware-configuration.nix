@@ -20,6 +20,15 @@
     initrd.kernelModules = [ ];
     kernelModules = [ ];
     extraModulePackages = [ ];
+
+    supportedFilesystems = [ "zfs" ];
+    zfs.forceImportRoot = false;
+  };
+
+  services.zfs = {
+    autoSnapshot.enable = true; # honors com.sun:auto-snapshot=true per-dataset
+    autoScrub.enable = true;
+    trim.enable = true;
   };
 
   fileSystems."/" = {

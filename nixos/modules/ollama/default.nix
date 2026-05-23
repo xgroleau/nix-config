@@ -56,5 +56,14 @@ in
           };
         };
       };
+
+      preservation.preserveAt."/persist".directories = [
+        {
+          directory = cfg.dataDir;
+          user = config.services.ollama.user;
+          group = config.services.ollama.group;
+          mode = "0744";
+        }
+      ];
     };
 }

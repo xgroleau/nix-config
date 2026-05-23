@@ -28,6 +28,7 @@
     ./n8n
     ./opencloud
     ./palworld
+    ./preservation
     ./ssh
     ./stalwart
     ./tailscale
