@@ -13,6 +13,8 @@ in
     ../base-config.nix
     ../server-config.nix
     ./hardware-configuration.nix
+    ./disko.nix
+    ./preservation.nix
   ];
 
   config = {
@@ -24,6 +26,10 @@ in
       };
 
       ssh.enable = true;
+
+      tailscale = {
+        authKeyFile = "/persist/secrets/tailscale-authkey";
+      };
 
       secrets.enable = true;
 
@@ -46,13 +52,6 @@ in
       ollama = {
         enable = true;
         port = 11434;
-      };
-    };
-
-    boot = {
-      loader = {
-        systemd-boot.enable = true;
-        efi.canTouchEfiVariables = true;
       };
     };
 

@@ -4,7 +4,7 @@
     disk.main = {
       type = "disk";
 
-      device = "/dev/disk/by-id/scsi-360575053486e4e5aa8e04a411ba18498";
+      device = "/dev/sda";
       content = {
         type = "gpt";
         partitions = {

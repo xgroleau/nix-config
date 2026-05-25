@@ -24,7 +24,10 @@ in
     users = {
       users = {
         root = {
-          openssh.authorizedKeys.keys = [ keys.deployer.ghAction ];
+          openssh.authorizedKeys.keys = [
+            keys.deployer.ghAction
+            # keys.users.xgroleau
+          ];
         };
 
         builder = {

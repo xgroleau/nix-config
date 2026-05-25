@@ -6,6 +6,8 @@
 
 {
   config = lib.mkIf config.preservation.enable {
+    boot.initrd.systemd.enable = true;
+
     services.openssh.hostKeys = [
       {
         type = "ed25519";
@@ -26,6 +28,9 @@
     };
 
     systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
+
+    # Keep journald persistent
+    services.journald.storage = "persistent";
 
     preservation.preserveAt = {
       "/persist" = {
