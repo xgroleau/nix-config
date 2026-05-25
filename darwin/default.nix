@@ -46,20 +46,6 @@ in
       registry.nixpkgsu.flake = inputs.nixpkgs-unstable; # For flake commands
       settings.trusted-users = [ "@admin" ];
 
-      # To sometimes build nixos images (if remote builders are not available)
-      linux-builder = {
-        enable = true;
-        systems = [
-          "aarch64-linux"
-          "x86_64-linux"
-        ];
-        ephemeral = true;
-        maxJobs = 4;
-        config = {
-          virtualisation.darwin-builder.memorySize = 8 * 1024;
-          virtualisation.darwin-builder.diskSize = 40 * 1024;
-        };
-      };
     };
 
     # Determinate Nix manages /etc/nix/nix.conf, so let's merge
