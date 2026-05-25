@@ -1,0 +1,12 @@
+tenancy_ocid     = "ocid1.tenancy.oc1..xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+compartment_ocid = "ocid1.compartment.oc1..aaaaaaaairvmt4nsakakxp7dscwmakyyaer6fpxn5snn6d5peubn2sb35teq"
+region           = "ca-toronto-1"
+oci_profile      = "DEFAULT"
+
+ssh_public_key       = "ssh-ed25519 AAAA... xavier@..."
+ssh_private_key_path = "~/.ssh/id_ed25519"
+
+# Always-Free A1.Flex maximum
+ocpus           = 4
+memory_gbs      = 24
+boot_volume_gbs = 200
