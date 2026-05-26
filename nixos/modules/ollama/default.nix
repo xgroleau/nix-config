@@ -26,44 +26,33 @@ in
     };
   };
 
-  config =
-    let
-      homePath = "${cfg.dataDir}/home";
-      modelsPath = "${cfg.dataDir}/models";
-    in
-    lib.mkIf cfg.enable {
-      users.deterministicIds.ollama = {
-        uid = 964;
-        gid = 964;
-      };
-
-      services.ollama = {
-        enable = true;
-        port = cfg.port;
-        host = "[::]";
-        home = cfg.dataDir;
-        loadModels = [ "llama3.2" ];
-        user = "ollama";
-        group = "ollama";
-      };
-
-      systemd.tmpfiles.settings.ollama = {
-        "${cfg.dataDir}" = {
-          d = {
-            mode = "0744";
-            user = config.services.ollama.user;
-            group = config.services.ollama.group;
-          };
-        };
-      };
-
-      preservation.preserveAt."/persist".directories = [
-        {
-          directory = cfg.dataDir;
-          user = config.services.ollama.user;
-          group = config.services.ollama.group;
-          mode = "0744";
-        }
-      ];
+  config = lib.mkIf cfg.enable {
+    users.deterministicIds.ollama = {
+      uid = 964;
+      gid = 964;
     };
+
+    services.ollama = {
+      enable = true;
+      port = cfg.port;
+      host = "[::]";
+      home = cfg.dataDir;
+      loadModels = [ "llama3.2" ];
+      user = "ollama";
+      group = "ollama";
+    };
+
+    # nixpkgs uses DynamicUser=true + StateDirectory=ollama, so actual
+    # storage lives at /var/lib/private/ollama (with /var/lib/ollama a
+    # symlink). Persist the real path — bind-mounting /var/lib/ollama
+    # itself races with systemd's symlink setup and breaks boot.
+    preservation.preserveAt."/persist".directories = [
+      {
+        directory = "/var/lib/private/ollama";
+        user = config.services.ollama.user;
+        group = config.services.ollama.group;
+        mode = "0700";
+      }
+    ];
+  };
 }

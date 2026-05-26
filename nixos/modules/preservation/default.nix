@@ -32,6 +32,12 @@
     # Keep journald persistent
     services.journald.storage = "persistent";
 
+    systemd.tmpfiles.settings."01-var-lib-private"."/var/lib/private".d = {
+      user = "root";
+      group = "root";
+      mode = "0700";
+    };
+
     preservation.preserveAt = {
       "/persist" = {
         files = [

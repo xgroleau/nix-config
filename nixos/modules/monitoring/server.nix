@@ -389,9 +389,9 @@ in
     ]
     ++ lib.optionals cfg.alerting.enable [
       {
-        directory = "/var/lib/alertmanager";
-        user = "alertmanager";
-        group = "alertmanager";
+        directory = "/var/lib/private/alertmanager";
+        user = "root";
+        group = "root";
         mode = "0700";
       }
     ];
