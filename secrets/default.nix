@@ -25,7 +25,11 @@ let
   # attrset of the secrets
   secrets = {
     alertmanagerEnv.file = ./alertmanager-env.age;
-    grafanaAdminPw.file = ./grafana-admin-pw.age;
+    grafanaAdminPw = {
+      file = ./grafana-admin-pw.age;
+      owner = "grafana";
+      group = "grafana";
+    };
     atticEnv.file = ./attic-env.age;
     authentikEnv.file = ./authentik-env.age;
     gluetunEnv.file = ./gluetun-env.age;

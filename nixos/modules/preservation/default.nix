@@ -22,6 +22,10 @@
 
     age.identityPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
 
+    # Need state for boot
+    fileSystems."/persist".neededForBoot = true;
+    fileSystems."/state".neededForBoot = true;
+
     services.userborn = {
       enable = true;
       passwordFilesLocation = "/persist/etc";
