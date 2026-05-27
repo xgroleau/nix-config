@@ -18,7 +18,7 @@ in
   config = lib.mkIf cfg.enable {
     services.openssh = {
       enable = true;
-      openFirewall = cfg.openFirewall;
+      openFirewall = false;
       settings = {
         PasswordAuthentication = false;
         KbdInteractiveAuthentication = false;
