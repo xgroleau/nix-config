@@ -17,7 +17,7 @@ in
 
   config = lib.mkIf cfg.enable {
     services.openssh = {
-      enable = false;
+      enable = true;
       openFirewall = cfg.openFirewall;
       settings = {
         PasswordAuthentication = false;

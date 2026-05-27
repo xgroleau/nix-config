@@ -25,19 +25,19 @@ jobs:
       - name: NixInstaller
         uses: DeterminateSystems/determinate-nix-action@v3.21.0
 
-      - name: Tailscale
-        uses: tailscale/github-action@v4
-        with:
-          oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TAILSCALE_OAUTH_CLIENT_SECRET }}
-          tags: tag:deploy-rs
-
       - name: Setup Attic cache
         uses: ryanccn/attic-action@v0
         with:
           endpoint: ${{ vars.ATTIC_ENDPOINT }}
           cache: ${{ vars.ATTIC_CACHE }}
           token: ${{ secrets.ATTIC_TOKEN }}
+
+      - name: Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TAILSCALE_OAUTH_CLIENT_SECRET }}
+          tags: tag:deploy-rs
 
       - name: SshKey
         uses: shimataro/ssh-key-action@v2
