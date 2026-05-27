@@ -97,18 +97,25 @@ in
               url = "https://grafana.com/api/dashboards/${toString id}/revisions/${toString rev}/download";
               inherit hash;
             };
+
+          # 13639 hardcodes a ${DS_LOKI} import-input placeholder that file
+          logsApp = pkgs.runCommand "logs-app.json" { } ''
+            sed 's/''${DS_LOKI}/loki/g' ${
+              dashboard 13639 2 "sha256-2dRUkooIA1E0Qshg58N+9duIW25iRruu1oW8ckBUNIA="
+            } > $out
+          '';
           dashboards = pkgs.linkFarm "grafana-dashboards" [
             {
               name = "node-exporter-full.json";
               path = dashboard 1860 45 "sha256-GExrdAnzBtp1Ul13cvcZRbEM6iOtFrXXjEaY6g6lGYY=";
             }
             {
-              name = "loki-stack.json";
-              path = dashboard 14055 5 "sha256-9vfUGpypFNKm9T1F12Cqh8TIl0x3jSwv2fL9HVRLt3o=";
-            }
-            {
               name = "alertmanager.json";
               path = dashboard 9578 4 "sha256-/scCKBKqTjRKKImIrEYLBKGweOUnkx+QsD5yLfdXW5o=";
+            }
+            {
+              name = "logs-app.json";
+              path = logsApp;
             }
           ];
         in
