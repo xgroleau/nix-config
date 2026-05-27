@@ -12,12 +12,13 @@ in
 
   options.modules.ssh = {
     enable = lib.mkEnableOption "Enable a ssh server";
+
   };
 
   config = lib.mkIf cfg.enable {
     services.openssh = {
-      enable = true;
-      openFirewall = true;
+      enable = false;
+      openFirewall = cfg.openFirewall;
       settings = {
         PasswordAuthentication = false;
         KbdInteractiveAuthentication = false;
