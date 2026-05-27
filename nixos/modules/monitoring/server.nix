@@ -24,6 +24,15 @@ in
       description = "Port for the grafana UI";
     };
 
+    grafanaAdminPasswordFile = lib.mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = ''
+        Path to a file containing the Grafana admin password, read via Grafana's
+        file provider. Only applied when the grafana DB is first created.
+      '';
+    };
+
     prometheusPort = lib.mkOption {
       type = types.port;
       default = 13020;
@@ -80,36 +89,68 @@ in
 
     services = {
 
-      grafana = {
-        enable = true;
-        settings = {
-          server = rec {
-            protocol = "http";
-            http_port = cfg.grafanaPort;
-            http_addr = "0.0.0.0";
-            domain = hostname;
-          };
-          analytics.reporting_enabled = false;
-        };
-
-        provision = {
-          enable = true;
-          datasources.settings.datasources = [
+      grafana =
+        let
+          dashboard =
+            id: rev: hash:
+            pkgs.fetchurl {
+              url = "https://grafana.com/api/dashboards/${toString id}/revisions/${toString rev}/download";
+              inherit hash;
+            };
+          dashboards = pkgs.linkFarm "grafana-dashboards" [
             {
-              name = "Prometheus";
-              type = "prometheus";
-              access = "proxy";
-              url = "http://127.0.0.1:${toString cfg.prometheusPort}";
+              name = "node-exporter-full.json";
+              path = dashboard 1860 45 "sha256-GExrdAnzBtp1Ul13cvcZRbEM6iOtFrXXjEaY6g6lGYY=";
             }
             {
-              name = "Loki";
-              type = "loki";
-              access = "proxy";
-              url = "http://127.0.0.1:${toString cfg.lokiPort}";
+              name = "loki-stack.json";
+              path = dashboard 14055 5 "sha256-9vfUGpypFNKm9T1F12Cqh8TIl0x3jSwv2fL9HVRLt3o=";
+            }
+            {
+              name = "alertmanager.json";
+              path = dashboard 9578 4 "sha256-/scCKBKqTjRKKImIrEYLBKGweOUnkx+QsD5yLfdXW5o=";
             }
           ];
+        in
+        {
+          enable = true;
+          settings = {
+            server = rec {
+              protocol = "http";
+              http_port = cfg.grafanaPort;
+              http_addr = "0.0.0.0";
+              domain = hostname;
+            };
+            analytics.reporting_enabled = false;
+            security.admin_password = lib.mkIf (
+              cfg.grafanaAdminPasswordFile != null
+            ) "$__file{${cfg.grafanaAdminPasswordFile}}";
+          };
+
+          provision = {
+            enable = true;
+            datasources.settings.datasources = [
+              {
+                name = "Prometheus";
+                uid = "prometheus";
+                isDefault = true;
+                type = "prometheus";
+                access = "proxy";
+                url = "http://127.0.0.1:${toString cfg.prometheusPort}";
+              }
+              {
+                name = "Loki";
+                uid = "loki";
+                type = "loki";
+                access = "proxy";
+                url = "http://127.0.0.1:${toString cfg.lokiPort}";
+              }
+            ];
+            dashboards.settings.providers = [
+              { options.path = dashboards; }
+            ];
+          };
         };
-      };
 
       prometheus = {
         enable = true;

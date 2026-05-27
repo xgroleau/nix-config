@@ -39,6 +39,7 @@ in
           prometheusScrapeUrls = [ "sheogorath:13150" ];
           prometheusPort = 13020;
           grafanaPort = 13010;
+          grafanaAdminPasswordFile = config.age.secrets.grafanaAdminPw.path;
           lokiPort = 13100;
           alerting = {
             enable = true;
