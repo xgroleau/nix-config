@@ -288,6 +288,16 @@ in
             job_name = "nodes";
             static_configs = [ { targets = cfg.prometheusScrapeUrls; } ];
           }
+          {
+            job_name = "loki";
+            static_configs = [ { targets = [ "127.0.0.1:${toString cfg.lokiPort}" ]; } ];
+          }
+        ]
+        ++ lib.optionals cfg.alerting.enable [
+          {
+            job_name = "alertmanager";
+            static_configs = [ { targets = [ "127.0.0.1:${toString cfg.alerting.port}" ]; } ];
+          }
         ];
 
         # Send notifications to
