@@ -32,7 +32,10 @@ in
       cfg.pythonPackages.black
       cfg.pythonPackages.setuptools
       cfg.pythonPackages.pylint
-      cfg.pythonPackages.pipx
+      #TODO: pipx 1.8.0 tests fail on 26.05 (packaging lib normalizes `name @ url` differently)
+      (cfg.pythonPackages.pipx.overridePythonAttrs (_: {
+        doCheck = false;
+      }))
     ];
     home.sessionVariables = {
       IPYTHONDIR = "${config.xdg.configHome}/ipython";
