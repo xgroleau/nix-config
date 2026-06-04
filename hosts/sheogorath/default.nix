@@ -41,7 +41,7 @@ in
           enable = true;
           lokiAddress = "http://jyggalag:13100/loki/api/v1/push";
           prometheusPort = 13150;
-          promtailPort = 13030;
+          alloyPort = 13030;
           containerSystemd.enable = true;
         };
       };
@@ -79,7 +79,7 @@ in
           "firefly.${domain}" = mkLocalHost config.modules.firefly-iii.port;
           "immich.${domain}" = mkLocalHost config.modules.immich.port;
           "jellyfin.${domain}" = mkLocalHost (config.services.jellyfin.port or 8096);
-          "jellyseerr.${domain}" = mkLocalHost (config.services.jellyseerr.port or 5055);
+          "jellyseerr.${domain}" = mkLocalHost (config.services.seerr.port or 5055);
           "mealie.${domain}" = mkLocalHost config.modules.mealie.port;
           "miniflux.${domain}" = mkLocalHost config.modules.miniflux.port;
           "ntfy.${domain}" = mkLocalHost config.modules.ntfy.port;

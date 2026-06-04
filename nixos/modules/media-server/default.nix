@@ -209,7 +209,7 @@ in
         package = pkgs.unstable.jellyfin;
       };
 
-      jellyseerr = {
+      seerr = {
         enable = true;
         port = 5055;
         openFirewall = cfg.openFirewall;

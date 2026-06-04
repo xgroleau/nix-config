@@ -6,7 +6,6 @@
 }:
 let
   cfg = config.modules.monitoring.target;
-  hostname = config.networking.hostName;
   containerSystemdCfg = cfg.containerSystemd;
   monitoredContainers = builtins.attrNames config.containers;
   containerSystemdEnabled = containerSystemdCfg.enable && monitoredContainers != [ ];
@@ -143,12 +142,12 @@ in
 
   options = {
     modules.monitoring.target = with lib.types; {
-      enable = lib.mkEnableOption "The target that will be monitored. Enables promtail and prometheus node exporter for systemd ";
+      enable = lib.mkEnableOption "The target that will be monitored. Enables Grafana Alloy and prometheus node exporter for systemd ";
 
-      promtailPort = lib.mkOption {
+      alloyPort = lib.mkOption {
         type = types.port;
         default = 13200;
-        description = "HTTP port for the promtail UI";
+        description = "HTTP listen port for the Grafana Alloy UI";
       };
 
       prometheusPort = lib.mkOption {
@@ -170,7 +169,7 @@ in
             linkJournals = lib.mkOption {
               type = types.bool;
               default = true;
-              description = "Link selected container journals into the host journal for promtail scraping.";
+              description = "Link selected container journals into the host journal for Alloy scraping.";
             };
 
             interval = lib.mkOption {
@@ -209,10 +208,6 @@ in
     lib.mkMerge [
       {
         users.deterministicIds = {
-          promtail = {
-            uid = 992;
-            gid = 992;
-          };
           node-exporter = {
             uid = 988;
             gid = 988;
@@ -232,56 +227,13 @@ in
           };
         };
 
-        services.promtail = {
+        services.alloy = {
           enable = true;
-          configuration = {
-            server = {
-              http_listen_port = cfg.promtailPort;
-              grpc_listen_port = 0;
-            };
-            positions = {
-              filename = "/var/lib/promtail/positions.yaml";
-            };
-            clients = [ { url = cfg.lokiAddress; } ];
-            scrape_configs = [
-              {
-                job_name = "journal";
-                journal = {
-                  path = "/var/log/journal";
-                  max_age = "48h";
-                  labels = {
-                    job = "systemd-journal";
-                    host = hostname;
-                  };
-                };
-                relabel_configs = [
-                  {
-                    source_labels = [ "__journal__systemd_unit" ];
-                    target_label = "unit";
-                  }
-                  {
-                    source_labels = [ "__journal__hostname" ];
-                    target_label = "hostname";
-                  }
-                  {
-                    source_labels = [ "__journal__machine_id" ];
-                    target_label = "machine_id";
-                  }
-                  {
-                    source_labels = [ "__journal__machine_name" ];
-                    target_label = "container";
-                  }
-                  {
-                    source_labels = [ "__journal__transport" ];
-                    target_label = "transport";
-                  }
-                ];
-              }
-            ];
-          };
+          extraFlags = [ "--server.http.listen-addr=127.0.0.1:${toString cfg.alloyPort}" ];
         };
 
-        systemd.services.promtail.serviceConfig.StateDirectory = "promtail";
+        environment.etc."alloy/config.alloy".source = ./config.alloy;
+        systemd.services.alloy.environment.LOKI_URL = cfg.lokiAddress;
       }
 
       (lib.mkIf containerSystemdEnabled {

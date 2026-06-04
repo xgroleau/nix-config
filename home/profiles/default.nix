@@ -59,7 +59,6 @@ rec {
         };
 
         home.packages = with pkgs; [
-          bitwarden-desktop
           element-desktop
           beeper
           mattermost-desktop

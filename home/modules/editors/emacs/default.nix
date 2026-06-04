@@ -60,7 +60,7 @@ in
           swiftformat
 
           nixfmt-tree
-          nixfmt-rfc-style
+          nixfmt
 
           pyright
           ruff

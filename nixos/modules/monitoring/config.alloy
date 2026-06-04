@@ -1,0 +1,41 @@
+// Ship the systemd journal to Loki.
+// LOKI_URL is injected by the NixOS `modules.monitoring.target` module.
+
+loki.write "default" {
+  endpoint {
+    url = sys.env("LOKI_URL")
+  }
+}
+
+loki.relabel "journal" {
+  forward_to = []
+
+  rule {
+    source_labels = ["__journal__systemd_unit"]
+    target_label  = "unit"
+  }
+  rule {
+    source_labels = ["__journal__hostname"]
+    target_label  = "hostname"
+  }
+  rule {
+    source_labels = ["__journal__machine_id"]
+    target_label  = "machine_id"
+  }
+  rule {
+    source_labels = ["__journal__machine_name"]
+    target_label  = "container"
+  }
+  rule {
+    source_labels = ["__journal__transport"]
+    target_label  = "transport"
+  }
+}
+
+loki.source.journal "journal" {
+  path          = "/var/log/journal"
+  max_age       = "48h"
+  relabel_rules = loki.relabel.journal.rules
+  forward_to    = [loki.write.default.receiver]
+  labels        = { job = "systemd-journal", host = constants.hostname }
+}
