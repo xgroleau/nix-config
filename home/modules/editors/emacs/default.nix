@@ -71,15 +71,15 @@ in
           ocamlPackages.ocamlformat
           ocamlPackages.ocp-indent
 
-          nodePackages.nodejs
+          nodejs
 
           html-tidy
-          nodePackages.stylelint
-          nodePackages.js-beautify
+          stylelint
+          js-beautify
 
-          nodePackages.textlint
-          nodePackages.prettier
-          nodePackages.markdownlint-cli
+          textlint
+          prettier
+          markdownlint-cli
           multimarkdown
           ispell
         ]
