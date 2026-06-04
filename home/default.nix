@@ -31,6 +31,8 @@ in
 
     stylix = {
       enable = false;
+      autoEnable = true;
+      targets.firefox.enable = false;
       image = ./modules/desktop/i3/config/wallpapers/firewatch1.jpg;
       polarity = "dark";
       base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-hard.yaml";
@@ -39,7 +41,6 @@ in
           package = pkgs.nerd-fonts.fira-code;
           name = "FiraCode Nerd Font";
         };
-
         serif = config.stylix.fonts.monospace;
         sansSerif = config.stylix.fonts.monospace;
         emoji = config.stylix.fonts.monospace;
@@ -50,9 +51,9 @@ in
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks."*" = {
-        addKeysToAgent = "yes";
-        userKnownHostsFile = "~/.ssh/known_hosts ~/.ssh/hm_known_hosts";
+      settings."*" = {
+        AddKeysToAgent = "yes";
+        UserKnownHostsFile = "~/.ssh/known_hosts ~/.ssh/hm_known_hosts";
       };
     };
 

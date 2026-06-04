@@ -43,7 +43,7 @@ in
       users.${cfg.username} = {
         imports = [ profiles.${cfg.profile} ];
         config = {
-          home.stateVersion = config.system.stateVersion;
+          home.stateVersion = "26.05";
         };
       };
     };

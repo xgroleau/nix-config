@@ -16,7 +16,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    xdg.configFile.zsh.source = ./config;
+    xdg.configFile.zsh = {
+      source = ./config;
+      recursive = true;
+    };
     programs.zsh = {
       enable = true;
       envExtra = "source ${config.xdg.configHome}/zsh/zshenv";

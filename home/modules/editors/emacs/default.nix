@@ -49,8 +49,15 @@ in
           ripgrep
 
           # lang
+          parinfer-rust
 
           rustup
+
+          swiftPackages.sourcekit-lsp
+
+          terraform-ls
+
+          swiftformat
 
           nixfmt-tree
           nixfmt-rfc-style
