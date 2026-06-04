@@ -49,8 +49,6 @@ in
 
         services.crowdsec = {
           enable = true;
-          # TODO: Remove once we have v1.7.7
-          package = pkgs.unstable.crowdsec;
           # TODO: re-enable once https://github.com/NixOS/nixpkgs/pull/446307 lands
           autoUpdateService = false;
           openFirewall = false;
