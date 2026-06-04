@@ -43,6 +43,10 @@ with keys;
     users.xgroleau
     machines.jyggalag
   ];
+  "grafana-secret-key.age".publicKeys = [
+    users.xgroleau
+    machines.jyggalag
+  ];
   "immich-env.age".publicKeys = [
     users.xgroleau
     machines.sheogorath

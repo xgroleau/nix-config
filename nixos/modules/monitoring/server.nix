@@ -33,6 +33,14 @@ in
       '';
     };
 
+    grafanaSecretKeyFile = lib.mkOption {
+      type = types.nullOr types.str;
+      description = ''
+        Path to a file containing Grafana's secret_key (used to encrypt secrets
+        stored in the database), read via Grafana's file provider.
+      '';
+    };
+
     prometheusPort = lib.mkOption {
       type = types.port;
       default = 13020;
@@ -132,6 +140,7 @@ in
             security.admin_password = lib.mkIf (
               cfg.grafanaAdminPasswordFile != null
             ) "$__file{${cfg.grafanaAdminPasswordFile}}";
+            security.secret_key = "$__file{${cfg.grafanaSecretKeyFile}}";
           };
 
           provision = {

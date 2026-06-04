@@ -30,6 +30,11 @@ let
       owner = "grafana";
       group = "grafana";
     };
+    grafanaSecretKey = {
+      file = ./grafana-secret-key.age;
+      owner = "grafana";
+      group = "grafana";
+    };
     atticEnv.file = ./attic-env.age;
     authentikEnv.file = ./authentik-env.age;
     gluetunEnv.file = ./gluetun-env.age;
