@@ -93,73 +93,71 @@ in
         };
       };
 
-      config =
-        { ... }:
-        {
-          nixpkgs.pkgs = pkgs;
-          networking.useHostResolvConf = true;
+      config = _: {
+        nixpkgs.pkgs = pkgs;
+        networking.useHostResolvConf = true;
 
-          services = {
-            paperless = {
-              enable = true;
-              address = "::";
-              port = cfg.port;
-              environmentFile = cfg.envFile;
-              dataDir = cfg.dataDir;
-              mediaDir = cfg.mediaDir;
-              consumptionDir = cfg.consumptionDir;
+        services = {
+          paperless = {
+            enable = true;
+            address = "::";
+            port = cfg.port;
+            environmentFile = cfg.envFile;
+            dataDir = cfg.dataDir;
+            mediaDir = cfg.mediaDir;
+            consumptionDir = cfg.consumptionDir;
 
-              consumptionDirIsPublic = true;
-              database.createLocally = true;
-              configureTika = true;
+            consumptionDirIsPublic = true;
+            database.createLocally = true;
+            configureTika = true;
 
-              settings = {
-                PAPERLESS_URL = cfg.url;
-                PAPERLESS_APPS = "allauth.socialaccount.providers.openid_connect";
-                PAPERLESS_CONSUMER_IGNORE_PATTERN = [
-                  ".DS_STORE/*"
-                  "desktop.ini"
-                ];
-                PAPERLESS_OCR_LANGUAGE = "fra+eng";
-                PAPERLESS_FILENAME_FORMAT = "{{ created_year }}/{{ document_type }}/{{ correspondent }}/{{ title }}";
-                PAPERLESS_DBPORT = postgresqlPort;
-                PAPERLESS_OCR_USER_ARGS = {
-                  optimize = 1;
-                  pdfa_image_compression = "lossless";
-                };
-              };
-            };
-
-            # Some override of the internal services
-            postgresql = {
-              dataDir = "${cfg.dataDir}/postgres";
-              settings.port = postgresqlPort;
-            };
-            postgresqlBackup = {
-              enable = true;
-              backupAll = true;
-              location = cfg.backupDir;
-            };
-          };
-
-          systemd.services.postgresqlBackup.environment = {
-            PGHOST = "/run/postgresql";
-            PGPORT = toString postgresqlPort;
-          };
-
-          # Create the sub folder
-          systemd.tmpfiles.settings.paperlessNgx = {
-            "${cfg.dataDir}/postgres" = {
-              d = {
-                user = "postgres";
-                group = "postgres";
-                mode = "750";
+            settings = {
+              PAPERLESS_URL = cfg.url;
+              PAPERLESS_APPS = "allauth.socialaccount.providers.openid_connect";
+              PAPERLESS_CONSUMER_IGNORE_PATTERN = [
+                ".DS_STORE/*"
+                "desktop.ini"
+              ];
+              PAPERLESS_OCR_LANGUAGE = "fra+eng";
+              PAPERLESS_FILENAME_FORMAT = "{{ created_year }}/{{ document_type }}/{{ correspondent }}/{{ title }}";
+              PAPERLESS_DBPORT = postgresqlPort;
+              PAPERLESS_OCR_USER_ARGS = {
+                optimize = 1;
+                pdfa_image_compression = "lossless";
               };
             };
           };
 
-          system.stateVersion = "23.11";
+          # Some override of the internal services
+          postgresql = {
+            dataDir = "${cfg.dataDir}/postgres";
+            settings.port = postgresqlPort;
+          };
+          postgresqlBackup = {
+            enable = true;
+            backupAll = true;
+            location = cfg.backupDir;
+          };
         };
+
+        systemd.services.postgresqlBackup.environment = {
+          PGHOST = "/run/postgresql";
+          PGPORT = toString postgresqlPort;
+        };
+
+        # Create the sub folder
+        systemd.tmpfiles.settings.paperlessNgx = {
+          "${cfg.dataDir}/postgres" = {
+            d = {
+              user = "postgres";
+              group = "postgres";
+              mode = "750";
+            };
+          };
+        };
+
+        system.stateVersion = "23.11";
+      };
     };
 
     networking = {

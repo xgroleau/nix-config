@@ -193,7 +193,7 @@ in
     containers = lib.mkOption {
       type = lib.types.attrsOf (
         lib.types.submodule (
-          { name, ... }:
+          { ... }:
           {
             config.extraFlags = lib.mkIf (
               cfg.enable && containerSystemdCfg.enable && containerSystemdCfg.linkJournals

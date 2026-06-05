@@ -1,8 +1,6 @@
 {
-  options,
   config,
   lib,
-  pkgs,
   ...
 }:
 
@@ -16,7 +14,7 @@ let
 
   # Filter for the secrets to only have the ones that have the host key
   filterSecrets =
-    name: att:
+    _name: att:
     let
       keyName = builtins.baseNameOf att.file;
     in

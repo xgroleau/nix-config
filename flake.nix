@@ -99,7 +99,7 @@
             inherit (hostConfig.deploy) user sshUser;
             path = deploy-rs.lib.${hostConfig.system}.activate.nixos self.nixosConfigurations.${hostName};
           };
-        }) (nixpkgs.lib.filterAttrs (hostName: hostConfig: hostConfig ? deploy) hosts);
+        }) (nixpkgs.lib.filterAttrs (_hostName: hostConfig: hostConfig ? deploy) hosts);
       };
 
       homeModules.default = import ./home;
@@ -115,7 +115,7 @@
 
       # Generate a home configuration for each profiles
       homeConfigurations = nixpkgs.lib.mapAttrs (
-        profileName: profileConfig:
+        _profileName: profileConfig:
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${flake-utils.lib.system.x86_64-linux};
           modules = [
@@ -131,7 +131,7 @@
 
       # Generate a nixos configuration for each hosts
       nixosConfigurations = nixpkgs.lib.mapAttrs (
-        hostName: hostConfig:
+        _hostName: hostConfig:
         let
           pkgsSource = if (hostConfig.useUnstable or false) then nixpkgs-unstable else nixpkgs;
         in
@@ -167,10 +167,12 @@
                   runtimeInputs = with pkgs; [
                     nixfmt-tree
                     statix
+                    deadnix
                   ];
                   text = ''
                     treefmt && \
-                    statix fix --config ${./statix.toml}
+                    statix fix --config ${./statix.toml} && \
+                    deadnix --edit 
                   '';
                 };
               in
@@ -213,11 +215,13 @@
                 buildInputs = with pkgs; [
                   nixfmt-tree
                   statix
+                  deadnix
                 ];
               }
               ''
                 ${pkgs.nixfmt-tree}/bin/treefmt --ci ${./.} && \
                 ${pkgs.statix}/bin/statix check --config ${./statix.toml} && \
+                ${pkgs.deadnix}/bin/deadnix --fail ${./.} && \
                 touch $out
               '';
         };
@@ -231,6 +235,7 @@
               git
               nixfmt-tree
               statix
+              deadnix
               home-manager.packages.${system}.default
             ]
             ++ (lib.optionals stdenv.isDarwin [ nix-darwin.packages.${system}.default ]);

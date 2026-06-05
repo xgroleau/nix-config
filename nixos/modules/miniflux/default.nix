@@ -74,64 +74,62 @@ in
         };
       };
 
-      config =
-        { ... }:
-        {
-          nixpkgs.pkgs = pkgs;
-          networking.useHostResolvConf = true;
+      config = _: {
+        nixpkgs.pkgs = pkgs;
+        networking.useHostResolvConf = true;
 
-          # db setup port
-          systemd.services.miniflux-dbsetup.serviceConfig.Environment = [
-            "PGHOST=/run/postgresql"
-            "PGPORT=${toString postgresqlPort}"
-          ];
+        # db setup port
+        systemd.services.miniflux-dbsetup.serviceConfig.Environment = [
+          "PGHOST=/run/postgresql"
+          "PGPORT=${toString postgresqlPort}"
+        ];
 
-          services = {
-            miniflux = {
-              enable = true;
-              adminCredentialsFile = cfg.envFile;
-              createDatabaseLocally = true;
-              config = {
-                PORT = cfg.port;
-                BASE_URL = cfg.url;
+        services = {
+          miniflux = {
+            enable = true;
+            adminCredentialsFile = cfg.envFile;
+            createDatabaseLocally = true;
+            config = {
+              PORT = cfg.port;
+              BASE_URL = cfg.url;
 
-                CLEANUP_FREQUENCY = 48;
+              CLEANUP_FREQUENCY = 48;
 
-                # Change the default port value
-                DATABASE_URL = lib.mkForce "user=miniflux host=/run/postgresql port=${toString postgresqlPort} dbname=miniflux";
-              };
-            };
-
-            # Some override of the internal services
-            postgresql = {
-              dataDir = "${cfg.dataDir}/postgres";
-              settings.port = postgresqlPort;
-            };
-            postgresqlBackup = {
-              enable = true;
-              backupAll = true;
-              location = cfg.backupDir;
+              # Change the default port value
+              DATABASE_URL = lib.mkForce "user=miniflux host=/run/postgresql port=${toString postgresqlPort} dbname=miniflux";
             };
           };
 
-          systemd.services.postgresqlBackup.environment = {
-            PGHOST = "/run/postgresql";
-            PGPORT = toString postgresqlPort;
+          # Some override of the internal services
+          postgresql = {
+            dataDir = "${cfg.dataDir}/postgres";
+            settings.port = postgresqlPort;
           };
-
-          # Create the sub folder
-          systemd.tmpfiles.settings.miniflux = {
-            "${cfg.dataDir}/postgres" = {
-              d = {
-                user = "postgres";
-                group = "postgres";
-                mode = "750";
-              };
-            };
+          postgresqlBackup = {
+            enable = true;
+            backupAll = true;
+            location = cfg.backupDir;
           };
-
-          system.stateVersion = "23.11";
         };
+
+        systemd.services.postgresqlBackup.environment = {
+          PGHOST = "/run/postgresql";
+          PGPORT = toString postgresqlPort;
+        };
+
+        # Create the sub folder
+        systemd.tmpfiles.settings.miniflux = {
+          "${cfg.dataDir}/postgres" = {
+            d = {
+              user = "postgres";
+              group = "postgres";
+              mode = "750";
+            };
+          };
+        };
+
+        system.stateVersion = "23.11";
+      };
     };
 
     networking = {

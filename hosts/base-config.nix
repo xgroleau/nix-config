@@ -108,7 +108,7 @@ in
     i18n.defaultLocale = "en_CA.UTF-8";
 
     # Adding all machines to known host
-    programs.ssh.knownHosts = lib.mapAttrs (name: value: { publicKey = value; }) keys.machines;
+    programs.ssh.knownHosts = lib.mapAttrs (_name: value: { publicKey = value; }) keys.machines;
 
     users = {
       users.xgroleau = {

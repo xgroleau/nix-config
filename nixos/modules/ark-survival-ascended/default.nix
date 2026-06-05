@@ -8,10 +8,6 @@
 let
 
   cfg = config.modules.arkSurvivalAscended;
-
-  containerBackendName = config.virtualisation.oci-containers.backend;
-
-  containerBackend = pkgs."${containerBackendName}" + "/bin/" + containerBackendName;
 in
 
 {

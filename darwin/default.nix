@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   inputs,
@@ -57,7 +56,7 @@ in
     '';
 
     # Adding all machines to known host
-    programs.ssh.knownHosts = lib.mapAttrs (name: value: { publicKey = value; }) keys.machines;
+    programs.ssh.knownHosts = lib.mapAttrs (_name: value: { publicKey = value; }) keys.machines;
 
     system = {
       primaryUser = "xgroleau";

@@ -1,16 +1,11 @@
 {
   config,
   lib,
-  pkgs,
   inputs,
   hostConfig,
   ...
 }:
 
-let
-  cfg = config.nixos;
-
-in
 {
 
   imports = [
