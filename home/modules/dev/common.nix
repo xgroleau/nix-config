@@ -33,6 +33,7 @@ in
         settings.user = {
           name = cfg.gitUser;
           email = cfg.gitEmail;
+          push.autoSetupRemote = true;
         };
         lfs.enable = true;
       };
