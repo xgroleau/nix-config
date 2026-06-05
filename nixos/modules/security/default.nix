@@ -100,6 +100,14 @@ in
           };
         };
 
+        # TODO: remove once https://github.com/NixOS/nixpkgs/pull/446307 lands.
+        systemd.services.crowdsec.serviceConfig.DynamicUser = lib.mkForce false;
+
+        # TODO: remove once https://github.com/NixOS/nixpkgs/pull/446307 lands.
+        environment.etc."crowdsec/config.yaml".source =
+          (pkgs.formats.yaml { }).generate "crowdsec-config.yaml"
+            config.services.crowdsec.settings.general;
+
         services.crowdsec-firewall-bouncer = {
           enable = true;
           settings = {
