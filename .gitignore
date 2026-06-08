@@ -3,3 +3,11 @@
 
 result
 /.cache/
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate*
+*.tfvars
+!*.tfvars.example
+

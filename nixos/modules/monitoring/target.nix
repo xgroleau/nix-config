@@ -192,14 +192,11 @@ in
 
     containers = lib.mkOption {
       type = lib.types.attrsOf (
-        lib.types.submodule (
-          { ... }:
-          {
-            config.extraFlags = lib.mkIf (
-              cfg.enable && containerSystemdCfg.enable && containerSystemdCfg.linkJournals
-            ) [ "--link-journal=try-host" ];
-          }
-        )
+        lib.types.submodule (_: {
+          config.extraFlags = lib.mkIf (
+            cfg.enable && containerSystemdCfg.enable && containerSystemdCfg.linkJournals
+          ) [ "--link-journal=try-host" ];
+        })
       );
     };
   };

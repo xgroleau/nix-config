@@ -1,4 +1,5 @@
 disabled = [
     "manual_inherit",  # Prefer  `types = types;` instead of `inherit types;`
     "manual_inherit_from",  # Prefer `options = eval.options` instead of `inherit (eval) options;`.
+    "repeated_keys",  # Allow `users.x=...; users.y=...;` flat form in NixOS modules.
 ]
