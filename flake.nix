@@ -220,9 +220,7 @@
               }
               ''
                 set -e
-                find ${./.} \
-                  \( -path '*/.terraform' -o -path '*/.direnv' -o -path '*/result' \) -prune -o \
-                  -name '*.nix' -print0 \
+                find ${./.} -name '*.nix' -print0 \
                   | xargs -0 ${pkgs.nixfmt}/bin/nixfmt --check
                 ${pkgs.statix}/bin/statix check --config ${./statix.toml} ${./.}
                 ${pkgs.deadnix}/bin/deadnix --fail ${./.}
