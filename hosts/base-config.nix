@@ -68,7 +68,6 @@ in
       # Avoid always redownloading the registry
       registry.nixpkgsu.flake = inputs.nixpkgs-unstable; # For flake commands
       settings = {
-        auto-optimise-store = true;
         substituters = [
           "https://cache.nixos.org/?priority=40"
           "https://nix-community.cachix.org?priority=41"
@@ -87,11 +86,27 @@ in
         ];
       };
 
+      optimise.automatic = true;
+
       gc = lib.mkDefault {
         automatic = true;
         dates = "weekly";
         options = "--delete-older-than 30d";
       };
+    };
+
+    systemd.services = {
+      nix-gc.serviceConfig = {
+        Nice = 19;
+        IOSchedulingClass = "idle";
+      };
+      nix-optimise.serviceConfig = {
+        Nice = 19;
+        IOSchedulingClass = "idle";
+      };
+
+      # Increase number of file descriptor
+      nix-daemon.serviceConfig.LimitNOFILE = lib.mkForce 32768;
     };
 
     time.timeZone = "America/Toronto";
@@ -141,8 +156,5 @@ in
     services.resolved.enable = true;
     virtualisation.containers.containersConf.settings.network.dns_servers =
       config.networking.nameservers;
-
-    #Increase number of file descriptor
-    systemd.services.nix-daemon.serviceConfig.LimitNOFILE = lib.mkForce 32768;
   };
 }

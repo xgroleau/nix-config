@@ -24,12 +24,6 @@ variable "ssh_public_key" {
   description = "SSH public key authorized for bootstrap (and post-install root login until disabled)"
 }
 
-variable "ssh_private_key_path" {
-  type        = string
-  description = "Path to matching private key; nixos-anywhere uses it to SSH in"
-  default     = "~/.ssh/id_ed25519"
-}
-
 # A1.Flex is shape-flexible. Defaults are the Always-Free maximum.
 variable "ocpus" {
   type    = number
@@ -44,11 +38,4 @@ variable "memory_gbs" {
 variable "boot_volume_gbs" {
   type    = number
   default = 200
-}
-
-# Path from the repo root to the flake. The nixos-anywhere module resolves
-# `.#nixosConfigurations.jyggalag` from here.
-variable "flake_root" {
-  type    = string
-  default = "../../.."
 }

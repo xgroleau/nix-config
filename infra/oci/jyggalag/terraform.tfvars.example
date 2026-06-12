@@ -3,8 +3,7 @@ compartment_ocid = "ocid1.compartment.oc1..aaaaaaaairvmt4nsakakxp7dscwmakyyaer6f
 region           = "ca-toronto-1"
 oci_profile      = "DEFAULT"
 
-ssh_public_key       = "ssh-ed25519 AAAA... xavier@..."
-ssh_private_key_path = "~/.ssh/id_ed25519"
+ssh_public_key = "ssh-ed25519 AAAA... xavier@..."
 
 # Always-Free A1.Flex maximum
 ocpus           = 4
