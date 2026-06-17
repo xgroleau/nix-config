@@ -1,0 +1,130 @@
+# Source of truth for the `jyggalag-free-tier-only` tenancy quota.
+# Default-deny across all billable families + an allowlist matching Always Free.
+# A1 cap tracks the post-2026-06-15 free tier: 2 OCPU / 12 GB (was 4 / 24).
+# Apply with ./apply-quota.sh (oci quota update is a FULL REPLACE — keep complete).
+
+# --- default deny: zero every service family ---
+zero adm quotas in tenancy
+zero agcs quotas in tenancy
+zero ai-anomaly-detection quotas in tenancy
+zero ai-biometric quotas in tenancy
+zero ai-document quotas in tenancy
+zero ai-forecasting quotas in tenancy
+zero ai-generative quotas in tenancy
+zero ai-language quotas in tenancy
+zero ai-speech quotas in tenancy
+zero ai-vision quotas in tenancy
+zero analytics quotas in tenancy
+zero api-gateway quotas in tenancy
+zero apm quotas in tenancy
+zero app-configuration quotas in tenancy
+zero atat quotas in tenancy
+zero auto-scaling quotas in tenancy
+zero autonomous-recovery-service quotas in tenancy
+zero batch-computing quotas in tenancy
+zero big-data quotas in tenancy
+zero block-storage quotas in tenancy
+zero blockchain quotas in tenancy
+zero ccatc quotas in tenancy
+zero cds quotas in tenancy
+zero cloud-bridge quotas in tenancy
+zero cloud-shell quotas in tenancy
+zero cloudguard quotas in tenancy
+zero cluster-placement-groups quotas in tenancy
+zero compartments quotas in tenancy
+zero compute quotas in tenancy
+zero compute-management quotas in tenancy
+zero container-engine quotas in tenancy
+zero dashboard quotas in tenancy
+zero data-catalog quotas in tenancy
+zero data-flow quotas in tenancy
+zero data-integration quotas in tenancy
+zero data-intelligence-foundation quotas in tenancy
+zero data-labeling quotas in tenancy
+zero data-science quotas in tenancy
+zero data-transfer quotas in tenancy
+zero database quotas in tenancy
+zero database-migration quotas in tenancy
+zero datalake quotas in tenancy
+zero dbtools quotas in tenancy
+zero devops quotas in tenancy
+zero digital-assistant quotas in tenancy
+zero digital-media quotas in tenancy
+zero disaster-recovery quotas in tenancy
+zero dns quotas in tenancy
+zero email-delivery quotas in tenancy
+zero events quotas in tenancy
+zero exadata-fleet-update quotas in tenancy
+zero faas quotas in tenancy
+zero fams quotas in tenancy
+zero fast-connect quotas in tenancy
+zero filesystem quotas in tenancy
+zero gdp quotas in tenancy
+zero generative-ai-agent quotas in tenancy
+zero global-accelerator quotas in tenancy
+zero goldengate quotas in tenancy
+zero health-checks quotas in tenancy
+zero identity quotas in tenancy
+zero integration quotas in tenancy
+zero iot quotas in tenancy
+zero java-management quotas in tenancy
+zero kms quotas in tenancy
+zero licensemanager quotas in tenancy
+zero limits quotas in tenancy
+zero load-balancer quotas in tenancy
+zero logging quotas in tenancy
+zero lustrefilestorage quotas in tenancy
+zero management-agent quotas in tenancy
+zero marketplace-publisher quotas in tenancy
+zero multicloud quotas in tenancy
+zero network-firewall quotas in tenancy
+zero network-load-balancer-api quotas in tenancy
+zero network-path-analyzer quotas in tenancy
+zero nosql quotas in tenancy
+zero notifications quotas in tenancy
+zero object-storage quotas in tenancy
+zero oci-bastion quotas in tenancy
+zero oci-kafka quotas in tenancy
+zero ocm-migration quotas in tenancy
+zero ocvp quotas in tenancy
+zero open-search quotas in tenancy
+zero operations-insights quotas in tenancy
+zero organizations quotas in tenancy
+zero osmh quotas in tenancy
+zero postgresql quotas in tenancy
+zero process-automation quotas in tenancy
+zero psacp quotas in tenancy
+zero queue quotas in tenancy
+zero redis quotas in tenancy
+zero regions quotas in tenancy
+zero resource-analytics quotas in tenancy
+zero resource-collection quotas in tenancy
+zero resource-manager quotas in tenancy
+zero resource-scheduler quotas in tenancy
+zero rndrive quotas in tenancy
+zero secure-desktops quotas in tenancy
+zero service-connector-hub quotas in tenancy
+zero stack-monitoring quotas in tenancy
+zero streaming quotas in tenancy
+zero subscription-pricing quotas in tenancy
+zero vcn quotas in tenancy
+zero vcnip quotas in tenancy
+zero visualbuilder quotas in tenancy
+zero vpn quotas in tenancy
+zero vulnerability-scanning quotas in tenancy
+zero waa quotas in tenancy
+zero waas quotas in tenancy
+zero waf quotas in tenancy
+
+# --- allowlist: storage + networking (Always Free amounts) ---
+set block-storage quota volume-count to 2 in tenancy
+set block-storage quota total-storage-gb to 200 in tenancy
+set vcn quota vcn-count to 2 in tenancy
+
+# --- allowlist: Ampere A1 compute only, capped at the free tier (2 OCPU / 12 GB) ---
+zero compute-core quotas in tenancy
+zero compute-memory quotas in tenancy
+set compute-core quota standard-a1-core-count to 2 in tenancy
+set compute-memory quota standard-a1-memory-count to 12 in tenancy
+set compute-core quota standard-a1-core-regional-count to 2 in tenancy
+set compute-memory quota standard-a1-memory-regional-count to 12 in tenancy
