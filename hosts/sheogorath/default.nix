@@ -193,8 +193,8 @@ in
         openFirewall = true;
 
         name = "Yofo";
-        type = "PAPER";
-        version = "26.1.2";
+        type = "FABRIC";
+        version = "26.2";
         dataDir = "/data/minecraft/yofo";
         # packwizPackUrl = "https://raw.githubusercontent.com/xgroleau/yofo-modpack/refs/tags/v1.0.5/pack.toml";
       };
