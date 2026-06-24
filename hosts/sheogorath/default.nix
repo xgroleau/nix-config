@@ -187,17 +187,17 @@ in
         port = 10600;
       };
 
-      # minecraft = {
-      #   enable = true;
-      #   port = 25665;
-      #   openFirewall = true;
+      minecraft = {
+        enable = true;
+        port = 25665;
+        openFirewall = true;
 
-      #   name = "Yofo";
-      #   type = "FORGE";
-      #   version = "1.20.2";
-      #   dataDir = "/data/minecraft/yofo";
-      #   packwizPackUrl = "https://raw.githubusercontent.com/xgroleau/yofo-modpack/refs/tags/v1.0.5/pack.toml";
-      # };
+        name = "Yofo";
+        type = "PAPER";
+        version = "26.1.2";
+        dataDir = "/data/minecraft/yofo";
+        # packwizPackUrl = "https://raw.githubusercontent.com/xgroleau/yofo-modpack/refs/tags/v1.0.5/pack.toml";
+      };
 
       # arkSurvivalAscended = {
       #   enable = true;
