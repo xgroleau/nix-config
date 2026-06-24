@@ -29,9 +29,11 @@ in
     programs = {
       git = {
         enable = true;
-        settings.user = {
-          name = cfg.gitUser;
-          email = cfg.gitEmail;
+        settings = {
+          user = {
+            name = cfg.gitUser;
+            email = cfg.gitEmail;
+          };
           push.autoSetupRemote = true;
         };
         lfs.enable = true;
