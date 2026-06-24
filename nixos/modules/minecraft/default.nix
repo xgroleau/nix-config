@@ -59,15 +59,19 @@ in
         autoStart = true;
         image = "itzg/minecraft-server";
         ports = [ "${toString cfg.port}:25565" ];
-        environment = {
-          EULA = "TRUE";
-          ONLINE_MODE = "FALSE";
-          MOTD = "${cfg.name} server :)";
-          SERVER_NAME = cfg.name;
-          TYPE = cfg.type;
-          VERSION = cfg.version;
-          PACKWIZ_URL = cfg.packwizPackUrl;
-        };
+        environment = lib.mkMerge [
+          {
+            EULA = "TRUE";
+            ONLINE_MODE = "FALSE";
+            MOTD = "${cfg.name} server :)";
+            SERVER_NAME = cfg.name;
+            TYPE = cfg.type;
+            VERSION = cfg.version;
+          }
+          (lib.mkIf (cfg.packwizPackUrl != null) {
+            PACKWIZ_URL = cfg.packwizPackUrl;
+          })
+        ];
 
         volumes = [
           "${cfg.dataDir}:/data"
