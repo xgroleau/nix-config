@@ -11,7 +11,7 @@ let
 
   containerBackendName = config.virtualisation.oci-containers.backend;
   containerBackend = pkgs."${containerBackendName}" + "/bin/" + containerBackendName;
-  openCloudImage = "opencloudeu/opencloud:4.0.7@sha256:66302ed6e69351e1228ae83c19e3b13aa5cd50f6bc257965bcd694aa62b53376";
+  openCloudImage = "opencloudeu/opencloud:7.2.0@sha256:b76b319ca12736372fff740fc4017a4532964eacd8223deadcb67f8dc2024774";
 in
 {
   options.modules.opencloud = with lib.types; {
