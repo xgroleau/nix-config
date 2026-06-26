@@ -145,6 +145,10 @@ in
           PGPORT = toString postgresqlPort;
         };
 
+        # Postgres data lives under dataDir, it needs group traversal now
+        # that the dir is no longer world-accessible
+        users.users.postgres.extraGroups = [ "paperless" ];
+
         # Create the sub folder
         systemd.tmpfiles.settings.paperlessNgx = {
           "${cfg.dataDir}/postgres" = {
@@ -266,7 +270,7 @@ in
         d = {
           user = "paperless";
           group = "paperless";
-          mode = "777";
+          mode = "750";
         };
       };
 

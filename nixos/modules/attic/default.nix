@@ -50,6 +50,18 @@ in
       ];
     };
 
+    # atticd defaults to DynamicUser, pin a static identity so the storage
+    # dir can be owned and locked down
+    users.deterministicIds.atticd = {
+      uid = 972;
+      gid = 972;
+    };
+    users.users.atticd = {
+      group = "atticd";
+      isSystemUser = true;
+    };
+    users.groups.atticd = { };
+
     services.atticd = {
 
       enable = true;
@@ -92,8 +104,9 @@ in
     systemd.tmpfiles.settings.attic = {
       "${cfg.dataDir}/" = {
         d = {
-          mode = "0777";
-          user = "root";
+          mode = "0700";
+          user = "atticd";
+          group = "atticd";
         };
       };
     };

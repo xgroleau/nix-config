@@ -9,6 +9,9 @@ let
 
   cfg = config.modules.immich;
 
+  # All immich containers write as this identity
+  immichId = 971;
+
   containerBackendName = config.virtualisation.oci-containers.backend;
 
   containerBackend = pkgs."${containerBackendName}" + "/bin/" + containerBackendName;
@@ -64,6 +67,16 @@ in
 
   config = lib.mkIf cfg.enable {
 
+    users.deterministicIds.immich = {
+      uid = immichId;
+      gid = immichId;
+    };
+    users.users.immich = {
+      group = "immich";
+      isSystemUser = true;
+    };
+    users.groups.immich = { };
+
     virtualisation.oci-containers.containers = {
       immich-server = {
         autoStart = true;
@@ -75,8 +88,8 @@ in
         ];
 
         environment = {
-          PUID = "1000";
-          PGID = "1000";
+          PUID = toString immichId;
+          PGID = toString immichId;
 
           # Redis
           REDIS_HOSTNAME = "immich-valkey";
@@ -112,6 +125,10 @@ in
       immich-postgres = {
         autoStart = true;
         image = "ghcr.io/immich-app/postgres:16-vectorchord0.4.3-pgvectors0.3.0@sha256:0851d187e1f512300b3fcf7911641aa94075a3bfe457f2600ec8637ca1cb9139";
+
+        # The official postgres images support running as an arbitrary uid,
+        # the data dir must be owned by it
+        user = "${toString immichId}:${toString immichId}";
 
         volumes = [
           "/etc/localtime:/etc/localtime:ro"
@@ -186,20 +203,23 @@ in
     systemd.tmpfiles.settings.immich = {
       "${cfg.configDir}" = {
         d = {
-          mode = "0777";
-          user = "root";
+          mode = "0700";
+          user = "immich";
+          group = "immich";
         };
       };
       "${cfg.dataDir}" = {
         d = {
-          mode = "0777";
-          user = "root";
+          mode = "0700";
+          user = "immich";
+          group = "immich";
         };
       };
       "${cfg.databaseDir}" = {
         d = {
-          mode = "0777";
-          user = "root";
+          mode = "0700";
+          user = "immich";
+          group = "immich";
         };
       };
 

@@ -75,6 +75,10 @@ with keys;
     users.xgroleau
     machines.sheogorath
   ];
+  "valheim-pass.age".publicKeys = [
+    users.xgroleau
+    machines.sheogorath
+  ];
   "vaultwarden-env.age".publicKeys = [
     users.xgroleau
     machines.sheogorath

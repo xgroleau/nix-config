@@ -60,38 +60,39 @@ in
       allowedUDPPorts = lib.mkIf cfg.openFirewall [ cfg.port ];
     };
 
+    # 25000 = the fixed `gameserver` uid baked into the asa-linux-server image
     systemd.tmpfiles.settings.arkSurvivalAscended = {
       "${cfg.dataDir}" = {
         d = {
-          mode = "0777";
+          mode = "0700";
           user = "25000";
           group = "25000";
         };
       };
       "${cfg.dataDir}/steam" = {
         d = {
-          mode = "0777";
+          mode = "0700";
           user = "25000";
           group = "25000";
         };
       };
       "${cfg.dataDir}/steamcmd" = {
         d = {
-          mode = "0777";
+          mode = "0700";
           user = "25000";
           group = "25000";
         };
       };
       "${cfg.dataDir}/server" = {
         d = {
-          mode = "0777";
+          mode = "0700";
           user = "25000";
           group = "25000";
         };
       };
       "${cfg.dataDir}/cluster" = {
         d = {
-          mode = "0777";
+          mode = "0700";
           user = "25000";
           group = "25000";
         };

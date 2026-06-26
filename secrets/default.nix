@@ -48,6 +48,7 @@ let
     opencloudEnv.file = ./opencloud-env.age;
     paperlessNgxEnv.file = ./paperless-ngx-env.age;
     stalwartEnv.file = ./stalwart-env.age;
+    valheimPass.file = ./valheim-pass.age;
     vaultwardenEnv.file = ./vaultwarden-env.age;
   };
 

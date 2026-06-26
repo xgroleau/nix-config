@@ -236,7 +236,7 @@ in
         restart = true;
         port = 2456;
         name = "Yofo";
-        password = "noobreport";
+        passwordFile = config.age.secrets.valheimPass.path;
         openFirewall = true;
         dataDir = "/data/valheim";
       };

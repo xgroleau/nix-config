@@ -36,10 +36,9 @@ in
       description = "Name for the server";
     };
 
-    password = lib.mkOption {
+    passwordFile = lib.mkOption {
       type = lib.types.str;
-      default = "valheim";
-      description = "Password for the server";
+      description = "Path to a file containing the server password";
     };
 
     restartTime = lib.mkOption {
@@ -94,16 +93,19 @@ in
               "validate"
               "+quit"
             ];
-            ExecStart = join [
-              "${pkgs.steam-run}/bin/steam-run ${cfg.dataDir}/valheim_server.x86_64"
-              "-port ${toString cfg.port}"
-              "-nographics"
-              "-batchmode"
-              "-name ${cfg.name}"
-              "-world ${cfg.name}"
-              "-password ${cfg.password}"
-              "-public 0"
-            ];
+            # The server only takes the password as a CLI argument, read it
+            # at runtime to keep it out of the nix store
+            ExecStart = pkgs.writeShellScript "valheim-start" ''
+              exec ${pkgs.steam-run}/bin/steam-run ${cfg.dataDir}/valheim_server.x86_64 \
+                -port ${toString cfg.port} \
+                -nographics \
+                -batchmode \
+                -name ${cfg.name} \
+                -world ${cfg.name} \
+                -password "$(cat "$CREDENTIALS_DIRECTORY/password")" \
+                -public 0
+            '';
+            LoadCredential = [ "password:${cfg.passwordFile}" ];
 
             User = cfg.user;
             Restart = "always";

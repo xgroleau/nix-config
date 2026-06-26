@@ -252,12 +252,10 @@ in
       ];
     };
 
-    # Allow collab to have a bigger restart limit
+    # collab flaps on boot until opencloud's nats/gateway is ready; space out its restarts
     systemd.services.podman-opencloud-collaboration = lib.mkIf cfg.collabora.enable {
       serviceConfig = {
         RestartSec = lib.mkForce 5;
-        StartLimitIntervalSec = lib.mkForce 60;
-        StartLimitBurst = lib.mkForce 10;
       };
     };
 
