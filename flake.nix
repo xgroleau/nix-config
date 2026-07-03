@@ -49,6 +49,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # master tracks nixos-unstable; used by hosts with useUnstable = true
+    home-manager-unstable = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     # Only supports unstable
     jovian-nixos = {
       url = "github:Jovian-Experiments/Jovian-NixOS/development";

@@ -29,6 +29,9 @@
 
     };
 
+    # decky-loader pulls in pnpm at build time; upstream package is flagged insecure
+    nixpkgs.config.permittedInsecurePackages = [ "pnpm-9.15.9" ];
+
     # Steam deck experience
     jovian = {
       decky-loader.enable = true;

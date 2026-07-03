@@ -9,7 +9,12 @@
 
   imports = [
     ./modules
-    inputs.home-manager.nixosModules.home-manager
+    (
+      if (hostConfig.useUnstable or false) then
+        inputs.home-manager-unstable.nixosModules.home-manager
+      else
+        inputs.home-manager.nixosModules.home-manager
+    )
     inputs.agenix.nixosModules.default
     inputs.disko.nixosModules.disko
     inputs.authentik-nix.nixosModules.default
