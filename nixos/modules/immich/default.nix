@@ -80,7 +80,7 @@ in
     virtualisation.oci-containers.containers = {
       immich-server = {
         autoStart = true;
-        image = "ghcr.io/imagegenius/immich:3.0.3@sha256:c18ad0d2c9c3116024d5f329664fcb558b422f7d286d0e00eab742695a887fd5";
+        image = "ghcr.io/imagegenius/immich:3.0.3@sha256:75f63a4d63c7f8e864aa354ded64e5914cf197d703f544b78ebbaea873e0e3b9";
         volumes = [
           "/etc/localtime:/etc/localtime:ro"
           "${cfg.configDir}:/config"
