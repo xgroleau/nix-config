@@ -220,6 +220,7 @@ in
             image = "collabora/code:26.04.2.2.1@sha256:f8a308bcd12ad09babcd635662b512776b0749fc04c9a63db568865bd195b4d9";
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
+              "${config.security.pki.caBundle}:/etc/coolwsd/ca-chain.cert.pem:ro"
             ];
             ports = [ "${toString cfg.collabora.collaboraPort}:9980" ];
             networks = [ "opencloud-bridge" ];
