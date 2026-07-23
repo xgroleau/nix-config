@@ -217,7 +217,7 @@ in
 
           opencloud-collabora = {
             autoStart = true;
-            image = "collabora/code:26.04.2.2.1";
+            image = "collabora/code:26.04.2.2.1@sha256:f8a308bcd12ad09babcd635662b512776b0749fc04c9a63db568865bd195b4d9";
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
             ];
@@ -227,24 +227,12 @@ in
             capabilities = {
               CAP_MKNOD = true;
             };
-            entrypoint = "/bin/bash";
-            cmd = [
-              "-c"
-              "coolconfig generate-proof-key && /start-collabora-online.sh"
-            ];
 
             environmentFiles = cfg.environmentFiles;
             environment = {
               aliasgroup1 = "https://${cfg.collabora.companionDomain}:443";
               DONT_GEN_SSL_CERT = "YES";
-              extra_params = ''
-                --o:ssl.enable=false \
-                --o:ssl.ssl_verification=true \
-                --o:ssl.termination=true \
-                --o:welcome.enable=false \
-                --o:home_mode.enable=true \
-                --o:net.frame_ancestors=${cfg.domain}
-              '';
+              extra_params = "--o:ssl.enable=false --o:ssl.ssl_verification=true --o:ssl.termination=true --o:welcome.enable=false --o:home_mode.enable=true --o:net.frame_ancestors=${cfg.domain}";
             };
           };
 
