@@ -12,6 +12,15 @@ let
   containerBackendName = config.virtualisation.oci-containers.backend;
   containerBackend = pkgs."${containerBackendName}" + "/bin/" + containerBackendName;
   openCloudImage = "opencloudeu/opencloud:7.2.2@sha256:01574d21811882390679e78aa2b2147d03779a5d486f6f2fd62a28463a485f3d";
+
+  # Self signed ssl
+  collaboraClientCert =
+    pkgs.runCommand "collabora-client-cert" { nativeBuildInputs = [ pkgs.openssl ]; }
+      ''
+        mkdir -p "$out"
+        openssl req -x509 -newkey rsa:2048 -nodes -keyout "$out/key.pem" -out "$out/cert.pem" \
+          -days 36500 -subj "/CN=collabora-client"
+      '';
 in
 {
   options.modules.opencloud = with lib.types; {
@@ -217,9 +226,13 @@ in
 
           opencloud-collabora = {
             autoStart = true;
-            image = "collabora/code:26.04.2.2.1@sha256:f8a308bcd12ad09babcd635662b512776b0749fc04c9a63db568865bd195b4d9";
+            image = "collabora/code:26.04.2.4.1@sha256:1f864ce3f0c49e867787b6dd303bd6ba989542d3023f6809df558eafd04c1b97";
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
+              # SSL
+              "${config.security.pki.caBundle}:/etc/coolwsd/ca-chain.cert.pem:ro"
+              "${collaboraClientCert}/cert.pem:/etc/coolwsd/cert.pem:ro"
+              "${collaboraClientCert}/key.pem:/etc/coolwsd/key.pem:ro"
             ];
             ports = [ "${toString cfg.collabora.collaboraPort}:9980" ];
             networks = [ "opencloud-bridge" ];
@@ -232,6 +245,7 @@ in
             environment = {
               aliasgroup1 = "https://${cfg.collabora.companionDomain}:443";
               DONT_GEN_SSL_CERT = "YES";
+              SSL_CERT_FILE = "/etc/coolwsd/ca-chain.cert.pem";
               extra_params = "--o:ssl.enable=false --o:ssl.ssl_verification=false --o:ssl.termination=true --o:welcome.enable=false --o:home_mode.enable=true --o:net.frame_ancestors=${cfg.domain}";
             };
           };
