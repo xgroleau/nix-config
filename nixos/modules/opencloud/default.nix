@@ -133,6 +133,10 @@ in
                 SEARCH_EXTRACTOR_TYPE = "tika";
                 SEARCH_EXTRACTOR_TIKA_TIKA_URL = "http://opencloud-tika:9998";
                 FRONTEND_FULL_TEXT_SEARCH_ENABLED = "true";
+
+                # Overall config
+                OC_SHARING_PUBLIC_SHARE_MUST_HAVE_PASSWORD = "false";
+                OC_SHARING_PUBLIC_WRITEABLE_SHARE_MUST_HAVE_PASSWORD = "true";
               }
 
               (lib.mkIf cfg.collabora.enable {
