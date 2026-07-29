@@ -20,7 +20,9 @@ let
     mkdir -p "$out"
     openssl req -x509 -newkey rsa:2048 -nodes -keyout "$out/key.pem" -out "$out/cert.pem" \
       -days 36500 -subj "/CN=collabora-client"
-    openssl genrsa -out "$out/proof_key" 2048
+    # -traditional = PKCS#1 ("BEGIN RSA PRIVATE KEY"); coolwsd loads this via Poco, which
+    # rejects the PKCS#8 that openssl 3's genrsa now defaults to. Matches coolconfig generate-proof-key.
+    openssl genrsa -traditional -out "$out/proof_key" 2048
   '';
 in
 {
