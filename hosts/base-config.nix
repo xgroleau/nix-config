@@ -95,6 +95,8 @@ in
       };
     };
 
+    systemd-boot.configurationLimit = 10;
+
     systemd.services = {
       nix-gc.serviceConfig = {
         Nice = 19;
