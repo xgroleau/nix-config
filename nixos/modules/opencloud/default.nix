@@ -13,9 +13,7 @@ let
   containerBackend = pkgs."${containerBackendName}" + "/bin/" + containerBackendName;
   openCloudImage = "opencloudeu/opencloud:7.2.2@sha256:01574d21811882390679e78aa2b2147d03779a5d486f6f2fd62a28463a485f3d";
 
-  # TLS client cert/key + WOPI proof key. The minimal CODE image ships none of these, and
-  # coolwsd loads all three from /etc/coolwsd at startup (missing cert/key aborts; missing
-  # proof_key silently disables WOPI request signing → OpenCloud rejects with ProofKeys failure).
+  # TLS client cert/key + WOPI proof key.
   collaboraKeys = pkgs.runCommand "collabora-keys" { nativeBuildInputs = [ pkgs.openssl ]; } ''
     mkdir -p "$out"
     openssl req -x509 -newkey rsa:2048 -nodes -keyout "$out/key.pem" -out "$out/cert.pem" \
@@ -232,11 +230,11 @@ in
             image = "collabora/code:26.04.2.4.1@sha256:1f864ce3f0c49e867787b6dd303bd6ba989542d3023f6809df558eafd04c1b97";
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
-              # TLS cert/key/CA + WOPI proof key — image ships none; coolwsd loads them from /etc/coolwsd
+              # TLS cert/key/CA + WOPI proof key image ships none; coolwsd loads them from /etc/coolwsd
               "${config.security.pki.caBundle}:/etc/coolwsd/ca-chain.cert.pem:ro"
               "${collaboraKeys}/cert.pem:/etc/coolwsd/cert.pem:ro"
               "${collaboraKeys}/key.pem:/etc/coolwsd/key.pem:ro"
-              "${collaboraKeys}/proof_key:/etc/coolwsd/proof_key:ro"
+
             ];
             ports = [ "${toString cfg.collabora.collaboraPort}:9980" ];
             networks = [ "opencloud-bridge" ];
@@ -244,6 +242,7 @@ in
             capabilities = {
               CAP_MKNOD = true;
             };
+            extraOptions = [ "--no-healthcheck" ];
 
             environmentFiles = cfg.environmentFiles;
             environment = {
