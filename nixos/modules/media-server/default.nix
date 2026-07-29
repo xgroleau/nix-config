@@ -57,7 +57,7 @@ in
       containers = {
         mediaserver-gluetun = {
           autoStart = true;
-          image = "ghcr.io/qdm12/gluetun:v3.41.1@sha256:1a5bf4b4820a879cdf8d93d7ef0d2d963af56670c9ebff8981860b6804ebc8ab";
+          image = "ghcr.io/qdm12/gluetun:v3.41.2@sha256:280809bc6900ed06d6529ad246499103efb31fd80c6327cbfaf90de0b17c3a99";
           ports = [
             "8112:8112"
             "8118:8118"
