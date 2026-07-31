@@ -106,9 +106,9 @@ in
               inherit hash;
             };
 
-          # 13639 hardcodes a ${DS_LOKI} import-input placeholder that file
+          # 13639 ships ${DS_LOKI} import-input placeholders.
           logsApp = pkgs.runCommand "logs-app.json" { } ''
-            sed 's/''${DS_LOKI}/loki/g' ${
+            sed 's|"''${DS_LOKI}"|{"type": "loki", "uid": "loki"}|g' ${
               dashboard 13639 2 "sha256-2dRUkooIA1E0Qshg58N+9duIW25iRruu1oW8ckBUNIA="
             } > $out
           '';
