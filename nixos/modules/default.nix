@@ -4,6 +4,7 @@
 
 {
   imports = [
+    ./abiotic-factor
     ./ark-survival-ascended
     ./attic
     ./authentik

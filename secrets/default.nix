@@ -22,6 +22,7 @@ let
 
   # attrset of the secrets
   secrets = {
+    abioticFactorPass.file = ./abiotic-factor-pass.age;
     alertmanagerEnv.file = ./alertmanager-env.age;
     grafanaAdminPw = {
       file = ./grafana-admin-pw.age;

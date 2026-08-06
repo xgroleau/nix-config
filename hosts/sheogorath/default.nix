@@ -199,6 +199,18 @@ in
         # packwizPackUrl = "https://raw.githubusercontent.com/xgroleau/yofo-modpack/refs/tags/v1.0.5/pack.toml";
       };
 
+      abioticFactor = {
+        enable = true;
+        restart = true;
+        port = 7777;
+        queryPort = 27015;
+        name = "Yofo";
+        maxPlayers = 6;
+        passwordFile = config.age.secrets.abioticFactorPass.path;
+        openFirewall = true;
+        dataDir = "/data/abiotic-factor";
+      };
+
       # arkSurvivalAscended = {
       #   enable = true;
       #   port = 7777;

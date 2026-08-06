@@ -3,6 +3,10 @@ let
 in
 with keys;
 {
+  "abiotic-factor-pass.age".publicKeys = [
+    users.xgroleau
+    machines.sheogorath
+  ];
   "alertmanager-env.age".publicKeys = [
     users.xgroleau
     machines.jyggalag
