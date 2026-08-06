@@ -205,7 +205,7 @@ in
         port = 7777;
         queryPort = 27015;
         name = "Yofo";
-        maxPlayers = 6;
+        maxPlayers = 10;
         passwordFile = config.age.secrets.abioticFactorPass.path;
         openFirewall = true;
         dataDir = "/data/abiotic-factor";
