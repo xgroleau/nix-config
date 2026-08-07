@@ -11,7 +11,7 @@ let
 
   containerBackendName = config.virtualisation.oci-containers.backend;
   containerBackend = pkgs."${containerBackendName}" + "/bin/" + containerBackendName;
-  openCloudImage = "opencloudeu/opencloud:7.2.2@sha256:01574d21811882390679e78aa2b2147d03779a5d486f6f2fd62a28463a485f3d";
+  openCloudImage = "opencloudeu/opencloud:7.2.3@sha256:707727b771e3267fc5558e228911007c35a206e5241bde3ffde3c76f6aef1f4c";
 
   # TLS client cert/key + WOPI proof key.
   collaboraKeys = pkgs.runCommand "collabora-keys" { nativeBuildInputs = [ pkgs.openssl ]; } ''
