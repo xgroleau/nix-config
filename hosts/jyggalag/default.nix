@@ -32,9 +32,19 @@ in
       secrets.enable = true;
 
       monitoring = {
+        target = {
+          enable = true;
+          lokiAddress = "http://127.0.0.1:13100/loki/api/v1/push";
+          prometheusPort = 13150;
+          alloyPort = 13030;
+        };
+
         server = {
           enable = true;
-          prometheusScrapeUrls = [ "sheogorath:13150" ];
+          prometheusScrapeUrls = [
+            "sheogorath:13150"
+            "${hostname}:13150"
+          ];
           prometheusPort = 13020;
           grafanaPort = 13010;
           grafanaAdminPasswordFile = config.age.secrets.grafanaAdminPw.path;
