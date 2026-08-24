@@ -238,6 +238,7 @@ in
               "${config.security.pki.caBundle}:/etc/coolwsd/ca-chain.cert.pem:ro"
               "${collaboraKeys}/cert.pem:/etc/coolwsd/cert.pem:ro"
               "${collaboraKeys}/key.pem:/etc/coolwsd/key.pem:ro"
+              "${collaboraKeys}/proof_key:/etc/coolwsd/proof_key:ro"
 
             ];
             ports = [ "${toString cfg.collabora.collaboraPort}:9980" ];
