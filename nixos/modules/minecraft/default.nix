@@ -76,6 +76,8 @@ in
         volumes = [
           "${cfg.dataDir}:/data"
         ];
+
+        extraOptions = [ "--no-healthcheck" ];
       };
 
     };

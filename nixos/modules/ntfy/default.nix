@@ -46,7 +46,10 @@ in
       gid = 969;
     };
 
-    systemd.services.ntfy-sh.serviceConfig.ReadWritePaths = [ cfg.dataDir ];
+    systemd.services.ntfy-sh = {
+      serviceConfig.ReadWritePaths = [ cfg.dataDir ];
+      unitConfig.RequiresMountsFor = [ cfg.dataDir ];
+    };
     services.ntfy-sh = {
       enable = true;
       environmentFile = cfg.envFile;
