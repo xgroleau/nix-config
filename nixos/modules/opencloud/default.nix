@@ -105,6 +105,7 @@ in
               "${./app-registry.yaml}:/etc/opencloud/app-registry.yaml"
               "${cfg.dataDir}:/var/lib/opencloud"
             ];
+            dependsOn = [ "opencloud-tika" ];
             networks = [ "opencloud-bridge" ];
 
             entrypoint = "/bin/sh";
