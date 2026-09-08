@@ -180,8 +180,8 @@ in
                 disable_startup_analytics = true;
                 avatars = "gravatar,initials";
                 listen = {
-                  http = "0.0.0.0:${toString cfg.port}";
-                  metrics = "0.0.0.0:${toString cfg.metricsPort}";
+                  http = [ "0.0.0.0:${toString cfg.port}" ];
+                  metrics = [ "0.0.0.0:${toString cfg.metricsPort}" ];
                 };
                 paths.media = "/var/lib/authentik/media";
                 blueprints_dir = lib.mkForce "${mergedBlueprints}";

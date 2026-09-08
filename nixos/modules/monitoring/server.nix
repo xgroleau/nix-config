@@ -171,6 +171,7 @@ in
       prometheus = {
         enable = true;
         port = cfg.prometheusPort;
+        retentionTime = "90d";
 
         rules = [
           (builtins.toJSON {
@@ -187,26 +188,26 @@ in
                     expr = "up == 0";
                     for = "5m";
                     annotations = {
-                      summary = "{{$labels.alias}}: Node is down.";
-                      description = "{{$labels.alias}} has been down for more than 5 minutes.";
+                      summary = "{{$labels.instance}}: Node is down.";
+                      description = "{{$labels.instance}} has been down for more than 5 minutes.";
                     };
                   }
                   {
                     alert = "Node90Full";
-                    expr = ''sort(node_filesystem_free{device!="ramfs"} < node_filesystem_size{device!="ramfs"} * 0.1) / 1024^3'';
+                    expr = ''(node_filesystem_avail_bytes{fstype!~"tmpfs|ramfs"} / node_filesystem_size_bytes{fstype!~"tmpfs|ramfs"}) < 0.10'';
                     for = "5m";
                     annotations = {
-                      summary = "{{$labels.alias}}: Filesystem is running out of space soon.";
-                      description = "{{$labels.alias}} device {{$labels.device}} on {{$labels.mountpoint}} got less than 10% space left on its filesystem.";
+                      summary = "{{$labels.instance}}: Filesystem is running out of space soon.";
+                      description = "{{$labels.instance}} device {{$labels.device}} on {{$labels.mountpoint}} got less than 10% space left on its filesystem.";
                     };
                   }
                   {
                     alert = "Node90FullIn4H";
-                    expr = ''predict_linear(node_filesystem_free{device!="ramfs"}[1h], 4*3600) <= 0'';
+                    expr = ''predict_linear(node_filesystem_avail_bytes{fstype!~"tmpfs|ramfs"}[1h], 4*3600) <= 0'';
                     for = "5m";
                     annotations = {
-                      summary = "{{$labels.alias}}: Filesystem is running out of space in 4 hours.";
-                      description = "{{$labels.alias}} device {{$labels.device}} on {{$labels.mountpoint}} is running out of space of in approx. 4 hours";
+                      summary = "{{$labels.instance}}: Filesystem is running out of space in 4 hours.";
+                      description = "{{$labels.instance}} device {{$labels.device}} on {{$labels.mountpoint}} is running out of space of in approx. 4 hours";
                     };
                   }
                   {
@@ -214,48 +215,57 @@ in
                     expr = "predict_linear(node_filefd_allocated[1h], 3*3600) >= node_filefd_maximum";
                     for = "10m";
                     annotations = {
-                      summary = "{{$labels.alias}} is running out of available file descriptors in 3 hours.";
-                      description = "{{$labels.alias}} is running out of available file descriptors in approx. 3 hours";
+                      summary = "{{$labels.instance}} is running out of available file descriptors in 3 hours.";
+                      description = "{{$labels.instance}} is running out of available file descriptors in approx. 3 hours";
                     };
                   }
                   {
                     alert = "NodeLoad1At90percent";
-                    expr = ''node_load1 / on(alias) count(node_cpu{mode="system"}) by (alias) >= 0.9'';
+                    expr = ''node_load1 / on(instance) count(node_cpu_seconds_total{mode="system"}) by (instance) >= 0.9'';
                     for = "1h";
                     annotations = {
-                      summary = "{{$labels.alias}}: Running on high load.";
-                      description = "{{$labels.alias}} is running with > 90% total load for at least 1h.";
+                      summary = "{{$labels.instance}}: Running on high load.";
+                      description = "{{$labels.instance}} is running with > 90% total load for at least 1h.";
                     };
                   }
                   {
                     alert = "NodeCpuUtil90Percent";
-                    expr = ''100 - (avg by (alias) (irate(node_cpu{mode="idle"}[5m])) * 100) >= 90'';
+                    expr = ''100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) >= 90'';
                     for = "1h";
                     annotations = {
-                      summary = "{{$labels.alias}}: High CPU utilization.";
-                      description = "{{$labels.alias}} has total CPU utilization over 90% for at least 1h.";
+                      summary = "{{$labels.instance}}: High CPU utilization.";
+                      description = "{{$labels.instance}} has total CPU utilization over 90% for at least 1h.";
                     };
                   }
                   {
                     alert = "NodeRamUsing90Percent";
-                    expr = ''
-                      node_memory_MemFree + node_memory_Buffers + node_memory_Cached < node_memory_MemTotal * 0.1
-                    '';
+                    expr = "node_memory_MemAvailable_bytes < node_memory_MemTotal_bytes * 0.1";
                     for = "130m";
                     annotations = {
-                      summary = "{{$labels.alias}}: Using lots of RAM.";
-                      description = "{{$labels.alias}} is using at least 90% of its RAM for at least 130 minutes now.";
+                      summary = "{{$labels.instance}}: Using lots of RAM.";
+                      description = "{{$labels.instance}} is using at least 90% of its RAM for at least 130 minutes now.";
                     };
                   }
                   {
                     alert = "NodeSwapUsing80Percent";
                     expr = ''
-                      node_memory_SwapTotal - (node_memory_SwapFree + node_memory_SwapCached) > node_memory_SwapTotal * 0.8
+                      node_memory_SwapTotal_bytes - (node_memory_SwapFree_bytes + node_memory_SwapCached_bytes) > node_memory_SwapTotal_bytes * 0.8
                     '';
                     for = "10m";
                     annotations = {
-                      summary = "{{$labels.alias}}: Running out of swap soon.";
-                      description = "{{$labels.alias}} is using 80% of its swap space for at least 10 minutes now.";
+                      summary = "{{$labels.instance}}: Running out of swap soon.";
+                      description = "{{$labels.instance}} is using 80% of its swap space for at least 10 minutes now.";
+                    };
+                  }
+                  {
+                    # promtool only validates syntax, a renamed node_exporter metric
+                    # silently kills the rules referencing it. This catches that.
+                    alert = "NodeExporterMetricsMissing";
+                    expr = "absent(node_memory_MemAvailable_bytes) or absent(node_filesystem_avail_bytes) or absent(node_cpu_seconds_total)";
+                    for = "15m";
+                    annotations = {
+                      summary = "Core node_exporter metrics are absent from prometheus.";
+                      description = "A metric referenced by the alert rules no longer exists, rules relying on it can never fire. Check for node_exporter metric renames.";
                     };
                   }
 
@@ -283,14 +293,6 @@ in
                     annotations = {
                       summary = "{{$labels.instance}} cannot query systemd in container {{$labels.container}}.";
                       description = "The monitoring target cannot query systemd units inside container {{$labels.container}} for more than 5 minutes.";
-                    };
-                  }
-                  {
-                    alert = "RootPartitionFull";
-                    for = "10m";
-                    expr = ''(node_filesystem_free_bytes{mountpoint="/"} * 100) / node_filesystem_size_bytes{mountpoint="/"} < 10'';
-                    annotations = {
-                      summary = ''{{ $labels.job }} running out of space: {{ $value | printf "%.2f" }}% < 10%'';
                     };
                   }
                 ];
@@ -346,7 +348,7 @@ in
             route = {
               group_by = [
                 "alertname"
-                "alias"
+                "instance"
               ];
               group_wait = "10s";
               receiver = "admin-smtp";
@@ -418,6 +420,9 @@ in
           limits_config = {
             reject_old_samples = true;
             reject_old_samples_max_age = "168h";
+            # Without this the compactor deletes nothing (default 0s = keep forever)
+            # and /var/lib/loki grows unbounded. Must be a multiple of the 24h index period.
+            retention_period = "2160h";
           };
 
           compactor = {
