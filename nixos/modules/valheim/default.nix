@@ -87,6 +87,7 @@ in
               "${pkgs.steamcmd}/bin/steamcmd"
               "+force_install_dir ${cfg.dataDir}"
               "+login anonymous"
+              "+app_info_update 1"
               "+app_update 896660"
               "validate"
               "+quit"
