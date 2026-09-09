@@ -87,9 +87,7 @@ in
               "${pkgs.steamcmd}/bin/steamcmd"
               "+force_install_dir ${cfg.dataDir}"
               "+login anonymous"
-              # "+app_update 896660"
-              # "-beta public-test"
-              "-betapassword yesimadebackups"
+              "+app_update 896660"
               "validate"
               "+quit"
             ];
