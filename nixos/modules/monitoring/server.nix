@@ -247,8 +247,6 @@ in
                     };
                   }
                   {
-                    # Swap filling with idle pages is expected; only alert when swap is
-                    # nearly full AND RAM is also low, i.e. genuinely out of usable memory.
                     alert = "NodeOutOfMemorySoon";
                     expr = ''
                       node_memory_SwapFree_bytes < node_memory_SwapTotal_bytes * 0.1
@@ -262,8 +260,6 @@ in
                     };
                   }
                   {
-                    # promtool only validates syntax, a renamed node_exporter metric
-                    # silently kills the rules referencing it. This catches that.
                     alert = "NodeExporterMetricsMissing";
                     expr = "absent(node_memory_MemAvailable_bytes) or absent(node_filesystem_avail_bytes) or absent(node_cpu_seconds_total)";
                     for = "15m";
