@@ -247,14 +247,18 @@ in
                     };
                   }
                   {
-                    alert = "NodeSwapUsing80Percent";
+                    # Swap filling with idle pages is expected; only alert when swap is
+                    # nearly full AND RAM is also low, i.e. genuinely out of usable memory.
+                    alert = "NodeOutOfMemorySoon";
                     expr = ''
-                      node_memory_SwapTotal_bytes - (node_memory_SwapFree_bytes + node_memory_SwapCached_bytes) > node_memory_SwapTotal_bytes * 0.8
+                      node_memory_SwapFree_bytes < node_memory_SwapTotal_bytes * 0.1
+                      and
+                      node_memory_MemAvailable_bytes < node_memory_MemTotal_bytes * 0.2
                     '';
                     for = "10m";
                     annotations = {
-                      summary = "{{$labels.instance}}: Running out of swap soon.";
-                      description = "{{$labels.instance}} is using 80% of its swap space for at least 10 minutes now.";
+                      summary = "{{$labels.instance}}: Low on memory and swap.";
+                      description = "{{$labels.instance}} has under 10% swap free and under 20% RAM available for 10 minutes: real memory pressure, OOM risk.";
                     };
                   }
                   {

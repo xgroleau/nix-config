@@ -92,8 +92,6 @@ in
               "validate"
               "+quit"
             ];
-            # The server only takes the password as a CLI argument, read it
-            # at runtime to keep it out of the nix store
             ExecStart = pkgs.writeShellScript "valheim-start" ''
               exec ${pkgs.steam-run}/bin/steam-run ${cfg.dataDir}/valheim_server.x86_64 \
                 -port ${toString cfg.port} \
