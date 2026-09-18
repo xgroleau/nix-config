@@ -60,8 +60,6 @@ rec {
 
         home.packages = with pkgs; [
           element-desktop
-          beeper
-          mattermost-desktop
           slack
           spotify
           thunderbird
