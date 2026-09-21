@@ -224,6 +224,11 @@ in
       };
     };
 
+    # Allow servcies for group write files (aka subtitles)
+    systemd.services.radarr.serviceConfig.UMask = lib.mkForce "0002";
+    systemd.services.sonarr.serviceConfig.UMask = lib.mkForce "0002";
+    systemd.services.readarr.serviceConfig.UMask = lib.mkForce "0002";
+
     users.users.jellyfin.extraGroups = [
       "render"
       "video"
