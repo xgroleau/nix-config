@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  options,
   pkgs,
   ...
 }:
@@ -51,7 +52,6 @@ in
           enable = true;
           # TODO: re-enable once https://github.com/NixOS/nixpkgs/pull/446307 lands
           autoUpdateService = false;
-          openFirewall = false;
 
           hub.collections = [
             "crowdsecurity/linux"
@@ -98,6 +98,9 @@ in
               }
             ];
           };
+        }
+        // lib.optionalAttrs (options.services.crowdsec ? openFirewall) {
+          openFirewall = false;
         };
 
         # TODO: remove once https://github.com/NixOS/nixpkgs/pull/446307 lands.
