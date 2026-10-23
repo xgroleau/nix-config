@@ -372,9 +372,9 @@ in
             invalidation_flow:  !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
 
             access_code_validity:    minutes=1
-            access_token_validity:   minutes=5
-            refresh_token_validity:  days=30
-            refresh_token_threshold: seconds=0
+            access_token_validity:   hours=1
+            refresh_token_validity:  days=180
+            refresh_token_threshold: days=173
 
             include_claims_in_id_token: true
             issuer_mode: per_provider
@@ -409,9 +409,9 @@ in
             invalidation_flow:  !Find [authentik_flows.flow, [slug, default-provider-invalidation-flow]]
 
             access_code_validity:    minutes=1
-            access_token_validity:   minutes=5
-            refresh_token_validity:  days=30
-            refresh_token_threshold: seconds=0
+            access_token_validity:   hours=1
+            refresh_token_validity:  days=180
+            refresh_token_threshold: days=173
 
             include_claims_in_id_token: true
             issuer_mode: per_provider
