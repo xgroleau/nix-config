@@ -12,6 +12,12 @@ let
   containerSystemdStateMetric = "nixos_container_systemd_unit_state";
   containerSystemdUpMetric = "nixos_container_systemd_up";
   containerSystemdScrapeTimestampMetric = "nixos_container_systemd_scrape_timestamp_seconds";
+  # Stable name/dir
+  containerMachineId = name: builtins.hashString "md5" "nixos-container-${name}";
+  containerJournalDir = name: "/var/log/journal/${containerMachineId name}";
+  ephemeralJournalDirs = lib.mapAttrsToList (name: _: containerJournalDir name) (
+    lib.filterAttrs (_: c: c.ephemeral) config.containers
+  );
   containerSystemdMetricsScript = pkgs.writeShellApplication {
     name = "prometheus-container-systemd-metrics";
     runtimeInputs = [
@@ -192,11 +198,34 @@ in
 
     containers = lib.mkOption {
       type = lib.types.attrsOf (
-        lib.types.submodule (_: {
-          config.extraFlags = lib.mkIf (
-            cfg.enable && containerSystemdCfg.enable && containerSystemdCfg.linkJournals
-          ) [ "--link-journal=try-host" ];
-        })
+        lib.types.submodule (
+          { name, ... }@args:
+          let
+            container = args.config;
+            linkJournals = cfg.enable && containerSystemdCfg.enable && containerSystemdCfg.linkJournals;
+            journalDir = containerJournalDir name;
+          in
+          {
+            # nspawn skips --link-journal in ephemeral mode, so bind the host journal dir manually
+            config = lib.mkIf linkJournals (
+              lib.mkMerge [
+                (lib.mkIf (!container.ephemeral) { extraFlags = [ "--link-journal=try-host" ]; })
+                (lib.mkIf container.ephemeral {
+                  extraFlags = [ "--uuid=${containerMachineId name}" ];
+                  bindMounts.${journalDir} = {
+                    hostPath = journalDir;
+                    isReadOnly = false;
+                  };
+                  config = {
+                    environment.etc.machine-id.text = "${containerMachineId name}\n";
+                    # Host journald only vacuums its own machine-id dir
+                    services.journald.extraConfig = "SystemMaxUse=500M";
+                  };
+                })
+              ]
+            );
+          }
+        )
       );
     };
   };
@@ -243,6 +272,16 @@ in
             };
           };
         };
+
+        systemd.tmpfiles.settings."container-journals" = lib.mkIf containerSystemdCfg.linkJournals (
+          lib.genAttrs ephemeralJournalDirs (_: {
+            d = {
+              mode = "2755";
+              user = "root";
+              group = "systemd-journal";
+            };
+          })
+        );
 
         systemd.services.prometheus-container-systemd-metrics = {
           description = "Export systemd service states for NixOS containers";
