@@ -84,7 +84,7 @@ in
           autoStart = true;
           dependsOn = [ "mediaserver-gluetun" ];
           #TODO:  Waiting on https://github.com/linuxserver/docker-deluge/issues/229
-          # image = "linuxserver/deluge:2.2.0@sha256:bf306ddd5e6d4a85d3d05ce1b947ab6e344e7fca1b7740b77c58ce170118c7ff";
+          # image = "linuxserver/deluge:2.2.0@sha256:1dbf9663387f85bb5805fcb1418a246f877e01374bb2a6cd9e632c72fb2e1ebc";
           image = "linuxserver/deluge:2.2.0-r1-ls364";
           volumes = [
             "${cfg.dataDir}/deluge:/config"
