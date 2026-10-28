@@ -52,6 +52,7 @@
     kernelPackages = pkgs.linuxPackages_6_12;
     extraModulePackages = [ ];
     zfs.forceImportRoot = false;
+    kernelParams = [ "zfs.zfs_arc_max=${toString (8 * 1024 * 1024 * 1024)}" ];
   };
 
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
