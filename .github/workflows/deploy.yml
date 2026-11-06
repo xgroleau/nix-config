@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Make space
-        uses: wimpysworld/nothing-but-nix@v11
+        uses: wimpysworld/nothing-but-nix@v12
 
       - name: NixInstaller
         uses: DeterminateSystems/determinate-nix-action@v3.24.2
