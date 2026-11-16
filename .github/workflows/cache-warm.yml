@@ -16,7 +16,7 @@ jobs:
       matrix:
         system:
           - { name: vaermina, platform: ubuntu-24.04, kind: nixos }
-          - { name: Xaviers-MacBook-Pro, platform: macos-14, kind: darwin }
+          - { name: Xaviers-MacBook-Pro, platform: macos-26, kind: darwin }
 
     runs-on: ${{ matrix.system.platform }}
     steps:
