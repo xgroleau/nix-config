@@ -11,7 +11,7 @@ let
 
   containerBackendName = config.virtualisation.oci-containers.backend;
   containerBackend = pkgs."${containerBackendName}" + "/bin/" + containerBackendName;
-  openCloudImage = "opencloudeu/opencloud:7.2.5@sha256:26fcc6f69d71937af015be73c585e7c36d1945d547fa2a6f706118283f1bcd6b";
+  openCloudImage = "opencloudeu/opencloud:9.1.1@sha256:d7d5b547f9e41db24f030d6a6857c4184752b2c875c936952ee0601b6531cd51";
 
   # TLS client cert/key + WOPI proof key.
   collaboraKeys = pkgs.runCommand "collabora-keys" { nativeBuildInputs = [ pkgs.openssl ]; } ''
@@ -138,6 +138,7 @@ in
                 # Overall config
                 OC_SHARING_PUBLIC_SHARE_MUST_HAVE_PASSWORD = "false";
                 OC_SHARING_PUBLIC_WRITEABLE_SHARE_MUST_HAVE_PASSWORD = "true";
+                OC_SPACES_DEFAULT_QUOTA = toString (50 * 1000 * 1000 * 1000);
               }
 
               (lib.mkIf cfg.collabora.enable {
