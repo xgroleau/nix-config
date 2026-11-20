@@ -68,19 +68,8 @@ in
 
           collaboraPort = lib.mkOption {
             type = types.port;
-            default = 9300;
-            description = "The port to use for colllabora ";
-          };
-
-          companionDomain = lib.mkOption {
-            type = types.str;
-            description = "domain of the companion instance";
-          };
-
-          companionPort = lib.mkOption {
-            type = types.port;
             default = 9980;
-            description = "The port to use for companion";
+            description = "The port to use for collabora";
           };
         };
       };
@@ -121,7 +110,9 @@ in
 
                 PROXY_TLS = "false";
                 PROXY_HTTP_ADDR = "0.0.0.0:9200";
-                START_ADDITIONAL_SERVICES = "notifications";
+                OC_ADD_RUN_SERVICES = lib.concatStringsSep "," (
+                  [ "notifications" ] ++ lib.optional cfg.collabora.enable "collaboration"
+                );
 
                 OC_INSECURE = "false";
                 OC_URL = "https://${cfg.domain}";
@@ -141,22 +132,22 @@ in
                 OC_SPACES_DEFAULT_QUOTA = toString (50 * 1000 * 1000 * 1000);
               }
 
+              # 9.x runs the WOPI server in-process; the proxy serves it under /wopi on the main domain
               (lib.mkIf cfg.collabora.enable {
                 # this is needed for setting the correct CSP header
                 COLLABORA_DOMAIN = cfg.collabora.collaboraDomain;
-                COMPANION_DOMAIN = cfg.collabora.companionDomain;
 
-                # expose nats and the reva gateway for the collaboration service
-                GATEWAY_GRPC_ADDR = "0.0.0.0:9142";
-                NATS_NATS_HOST = "0.0.0.0";
-                NATS_NATS_PORT = "9233";
-                NATS_DEBUG_ADDR = "0.0.0.0:9234";
-
-                # make collabora the secure view app
-                FRONTEND_APP_HANDLER_SECURE_VIEW_APP_ADDR = "eu.opencloud.api.collaboration.CollaboraOnline";
+                FRONTEND_APP_HANDLER_SECURE_VIEW_APP_ADDR = "eu.opencloud.api.collaboration";
                 # Not sure what this is
                 GRAPH_AVAILABLE_ROLES = "b1e2218d-eef8-4d4c-b82d-0f1a1b48f3b5,a8d5fe5e-96e3-418d-825b-534dbdf22b99,fb6c3e19-e378-47e5-b277-9732f9de6e21,58c63c02-1d89-4572-916a-870abc5a1b7d,2d00ce52-1fc2-4dbc-8b95-a73b73395f5a,1c996275-f1c9-4e71-abdf-a42f6495e960,312c0871-5ef7-4b3a-85b6-0e4074c64049,aa97fe03-7980-45ac-9e50-b325749fd7e6";
 
+                COLLABORATION_WOPI_SRC = "https://${cfg.domain}";
+                COLLABORATION_APP_NAME = "CollaboraOnline";
+                COLLABORATION_APP_PRODUCT = "Collabora";
+                COLLABORATION_APP_ADDR = "https://${cfg.collabora.collaboraDomain}";
+                COLLABORATION_APP_ICON = "https://${cfg.collabora.collaboraDomain}/favicon.ico";
+                COLLABORATION_APP_INSECURE = "true";
+                COLLABORATION_CS3API_DATAGATEWAY_INSECURE = "true";
               })
             ];
           };
@@ -169,67 +160,6 @@ in
         }
 
         (lib.mkIf cfg.collabora.enable {
-
-          opencloud-collaboration = {
-            autoStart = true;
-            image = openCloudImage;
-            volumes = [
-              "/etc/localtime:/etc/localtime:ro"
-              "${cfg.configDir}:/etc/opencloud"
-            ];
-            dependsOn = [
-              "opencloud"
-              "opencloud-collabora"
-            ];
-            ports = [ "${toString cfg.collabora.companionPort}:9300" ];
-            networks = [ "opencloud-bridge" ];
-            entrypoint = "/bin/sh";
-            cmd = [
-              "-c"
-              ''
-                set -e
-
-                echo "Waiting for NATS (opencloud:9234) health..."
-                timeout 5 sh -c 'until curl -fsS http://opencloud:9234/healthz >/dev/null; do sleep 1; done'
-
-                echo "Waiting for gateway gRPC port (opencloud:9142)..."
-                timeout 10 sh -c '
-                  # curl exit code 7 = cannot connect (port closed). Any other result means socket accepted.
-                  until (curl --max-time 1 http://opencloud:9142 >/dev/null 2>&1 || [ $? -ne 7 ]); do
-                    sleep 1
-                  done
-                '
-
-                sleep 3
-                echo "Starting collaboration server..."
-                exec opencloud collaboration server
-              ''
-            ];
-
-            environmentFiles = cfg.environmentFiles;
-            environment = {
-              PROXY_CSP_CONFIG_FILE_LOCATION = "/etc/opencloud/csp.yaml";
-              COLLABORA_DOMAIN = cfg.collabora.collaboraDomain;
-              COMPANION_DOMAIN = cfg.collabora.companionDomain;
-
-              COLLABORATION_GRPC_ADDR = "0.0.0.0:9301";
-              COLLABORATION_HTTP_ADDR = "0.0.0.0:9300";
-              COLLABORATION_WOPI_SRC = "https://${cfg.collabora.companionDomain}";
-              COLLABORATION_APP_NAME = "CollaboraOnline";
-              COLLABORATION_APP_PRODUCT = "Collabora";
-              COLLABORATION_APP_ADDR = "https://${cfg.collabora.collaboraDomain}";
-              COLLABORATION_APP_ICON = "https://${cfg.collabora.collaboraDomain}/favicon.ico";
-              COLLABORATION_APP_INSECURE = "true";
-              COLLABORATION_CS3API_DATAGATEWAY_INSECURE = "true";
-              # COLLABORATION_LOG_LEVEL = "info";
-              COLLABORATION_STORE = "nats-js-kv";
-              COLLABORATION_STORE_NODES = "opencloud:9233";
-              MICRO_REGISTRY = "nats-js-kv"; # Seems like we need both
-              MICRO_REGISTRY_ADDRESS = "opencloud:9233";
-              OC_URL = "https://${cfg.domain}";
-            };
-
-          };
 
           opencloud-collabora = {
             autoStart = true;
@@ -253,22 +183,15 @@ in
 
             environmentFiles = cfg.environmentFiles;
             environment = {
-              aliasgroup1 = "https://${cfg.collabora.companionDomain}:443";
+              aliasgroup1 = "https://${cfg.domain}:443";
               DONT_GEN_SSL_CERT = "YES";
               SSL_CERT_FILE = "/etc/coolwsd/ca-chain.cert.pem";
-              extra_params = "--o:ssl.enable=false --o:ssl.ssl_verification=false --o:ssl.termination=true --o:welcome.enable=false --o:home_mode.enable=true --o:net.frame_ancestors=${cfg.domain}";
+              extra_params = "--o:ssl.enable=false --o:ssl.ssl_verification=false --o:ssl.termination=true --o:welcome.enable=false --o:home_mode.enable=true --o:net.frame_ancestors=${cfg.domain} --o:net.lok_allow.host[14]=${cfg.domain}";
             };
           };
 
         })
       ];
-    };
-
-    # collab flaps on boot until opencloud's nats/gateway is ready; space out its restarts
-    systemd.services.podman-opencloud-collaboration = lib.mkIf cfg.collabora.enable {
-      serviceConfig = {
-        RestartSec = lib.mkForce 5;
-      };
     };
 
     # Network creation
@@ -294,10 +217,7 @@ in
       allowedTCPPorts = [
         cfg.port
       ]
-      ++ lib.optionals cfg.collabora.enable [
-        cfg.collabora.collaboraPort
-        cfg.collabora.companionPort
-      ];
+      ++ lib.optional cfg.collabora.enable cfg.collabora.collaboraPort;
     };
 
     systemd.tmpfiles.settings.opencloud = {

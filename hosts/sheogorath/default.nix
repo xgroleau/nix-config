@@ -84,7 +84,6 @@ in
           "ntfy.${domain}" = mkLocalHost config.modules.ntfy.port;
           "opencloud.${domain}" = mkLocalHost config.modules.opencloud.port;
           "collabora.opencloud.${domain}" = mkLocalHost config.modules.opencloud.collabora.collaboraPort;
-          "companion.opencloud.${domain}" = mkLocalHost config.modules.opencloud.collabora.companionPort;
           "paperless.${domain}" = mkLocalHost config.modules.paperlessNgx.port;
           "vaultwarden.${domain}" = mkLocalHost config.modules.vaultwarden.port;
 
@@ -141,9 +140,7 @@ in
         collabora = {
           enable = true;
           collaboraPort = 11210;
-          companionPort = 11220;
           collaboraDomain = "collabora.opencloud.xgroleau.com";
-          companionDomain = "companion.opencloud.xgroleau.com";
         };
       };
 

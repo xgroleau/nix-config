@@ -4,8 +4,6 @@ directives:
   connect-src:
     - "'self'"
     - "blob:"
-    - "https://${COMPANION_DOMAIN|companion.opencloud.xgroleau.com}/"
-    - "wss://${COMPANION_DOMAIN|companion.opencloud.xgroleau.com}/"
     - "https://raw.githubusercontent.com/opencloud-eu/awesome-apps/"
     - "https://raw.githubusercontent.com/opencloud-eu/awesome/"
     - "https://${OIDC_DOMAIN|authentik.xgroleau.com}/"
