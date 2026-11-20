@@ -94,23 +94,23 @@ in
         };
       };
 
-      firefly-iii = {
-        enable = true;
-        port = 12300;
-        exporterPort = 12301;
-        dataDir = "/vault/firefly-iii";
-        appUrl = "https://firefly.${domain}";
-        appKeyFile = config.age.secrets.fireflyAppKey.path;
-        importerTokenFile = config.age.secrets.fireflyImporterToken.path;
-        mail = {
-          enable = true;
-          host = "mail.gmx.com";
-          from = "sheogorath@gmx.com";
-          to = "xavgroleau@gmail.com";
-          username = "xavgroleau@gmx.com";
-          passwordFile = config.age.secrets.gmxPass.path;
-        };
-      };
+      # firefly-iii = {
+      #   enable = true;
+      #   port = 12300;
+      #   exporterPort = 12301;
+      #   dataDir = "/vault/firefly-iii";
+      #   appUrl = "https://firefly.${domain}";
+      #   appKeyFile = config.age.secrets.fireflyAppKey.path;
+      #   importerTokenFile = config.age.secrets.fireflyImporterToken.path;
+      #   mail = {
+      #     enable = true;
+      #     host = "mail.gmx.com";
+      #     from = "sheogorath@gmx.com";
+      #     to = "xavgroleau@gmail.com";
+      #     username = "xavgroleau@gmx.com";
+      #     passwordFile = config.age.secrets.gmxPass.path;
+      #   };
+      # };
 
       immich = {
         enable = true;
@@ -187,29 +187,29 @@ in
         port = 10600;
       };
 
-      minecraft = {
-        enable = true;
-        port = 25665;
-        openFirewall = true;
+      # minecraft = {
+      #   enable = true;
+      #   port = 25665;
+      #   openFirewall = true;
 
-        name = "Yofo";
-        type = "FABRIC";
-        version = "26.2";
-        dataDir = "/data/minecraft/yofo";
-        # packwizPackUrl = "https://raw.githubusercontent.com/xgroleau/yofo-modpack/refs/tags/v1.0.5/pack.toml";
-      };
+      #   name = "Yofo";
+      #   type = "FABRIC";
+      #   version = "26.2";
+      #   dataDir = "/data/minecraft/yofo";
+      #   # packwizPackUrl = "https://raw.githubusercontent.com/xgroleau/yofo-modpack/refs/tags/v1.0.5/pack.toml";
+      # };
 
-      abioticFactor = {
-        enable = true;
-        restart = true;
-        port = 7777;
-        queryPort = 27015;
-        name = "Yofo";
-        maxPlayers = 10;
-        passwordFile = config.age.secrets.abioticFactorPass.path;
-        openFirewall = true;
-        dataDir = "/data/abiotic-factor";
-      };
+      # abioticFactor = {
+      #   enable = true;
+      #   restart = true;
+      #   port = 7777;
+      #   queryPort = 27015;
+      #   name = "Yofo";
+      #   maxPlayers = 10;
+      #   passwordFile = config.age.secrets.abioticFactorPass.path;
+      #   openFirewall = true;
+      #   dataDir = "/data/abiotic-factor";
+      # };
 
       # arkSurvivalAscended = {
       #   enable = true;
@@ -243,15 +243,15 @@ in
         options.admin_password = config.age.secrets.stalwartEnv.path;
       };
 
-      valheim = {
-        enable = true;
-        restart = true;
-        port = 2456;
-        name = "Yofo";
-        passwordFile = config.age.secrets.valheimPass.path;
-        openFirewall = true;
-        dataDir = "/data/valheim";
-      };
+      # valheim = {
+      #   enable = true;
+      #   restart = true;
+      #   port = 2456;
+      #   name = "Yofo";
+      #   passwordFile = config.age.secrets.valheimPass.path;
+      #   openFirewall = true;
+      #   dataDir = "/data/valheim";
+      # };
 
       vaultwarden = {
         enable = true;
