@@ -163,7 +163,7 @@ in
 
           opencloud-collabora = {
             autoStart = true;
-            image = "collabora/code:26.04.6.1.1@sha256:95f29f1c0a1778999125f53f058d968fe0afb37c95e32ebfb9f3444140faebd2";
+            image = "collabora/code:26.04.6.2.1@sha256:a2f5d4e88addd46033d8440f7a13b82f7e6fe444bf8c6b5a3eadc789f0b5342b";
             volumes = [
               "/etc/localtime:/etc/localtime:ro"
               # TLS cert/key/CA + WOPI proof key image ships none; coolwsd loads them from /etc/coolwsd
