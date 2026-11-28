@@ -27,9 +27,21 @@
       uinput.enable = true;
       steam-hardware.enable = true;
 
+      bluetooth = {
+        enable = true;
+        settings = {
+          General.FastConnectable = true;
+          LE = {
+            MinConnectionInterval = 6;
+            MaxConnectionInterval = 9;
+            ConnectionLatency = 0;
+          };
+        };
+      };
     };
 
-    # decky-loader pulls in pnpm at build time; upstream package is flagged insecure
+    boot.extraModprobeConfig = "options btusb enable_autosuspend=0";
+
     nixpkgs.config.permittedInsecurePackages = [ "pnpm-9.15.9" ];
 
     # Steam deck experience

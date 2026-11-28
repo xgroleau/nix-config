@@ -31,7 +31,7 @@
       "kvm-intel"
       "hid_sony"
       "hid_playstation"
-      "hid_nindento"
+      "hid_nintendo"
 
     ];
     extraModulePackages = [ ];
